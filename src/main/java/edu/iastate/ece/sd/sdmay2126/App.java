@@ -30,7 +30,6 @@ public class App
 		});
 		//Don't start the narrative until we select the button to start it.
 		while(GUI.RunDefault == false){}
-		Thread.sleep(10000);
 		WebDriver driver = getDriver();
         try {
         	System.out.println("Loading KBase narrative...");
