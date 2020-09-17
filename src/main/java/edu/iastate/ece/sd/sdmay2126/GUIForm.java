@@ -1,5 +1,7 @@
 package edu.iastate.ece.sd.sdmay2126;
 
+import org.openqa.selenium.WebDriver;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -27,6 +29,36 @@ public class GUIForm extends JFrame{
                 JComponent comp = (JComponent) e.getSource();
                 Window win = SwingUtilities.getWindowAncestor(comp);
                 win.dispose();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        WebDriver driver = App.getDriver();
+                        try {
+                            System.out.println("Loading KBase narrative...");
+                            driver.get("https://narrative.kbase.us/narrative/71238");
+
+                            // Let things load
+                            Thread.sleep(3000);
+
+                            // Login with Globus
+                            App.performGlobusAuthFlow(driver);
+
+                            // This load really takes a while
+                            Thread.sleep(15000);
+
+                            // TODO: Interact with the narrative (fill form, click buttons, read output)
+
+                            // Wait so we can observe/mess around
+                            System.out.println("Waiting 5 minutes so we can experiment");
+                            Thread.sleep(5 * 60 * 1000);
+                        } catch (InterruptedException interruptedException) {
+                            interruptedException.printStackTrace();
+                        } finally {
+                            System.out.println("Run done - closing driver and quitting.");
+                            driver.close();
+                        }
+                    }
+                }).start();
             }
         });
     }
