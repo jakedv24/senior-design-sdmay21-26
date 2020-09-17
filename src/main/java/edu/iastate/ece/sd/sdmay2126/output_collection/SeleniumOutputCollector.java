@@ -1,18 +1,17 @@
 package edu.iastate.ece.sd.sdmay2126.output_collection;
 
-import com.google.common.annotations.VisibleForTesting;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import static org.openqa.selenium.support.locators.RelativeLocator.withTagName;
-
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
+
+import static org.openqa.selenium.support.locators.RelativeLocator.withTagName;
 
 public class SeleniumOutputCollector implements OutputCollector {
     static final String OBJECTIVE_VALUE_LABEL_PATH = "//td[text()='Objective value']";

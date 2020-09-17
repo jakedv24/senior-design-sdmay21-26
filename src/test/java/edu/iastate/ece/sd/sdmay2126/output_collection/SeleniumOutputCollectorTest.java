@@ -7,14 +7,14 @@ import org.mockito.Mockito;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-import sun.util.locale.provider.FallbackLocaleProviderAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static edu.iastate.ece.sd.sdmay2126.output_collection.SeleniumOutputCollector.*;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.openqa.selenium.support.locators.RelativeLocator.withTagName;
