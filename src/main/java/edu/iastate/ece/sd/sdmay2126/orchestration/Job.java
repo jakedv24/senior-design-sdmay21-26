@@ -3,6 +3,7 @@ package edu.iastate.ece.sd.sdmay2126.orchestration;
 import edu.iastate.ece.sd.sdmay2126.application.ApplicationType;
 import edu.iastate.ece.sd.sdmay2126.application.ApplicationOutput;
 import edu.iastate.ece.sd.sdmay2126.application.ApplicationParameters;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a unique execution of some {@link ApplicationType}.
@@ -19,10 +20,7 @@ public class Job {
         this(parameters, null, null);
     }
 
-    public Job(ApplicationParameters parameters, JobCompleted completionCallback, JobCanceled cancellationCallback) {
-        if (parameters == null)
-            throw new IllegalArgumentException("Parameters are required to create a job.");
-
+    public Job(@NotNull ApplicationParameters parameters, JobCompleted completionCallback, JobCanceled cancellationCallback) {
         this.parameters = parameters;
         this.completionCallback = completionCallback;
         this.cancellationCallback = cancellationCallback;
