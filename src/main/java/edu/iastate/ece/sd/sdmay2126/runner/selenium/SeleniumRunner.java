@@ -1,6 +1,6 @@
 package edu.iastate.ece.sd.sdmay2126.runner.selenium;
 
-import edu.iastate.ece.sd.sdmay2126.application.Application;
+import edu.iastate.ece.sd.sdmay2126.application.ApplicationType;
 import edu.iastate.ece.sd.sdmay2126.application.InvalidApplicationException;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManager;
@@ -131,7 +131,7 @@ public class SeleniumRunner implements Runner {
      * Executes an FBA application using the provided job.
      */
     private void executeFBARunner(Job job) throws InvalidApplicationException {
-        if (job.getApplication() != Application.FBA)
+        if (job.getApplication() != ApplicationType.FBA)
             throw new InvalidApplicationException();
 
         // First program the application

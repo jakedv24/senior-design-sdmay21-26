@@ -1,11 +1,11 @@
 package edu.iastate.ece.sd.sdmay2126.orchestration;
 
-import edu.iastate.ece.sd.sdmay2126.application.Application;
+import edu.iastate.ece.sd.sdmay2126.application.ApplicationType;
 import edu.iastate.ece.sd.sdmay2126.application.ApplicationOutput;
 import edu.iastate.ece.sd.sdmay2126.application.ApplicationParameters;
 
 /**
- * Represents a unique execution of some {@link edu.iastate.ece.sd.sdmay2126.application.Application}.
+ * Represents a unique execution of some {@link ApplicationType}.
  */
 public class Job {
 
@@ -28,7 +28,7 @@ public class Job {
         this.cancellationCallback = cancellationCallback;
     }
 
-    public Application getApplication() {
+    public ApplicationType getApplication() {
         return parameters.getApplication();
     }
 

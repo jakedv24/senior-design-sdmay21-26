@@ -109,7 +109,7 @@ public class FBAParameters implements ApplicationParameters {
     }
 
     @Override
-    public Application getApplication() {
-        return Application.FBA;
+    public ApplicationType getApplication() {
+        return ApplicationType.FBA;
     }
 }

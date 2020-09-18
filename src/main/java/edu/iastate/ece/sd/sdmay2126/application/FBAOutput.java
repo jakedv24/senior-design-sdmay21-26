@@ -31,7 +31,7 @@ public class FBAOutput implements ApplicationOutput {
     }
 
     @Override
-    public Application getApplication() {
-        return Application.FBA;
+    public ApplicationType getApplication() {
+        return ApplicationType.FBA;
     }
 }
