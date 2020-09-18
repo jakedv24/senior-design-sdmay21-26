@@ -7,5 +7,5 @@ public interface RunnerInstantiator {
     /**
      * Creates a new runner to be used by some manager.
      */
-    Runner createRunner();
+     Runner createRunner(RunnerReady onReady);
 }

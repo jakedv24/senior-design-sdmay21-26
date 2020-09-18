@@ -11,11 +11,6 @@ import edu.iastate.ece.sd.sdmay2126.orchestration.JobManager;
  */
 public interface Runner extends Runnable {
     /**
-     * @return This runner's manager.
-     */
-    JobManager getManager();
-
-    /**
      * Indicates that the runner should cease execution.
      */
     void stopRunner();
@@ -24,5 +19,5 @@ public interface Runner extends Runnable {
      * Instructs the runner to begin processing the specified job. Preconditions include the runner having indicated to
      * the manager that resources were available.
      */
-    void runJob(Job job) throws RunnerNotReadyException;
+    void runJob(Job job) throws RunnerNotReadyException, InterruptedException;
 }

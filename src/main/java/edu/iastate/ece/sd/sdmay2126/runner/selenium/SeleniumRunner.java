@@ -9,6 +9,7 @@ import edu.iastate.ece.sd.sdmay2126.orchestration.JobResult;
 import edu.iastate.ece.sd.sdmay2126.runner.Runner;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotInitializedException;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotReadyException;
+import edu.iastate.ece.sd.sdmay2126.runner.RunnerReady;
 import org.openqa.selenium.WebDriver;
 
 import java.util.concurrent.BlockingQueue;
@@ -19,7 +20,7 @@ import java.util.concurrent.SynchronousQueue;
  */
 public class SeleniumRunner implements Runner {
     private final SeleniumConfiguration configuration;
-    private final JobManager manager;
+    private final RunnerReady runnerReady;
     private WebDriver driver;
 
     /** Synchronizes job delegation from the manager with the runner. */
@@ -28,16 +29,11 @@ public class SeleniumRunner implements Runner {
     /** Indicates runner status and availability. */
     private boolean initialized = false, waiting = true, stopped = false;
 
-    public SeleniumRunner(SeleniumConfiguration configuration, JobManager manager) {
+    public SeleniumRunner(SeleniumConfiguration configuration, RunnerReady runnerReady, JobManager manager) {
         this.configuration = configuration;
-        this.manager = manager;
+        this.runnerReady = runnerReady;
 
         nextJob = new SynchronousQueue<>();
-    }
-
-    @Override
-    public JobManager getManager() {
-        return manager;
     }
 
     @Override
@@ -46,11 +42,11 @@ public class SeleniumRunner implements Runner {
     }
 
     @Override
-    public void runJob(Job job) throws RunnerNotReadyException {
-        if (!nextJob.isEmpty())
+    public void runJob(Job job) throws RunnerNotReadyException, InterruptedException {
+        if (!initialized || !waiting)
             throw new RunnerNotReadyException();
 
-        nextJob.add(job);
+        nextJob.put(job);
     }
 
     @Override
@@ -83,11 +79,10 @@ public class SeleniumRunner implements Runner {
 
                 // Reopen availability and notify the manager
                 waiting = true;
-                manager.indicateAvailability(this);
+                runnerReady.runnerReady(this);
             }
         }
         catch (InterruptedException e) { /* TODO */ e.printStackTrace(); }
-        catch (JobManagerStoppedException e) { /* TODO */ e.printStackTrace(); }
     }
 
     /**
@@ -113,7 +108,7 @@ public class SeleniumRunner implements Runner {
 
         // Mark initialization complete and indicate availability to the manager
         initialized = true;
-        getManager().indicateAvailability(this);
+        runnerReady.runnerReady(this);
     }
 
     /**

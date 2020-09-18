@@ -1,5 +1,6 @@
 package edu.iastate.ece.sd.sdmay2126.orchestration;
 
+import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
 import edu.iastate.ece.sd.sdmay2126.runner.Runner;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerInstantiator;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotReadyException;
@@ -49,7 +50,15 @@ public class JobManager implements Runnable {
         // Initialize the runners
         for (int i = 0; i < totalRunnerCount; i++) {
             // Note that this does NOT indicate resource availability; that's the runner's responsibility
-            Runner newRunner = runnerInstantiator.createRunner();
+            Runner newRunner = runnerInstantiator.createRunner(
+                    (runner) -> {
+                        try {
+                            this.indicateAvailability(runner);
+                        } catch (JobManagerStoppedException e) {
+                            // TODO: Handle better (can we pass this to the runner somehow?)
+                            e.printStackTrace();
+                        }
+                    });
             runners.add(newRunner);
 
             // Start the runner's initialization process
@@ -112,17 +121,21 @@ public class JobManager implements Runnable {
                 //      "stop" without processing a job/runner first?
 
                 // Will block until something is added, if the queue is exhausted
+                System.out.println("Job Manager: Job manager waiting for a job");
                 Job nextJob = jobQueue.take();
 
                 // Will block until some runner's resources come available
+                System.out.println("Job Manager: Job manager waiting for a runner");
                 Runner runner = availableRunners.take();
 
                 // Instruct the runner to take this job
                 try {
+                    System.out.println("Job Manager: Processing job " + ((FBAParameters) nextJob.getParameters()).getActivationCoefficient());
                     // Note that this is asynchronous, and the runner has callback responsibility
                     runner.runJob(nextJob);
                 } catch (RunnerNotReadyException e) {
                     // Runner wasn't ready after-all (we should log this); reschedule the job
+                    System.out.println("Job Manager: ERROR! Runner wasn't ready");
                     jobQueue.add(nextJob);
                 }
             }
