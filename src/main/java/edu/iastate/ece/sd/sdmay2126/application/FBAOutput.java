@@ -5,7 +5,7 @@ import java.util.Collection;
 /**
  * Simulation output data from a Flux Balanace Analysis.
  */
-public class FBAOutput extends ApplicationOutput {
+public class FBAOutput implements ApplicationOutput {
     private Float objectiveValue;
     private Collection<String> jobLogs;
 

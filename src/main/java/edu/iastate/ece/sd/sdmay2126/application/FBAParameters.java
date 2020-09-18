@@ -3,7 +3,7 @@ package edu.iastate.ece.sd.sdmay2126.application;
 /**
  * Simulation parameters for Flux Balance Analysis.
  */
-public class FBAParameters extends ApplicationParameters {
+public class FBAParameters implements ApplicationParameters {
     private boolean fluxVariabilityAnalysis;
     private boolean minimizeFlux;
     private boolean simulateAllSingleKos;
