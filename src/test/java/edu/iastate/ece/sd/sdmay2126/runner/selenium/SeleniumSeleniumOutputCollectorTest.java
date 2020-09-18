@@ -39,14 +39,14 @@ public class SeleniumSeleniumOutputCollectorTest {
 
     @Test
     public void collectorWillReturnDefaultOfNegOneObjectiveValueIfLabelNotFound() throws InvalidApplicationException {
-        FBAOutput result = (FBAOutput) classToTest.collectOutput(new Job(new FBAParameters()));
+        FBAOutput result = (FBAOutput) classToTest.collectOutput(new Job(new FBAParameters(false, false, false)));
 
         assertThat(result.getObjectiveValue(), is(-1f));
     }
 
     @Test
     public void collectorWillReturnDefaultOfEmptyCollectionIfLogElementsAreNotFound() throws InvalidApplicationException {
-        FBAOutput result = (FBAOutput) classToTest.collectOutput(new Job(new FBAParameters()));
+        FBAOutput result = (FBAOutput) classToTest.collectOutput(new Job(new FBAParameters(false, false, false)));
 
         assertTrue(result.getJobLogs().isEmpty());
     }
@@ -57,7 +57,7 @@ public class SeleniumSeleniumOutputCollectorTest {
         doReturn(labelElement).when(mockWebDriver).findElement(By.xpath(OBJECTIVE_VALUE_LABEL_PATH));
         doReturn(new FakeWebElement("not a float")).when(mockWebDriver).findElement(withTagName(OBJECTIVE_VALUE_VALUE_TAG_NAME).toRightOf(labelElement));
 
-        FBAOutput result = (FBAOutput) classToTest.collectOutput(new Job(new FBAParameters()));
+        FBAOutput result = (FBAOutput) classToTest.collectOutput(new Job(new FBAParameters(false, false, false)));
 
         assertThat(result.getObjectiveValue(), is(-1f));
     }
@@ -68,7 +68,7 @@ public class SeleniumSeleniumOutputCollectorTest {
         doReturn(labelElement).when(mockWebDriver).findElement(By.xpath(OBJECTIVE_VALUE_LABEL_PATH));
         doReturn(new FakeWebElement("2.9")).when(mockWebDriver).findElement(withTagName(OBJECTIVE_VALUE_VALUE_TAG_NAME).toRightOf(labelElement));
 
-        FBAOutput result = (FBAOutput) classToTest.collectOutput(new Job(new FBAParameters()));
+        FBAOutput result = (FBAOutput) classToTest.collectOutput(new Job(new FBAParameters(false, false, false)));
 
         assertThat(result.getObjectiveValue(), is(2.9f));
     }
@@ -82,7 +82,7 @@ public class SeleniumSeleniumOutputCollectorTest {
         doReturn(new FakeWebElement()).when(mockWebDriver).findElement(By.xpath(JOB_STATUS_BUTTON_PATH));
         doReturn(webElementsToReturn).when(mockWebDriver).findElements(By.className(LOG_TEXT_CLASS_NAME));
 
-        FBAOutput result = (FBAOutput) classToTest.collectOutput(new Job(new FBAParameters()));
+        FBAOutput result = (FBAOutput) classToTest.collectOutput(new Job(new FBAParameters(false, false, false)));
 
         assertThat(result.getJobLogs().size(), is(2));
         assertTrue(result.getJobLogs().contains("foo"));
