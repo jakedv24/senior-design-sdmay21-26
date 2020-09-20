@@ -1,5 +1,10 @@
 package edu.iastate.ece.sd.sdmay2126;
 
+import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
+import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
+import edu.iastate.ece.sd.sdmay2126.orchestration.JobManager;
+import edu.iastate.ece.sd.sdmay2126.orchestration.JobManagerStoppedException;
+import edu.iastate.ece.sd.sdmay2126.util.RandomUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -120,5 +125,33 @@ public class App
 		// Swap back to the window
 		driver.switchTo().defaultContent();
 	}
+
+	/*
+	private static int incrementingRunnerIdentifier = 1;
+	private static int incrementingJobIdentifier = 1;
+
+	public static void runnerTesting_main(String[] args) throws InterruptedException, JobManagerStoppedException {
+		// Start the manager with demo. runners (they'll start initializing)
+		JobManager manager = new JobManager((byte) 5,
+				onReady -> new DemonstrationRunner(onReady, incrementingRunnerIdentifier++));
+		new Thread(manager).start();
+
+		// Wait just long enough for initialization to complete
+		Thread.sleep(6000);
+
+		// Start throwing jobs onto the queue
+		for (int i = 0; i < 20; i++) {
+			FBAParameters params = new FBAParameters(false, false, false);
+			params.setActivationCoefficient(incrementingJobIdentifier++);
+
+			System.out.println("Application scheduling job " + incrementingJobIdentifier);
+			manager.scheduleJob(new Job(params));
+
+			Thread.sleep(RandomUtil.getRandInRange(500, 1500));
+		}
+
+		Thread.sleep(20000);
+	}
+	*/
 
 }
