@@ -16,6 +16,9 @@ public class GUIForm extends JFrame{
     public String activationCoefficientString; //the string to be converted
     public JPanel MainPanel;
     private JTextField ErrorTextField;
+    public boolean  fluxVariabilityAnalysisValue = false; //Value read from the checkbox.
+    public boolean simulateAllSingleKosValue = false; //Value read from the checkbox.
+    public boolean minimizeFluxValue = false; //Value read from the checkbox.
     private boolean formError = false; //try catches will signal this.
 
     //TODO (DL): Set error message to red, set error message if number is outside of the range, set booleans to values, handoff to driver.
@@ -58,6 +61,13 @@ public class GUIForm extends JFrame{
                             ErrorTextField.setText("Activation Coefficient must be an integer between 0-1 inclusive");
                             formError = true;
                         }
+                        //Viewing the checklists of the 3 booleans and setting the values appropriately.
+                        if(fluxVariabilityAnalysis.isSelected()) fluxVariabilityAnalysisValue = true;
+                        else fluxVariabilityAnalysisValue = false;
+                        if(simulateAllSingleKos.isSelected()) simulateAllSingleKosValue = true;
+                        else simulateAllSingleKosValue = false;
+                        if(minimizeFlux.isSelected()) minimizeFluxValue = false;
+                        else minimizeFluxValue = true;
                         //Close the Jpanel and free the resources it used.
                         if (formError == false) {
                             JComponent comp = (JComponent) e.getSource();
@@ -98,4 +108,5 @@ public class GUIForm extends JFrame{
                 });
 
     }
+
 }
