@@ -35,7 +35,7 @@ public class GUIForm extends JFrame{
                         WebDriver driver = App.getDriver();
                         try {
                             System.out.println("Loading KBase narrative...");
-                            driver.get("https://narrative.kbase.us/narrative/71238");
+                            driver.get("https://narrative.kbase.us/narrative/72313");
 
                             // Let things load
                             Thread.sleep(3000);
