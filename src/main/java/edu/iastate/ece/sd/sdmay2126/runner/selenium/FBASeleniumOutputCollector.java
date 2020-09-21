@@ -1,5 +1,8 @@
-package edu.iastate.ece.sd.sdmay2126.output_collection;
+package edu.iastate.ece.sd.sdmay2126.runner.selenium;
 
+import edu.iastate.ece.sd.sdmay2126.application.ApplicationOutput;
+import edu.iastate.ece.sd.sdmay2126.application.FBAOutput;
+import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -13,7 +16,7 @@ import java.util.stream.Collectors;
 
 import static org.openqa.selenium.support.locators.RelativeLocator.withTagName;
 
-public class SeleniumOutputCollector implements OutputCollector {
+public class FBASeleniumOutputCollector implements SeleniumOutputCollector {
     static final String OBJECTIVE_VALUE_LABEL_PATH = "//td[text()='Objective value']";
     static final String JOB_STATUS_BUTTON_PATH = "//button[@title='Job Status']";
     static final String OBJECTIVE_VALUE_VALUE_TAG_NAME = "td";
@@ -21,14 +24,14 @@ public class SeleniumOutputCollector implements OutputCollector {
 
     private WebDriver webDriver;
 
-    public SeleniumOutputCollector(@Nonnull WebDriver webDriver) {
+    public FBASeleniumOutputCollector(@Nonnull WebDriver webDriver) {
         this.webDriver = webDriver;
     }
 
     @Nonnull
     @Override
-    public KBaseOutput collectOutput() {
-        return new KBaseOutput(getObjectiveValue(), getLogs());
+    public ApplicationOutput collectOutput(Job job) {
+        return new FBAOutput(getObjectiveValue(), getLogs());
     }
 
     @NotNull
