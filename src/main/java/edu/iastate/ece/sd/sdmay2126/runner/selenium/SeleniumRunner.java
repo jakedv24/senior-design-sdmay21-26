@@ -10,10 +10,11 @@ import edu.iastate.ece.sd.sdmay2126.runner.Runner;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotInitializedException;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotReadyException;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerReady;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.SeleniumAuthenticationFlow;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus.GlobusAuthenticationFlow;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverConfiguration;
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.WebDriverChrome;
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.WebDriverFirefox;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverChrome;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverFirefox;
 import org.openqa.selenium.WebDriver;
 
 import java.util.concurrent.BlockingQueue;
@@ -105,9 +106,9 @@ public class SeleniumRunner implements Runner {
         SeleniumDriverConfiguration driverConfiguration = configuration.getDriverConfiguration();
         switch (driverConfiguration.getDriverType()) {
             case CHROME:
-                return new WebDriverChrome().initializeDriver(driverConfiguration);
+                return new SeleniumDriverChrome().initializeDriver(driverConfiguration);
             case FIREFOX:
-                return new WebDriverFirefox().initializeDriver(driverConfiguration);
+                return new SeleniumDriverFirefox().initializeDriver(driverConfiguration);
             default:
                 throw new IllegalArgumentException("Invalid web-driver type.");
         }

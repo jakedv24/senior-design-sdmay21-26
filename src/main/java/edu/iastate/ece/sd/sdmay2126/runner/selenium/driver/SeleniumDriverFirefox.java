@@ -7,7 +7,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 /**
  * Provides management and initialization for Firefox web-drivers.
  */
-public class WebDriverFirefox implements WebDriverManager {
+public class SeleniumDriverFirefox implements SeleniumDriverManager {
     @Override
     public WebDriver initializeDriver(SeleniumDriverConfiguration driverConfiguration) {
         System.setProperty("webdriver.gecko.driver", driverConfiguration.getDriverLocation());

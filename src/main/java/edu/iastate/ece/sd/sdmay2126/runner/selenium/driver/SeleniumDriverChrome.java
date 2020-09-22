@@ -7,7 +7,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 /**
  * Provides management and initialization for Chromium web-drivers.
  */
-public class WebDriverChrome implements WebDriverManager {
+public class SeleniumDriverChrome implements SeleniumDriverManager {
     @Override
     public WebDriver initializeDriver(SeleniumDriverConfiguration driverConfiguration) {
         System.setProperty("webdriver.chrome.driver", driverConfiguration.getDriverLocation());

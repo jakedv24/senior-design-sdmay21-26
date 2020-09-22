@@ -1,7 +1,7 @@
 package edu.iastate.ece.sd.sdmay2126.runner.selenium;
 
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverConfiguration;
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumWebDrivers;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDrivers;
 
 /**
  * Specifies some Selenium configuration, including driver and authentication information.
@@ -11,7 +11,7 @@ public class SeleniumConfiguration {
     private String globusPassword;
     private SeleniumDriverConfiguration driverConfiguration;
 
-    public SeleniumConfiguration(String globusUsername, String globusPassword, SeleniumWebDrivers driverType, String driverLocation) {
+    public SeleniumConfiguration(String globusUsername, String globusPassword, SeleniumDrivers driverType, String driverLocation) {
         this(
                 globusUsername,
                 globusUsername,

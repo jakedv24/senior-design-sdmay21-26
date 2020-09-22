@@ -1,6 +1,6 @@
 package edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus;
 
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.SeleniumAuthenticationFlow;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.SeleniumAuthenticationFlow;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

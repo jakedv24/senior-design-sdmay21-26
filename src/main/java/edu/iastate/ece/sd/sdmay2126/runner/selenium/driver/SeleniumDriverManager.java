@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 /**
  * Provides configuration and initializtion capabilites for Selenium web-drivers.
  */
-public interface WebDriverManager {
+public interface SeleniumDriverManager {
     /**
      * Should initialize a web-driver with the specified driver configuration.
      */
