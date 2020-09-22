@@ -14,10 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Handles delegating queued jobs to a finite set of runners and resources.
  */
 public class JobManager implements Runnable {
-    private static final byte DEFAULT_RUNNER_COUNT = 2;
-
-    /** The maximum concurrent runner execution allowed for this manager. */
-    private final byte totalRunnerCount;
+    private static final int DEFAULT_RUNNER_COUNT = 2;
 
     /** All of this manager's runners. */
     private final List<Runner> runners;
@@ -30,35 +27,31 @@ public class JobManager implements Runnable {
     private boolean stopped = false;
 
     /**
-     * Creates a job manager with the default runner count.
-     *
-     * @param runnerInstantiator Provisions runners for the manager.
-     */
-    public JobManager(RunnerInstantiator runnerInstantiator) {
-        this(DEFAULT_RUNNER_COUNT, runnerInstantiator);
-    }
-
-    /**
      * Creates a job manager with the specified runner count.
      */
-    public JobManager(byte totalRunnerCount, RunnerInstantiator runnerInstantiator) {
-        this.totalRunnerCount = totalRunnerCount;
+    public JobManager() {
         runners = new LinkedList<>();
         availableRunners = new LinkedBlockingQueue<>();
         jobQueue = new LinkedBlockingQueue<>();
+    }
 
+    /**
+     * Initializes the default number of runners using the specified instantiator.
+     * Note that this will kick-off the initialization routine.
+     */
+    public void initializeRunners(RunnerInstantiator runnerInstantiator) {
+        initializeRunners(runnerInstantiator, DEFAULT_RUNNER_COUNT);
+    }
+
+    /**
+     * Initializes the specified number of runners using the specified instantiator.
+     * Note that this will kick-off the initialization routine.
+     */
+    public void initializeRunners(RunnerInstantiator runnerInstantiator, int runnerCount) {
         // Initialize the runners
-        for (int i = 0; i < totalRunnerCount; i++) {
+        for (int i = 0; i < runnerCount; i++) {
             // Note that this does NOT indicate resource availability; that's the runner's responsibility
-            Runner newRunner = runnerInstantiator.createRunner(
-                    (runner) -> {
-                        try {
-                            this.indicateAvailability(runner);
-                        } catch (JobManagerStoppedException e) {
-                            // TODO: Handle better (can we pass this to the runner somehow?)
-                            e.printStackTrace();
-                        }
-                    });
+            Runner newRunner = runnerInstantiator.createRunner(this);
             runners.add(newRunner);
 
             // Start the runner's initialization process

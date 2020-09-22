@@ -9,7 +9,6 @@ import edu.iastate.ece.sd.sdmay2126.orchestration.JobResult;
 import edu.iastate.ece.sd.sdmay2126.runner.Runner;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotInitializedException;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotReadyException;
-import edu.iastate.ece.sd.sdmay2126.runner.RunnerReady;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.SeleniumAuthenticationFlow;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus.GlobusAuthenticationConfiguration;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus.GlobusAuthenticationFlow;
@@ -25,8 +24,8 @@ import java.util.concurrent.SynchronousQueue;
  * KBase job runner using Selenium WebDrivers.
  */
 public class SeleniumRunner implements Runner {
+    private final JobManager jobManager;
     private final SeleniumConfiguration configuration;
-    private final RunnerReady runnerReady;
     private WebDriver driver;
 
     /** Synchronizes job delegation from the manager with the runner. */
@@ -35,9 +34,9 @@ public class SeleniumRunner implements Runner {
     /** Indicates runner status and availability. */
     private boolean initialized = false, waiting = true, stopped = false;
 
-    public SeleniumRunner(SeleniumConfiguration configuration, RunnerReady runnerReady, JobManager manager) {
+    public SeleniumRunner(JobManager jobManager, SeleniumConfiguration configuration) {
+        this.jobManager = jobManager;
         this.configuration = configuration;
-        this.runnerReady = runnerReady;
 
         nextJob = new SynchronousQueue<>();
     }
@@ -89,10 +88,10 @@ public class SeleniumRunner implements Runner {
 
                 // Reopen availability and notify the manager
                 waiting = true;
-                runnerReady.runnerReady(this);
+                jobManager.indicateAvailability(this);
             }
         }
-        catch (InterruptedException e) { /* TODO */ e.printStackTrace(); }
+        catch (InterruptedException | JobManagerStoppedException e) { /* TODO */ e.printStackTrace(); }
     }
 
     /**
@@ -151,7 +150,7 @@ public class SeleniumRunner implements Runner {
 
         // Mark initialization complete and indicate availability to the manager
         initialized = true;
-        runnerReady.runnerReady(this);
+        jobManager.indicateAvailability(this);
     }
 
     /**

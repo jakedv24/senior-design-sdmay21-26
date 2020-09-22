@@ -5,7 +5,6 @@ import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobResult;
 import edu.iastate.ece.sd.sdmay2126.runner.Runner;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotReadyException;
-import edu.iastate.ece.sd.sdmay2126.runner.RunnerReady;
 import edu.iastate.ece.sd.sdmay2126.util.RandomUtil;
 
 import java.text.SimpleDateFormat;

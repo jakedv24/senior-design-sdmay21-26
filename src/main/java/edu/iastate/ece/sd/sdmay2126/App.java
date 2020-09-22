@@ -4,6 +4,9 @@ import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManager;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManagerStoppedException;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.SeleniumConfiguration;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.SeleniumRunner;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDrivers;
 import edu.iastate.ece.sd.sdmay2126.util.RandomUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -22,6 +25,24 @@ public class App
 	public static GUIForm GUI;
 
 	public static void main( String[] args ) throws InterruptedException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+		// Initialize the job manager
+		JobManager manager = new JobManager();
+
+		// Initialize and add a Selenium runner to the manager
+		manager.initializeRunners(
+				jobManager -> new SeleniumRunner(
+						manager,
+						new SeleniumConfiguration(
+								"sdmay2126",
+								"sdmay2126pw",
+								SeleniumDrivers.CHROME,
+								"./drivers/chromedriver",
+								72313
+						)
+				),
+				1 // Let's leave it at a single runner for now
+		);
+
 		//Give the GUI a more authentic feel according to use OS
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		GUI = new GUIForm();
