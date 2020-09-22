@@ -37,6 +37,7 @@ public class App
 	/**
 	 * Produces a web driver for automation.
 	 */
+	@Deprecated()
 	static WebDriver getDriver() {
 		/*
 		 * When we begin to decrease the hackiness and make this user-friendly,
