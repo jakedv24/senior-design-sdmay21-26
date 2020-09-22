@@ -8,6 +8,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import javax.annotation.Nonnull;
 
+/**
+ * A Selenium automation flow for 3rd-party authentication provider, Globus.
+ */
 public class GlobusAuthenticationFlow implements SeleniumAuthenticationFlow {
     private final WebDriver driver;
     private final String username, password;
