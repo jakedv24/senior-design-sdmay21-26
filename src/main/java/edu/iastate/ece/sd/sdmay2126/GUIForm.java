@@ -80,7 +80,7 @@ public class GUIForm extends JFrame {
                 simulateAllSingleKosValue = simulateAllSingleKos.isSelected();
                 minimizeFluxValue = minimizeFlux.isSelected();
                 //Close the Jpanel and free the resources it used.
-                if (formError == false) {
+                if (!formError) {
                     JComponent comp = (JComponent) e.getSource();
                     Window win = SwingUtilities.getWindowAncestor(comp);
                     win.dispose();
