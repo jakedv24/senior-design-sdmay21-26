@@ -15,10 +15,10 @@ public class GlobusAuthenticationFlow implements SeleniumAuthenticationFlow {
     private final WebDriver driver;
     private final String username, password;
 
-    public GlobusAuthenticationFlow(@Nonnull WebDriver driver, String username, String password) {
+    public GlobusAuthenticationFlow(@Nonnull WebDriver driver, GlobusAuthenticationConfiguration authenticationConfiguration) {
         this.driver = driver;
-        this.username = username;
-        this.password = password;
+        username = authenticationConfiguration.getUsername();
+        password = authenticationConfiguration.getPassword();
     }
 
     @Override

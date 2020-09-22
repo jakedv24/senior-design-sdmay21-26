@@ -11,6 +11,7 @@ import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotInitializedException;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotReadyException;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerReady;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.SeleniumAuthenticationFlow;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus.GlobusAuthenticationConfiguration;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus.GlobusAuthenticationFlow;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverConfiguration;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverChrome;
@@ -119,10 +120,15 @@ public class SeleniumRunner implements Runner {
      */
     private void initializeRunner() throws JobManagerStoppedException {
         // Initialize the authentication flow
-        // TODO: Can we make this configurable (Globus vs. other OAuth flows)
-        SeleniumAuthenticationFlow authenticationFlow
-                = new GlobusAuthenticationFlow(driver,
-                    configuration.getGlobusUsername(), configuration.getGlobusPassword());
+        SeleniumAuthenticationFlow authenticationFlow;
+        switch (configuration.getAuthenticationConfiguration().getFlowType()) {
+            case GLOBUS:
+                authenticationFlow = new GlobusAuthenticationFlow(driver,
+                        (GlobusAuthenticationConfiguration) configuration.getAuthenticationConfiguration());
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid authentication flow.");
+        }
 
         // Perform the authentication flow
         authenticationFlow.authenticateSession();
