@@ -10,6 +10,7 @@ import edu.iastate.ece.sd.sdmay2126.runner.Runner;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotInitializedException;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotReadyException;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerReady;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus.GlobusAuthenticationFlow;
 import org.openqa.selenium.WebDriver;
 
 import java.util.concurrent.BlockingQueue;
@@ -100,7 +101,7 @@ public class SeleniumRunner implements Runner {
         // Initialize the authentication flow
         // TODO: Can we make this configurable (Globus vs. other OAuth flows)
         SeleniumAuthenticationFlow authenticationFlow
-                = new SeleniumGlobusAuthenticationFlow(driver,
+                = new GlobusAuthenticationFlow(driver,
                     configuration.getGlobusUsername(), configuration.getGlobusPassword());
 
         // Perform the authentication flow

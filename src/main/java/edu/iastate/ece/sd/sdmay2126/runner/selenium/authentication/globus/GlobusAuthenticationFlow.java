@@ -1,5 +1,6 @@
-package edu.iastate.ece.sd.sdmay2126.runner.selenium;
+package edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus;
 
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.SeleniumAuthenticationFlow;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -7,11 +8,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import javax.annotation.Nonnull;
 
-public class SeleniumGlobusAuthenticationFlow implements SeleniumAuthenticationFlow {
+public class GlobusAuthenticationFlow implements SeleniumAuthenticationFlow {
     private final WebDriver driver;
     private final String username, password;
 
-    SeleniumGlobusAuthenticationFlow(@Nonnull WebDriver driver, String username, String password) {
+    GlobusAuthenticationFlow(@Nonnull WebDriver driver, String username, String password) {
         this.driver = driver;
         this.username = username;
         this.password = password;
