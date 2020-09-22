@@ -11,7 +11,13 @@ import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotInitializedException;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotReadyException;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerReady;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus.GlobusAuthenticationFlow;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.WebDriverChrome;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.WebDriverFirefox;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
@@ -90,8 +96,24 @@ public class SeleniumRunner implements Runner {
      * Provides a Selenium WebDriver to automate through.
      */
     private WebDriver getDriver() {
-        String driverLoc = configuration.getWebDriverLocation();
-        return null; // TODO
+        /*
+         * TODO:
+         * When we begin to decrease the hackiness and make this user-friendly,
+         * we may want to explore downloading this into the user's home directory.
+         *
+         * Note that these drivers are device and browser specific. Docs/drivers:
+         * https://www.selenium.dev/documentation/en/webdriver/driver_requirements/
+         */
+
+        SeleniumDriverConfiguration driverConfiguration = configuration.getDriverConfiguration();
+        switch (driverConfiguration.getDriverType()) {
+            case CHROME:
+                return new WebDriverChrome().initializeDriver(driverConfiguration);
+            case FIREFOX:
+                return new WebDriverFirefox().initializeDriver(driverConfiguration);
+            default:
+                throw new IllegalArgumentException("Invalid web-driver type.");
+        }
     }
 
     /**
