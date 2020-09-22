@@ -15,7 +15,7 @@ public class GlobusAuthenticationFlow implements SeleniumAuthenticationFlow {
     private final WebDriver driver;
     private final String username, password;
 
-    GlobusAuthenticationFlow(@Nonnull WebDriver driver, String username, String password) {
+    public GlobusAuthenticationFlow(@Nonnull WebDriver driver, String username, String password) {
         this.driver = driver;
         this.username = username;
         this.password = password;
