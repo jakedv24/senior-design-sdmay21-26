@@ -1,5 +1,7 @@
 package edu.iastate.ece.sd.sdmay2126.runner.selenium;
 
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverConfiguration;
+
 /**
  * Specifies some Selenium configuration, including driver and authentication information.
  */

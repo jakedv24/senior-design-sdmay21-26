@@ -1,6 +1,5 @@
 package edu.iastate.ece.sd.sdmay2126.runner.selenium.driver;
 
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.SeleniumDriverConfiguration;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
