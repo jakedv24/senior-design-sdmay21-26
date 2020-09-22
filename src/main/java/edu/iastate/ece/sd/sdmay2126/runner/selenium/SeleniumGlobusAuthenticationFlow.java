@@ -7,11 +7,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import javax.annotation.Nonnull;
 
-public class FBASeleniumGlobusAuthenticationFlow implements SeleniumAuthenticationFlow {
+public class SeleniumGlobusAuthenticationFlow implements SeleniumAuthenticationFlow {
     private final WebDriver driver;
     private final String username, password;
 
-    FBASeleniumGlobusAuthenticationFlow(@Nonnull WebDriver driver, String username, String password) {
+    SeleniumGlobusAuthenticationFlow(@Nonnull WebDriver driver, String username, String password) {
         this.driver = driver;
         this.username = username;
         this.password = password;

@@ -100,7 +100,7 @@ public class SeleniumRunner implements Runner {
         // Initialize the authentication flow
         // TODO: Can we make this configurable (Globus vs. other OAuth flows)
         SeleniumAuthenticationFlow authenticationFlow
-                = new FBASeleniumGlobusAuthenticationFlow(driver,
+                = new SeleniumGlobusAuthenticationFlow(driver,
                     configuration.getGlobusUsername(), configuration.getGlobusPassword());
 
         // Perform the authentication flow
