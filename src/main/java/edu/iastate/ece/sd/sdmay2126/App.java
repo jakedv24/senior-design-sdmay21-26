@@ -73,6 +73,7 @@ public class App
 	/**
 	 * Performs a Globus authentication flow, assuming the login page is loaded.
 	 */
+	@Deprecated()
 	static void performGlobusAuthFlow(WebDriver driver) throws InterruptedException {
 		System.out.println("Initiating Globus authentication...");
 
