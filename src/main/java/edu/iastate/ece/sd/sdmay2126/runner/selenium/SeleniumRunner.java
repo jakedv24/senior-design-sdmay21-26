@@ -95,6 +95,33 @@ public class SeleniumRunner implements Runner {
     }
 
     /**
+     * Performs KBase authentication flows and, ultimately, produces a ready-to-run narrative session.
+     */
+    private void initializeRunner() throws JobManagerStoppedException, InterruptedException {
+        // Initialize the web driver
+        driver = getDriver();
+
+        // Perform the initial narrative load
+        System.out.println("Loading KBase narrative...");
+        driver.get("https://narrative.kbase.us/narrative/" + configuration.getNarrativeIdentifier());
+
+        // Let things load
+        // TODO: Detect the loaded page reactively
+        Thread.sleep(3000);
+
+        // Initialize and perform the authentication flow
+        getAuthFlow().authenticateSession();
+
+        // Wait a bit while, post-auth, the Jupyter backend initializes/provisions resources
+        // TODO: Detect the load completion reactively
+        Thread.sleep(15000);
+
+        // Mark initialization complete and indicate availability to the manager
+        initialized = true;
+        jobManager.indicateAvailability(this);
+    }
+
+    /**
      * Provides a Selenium WebDriver to automate through.
      */
     private WebDriver getDriver() {
@@ -119,38 +146,16 @@ public class SeleniumRunner implements Runner {
     }
 
     /**
-     * Performs KBase authentication flows and, ultimately, produces a ready-to-run narrative session.
+     * Provides an authentication flow to automate.
      */
-    private void initializeRunner() throws JobManagerStoppedException, InterruptedException {
-        // Perform the initial narrative load
-        System.out.println("Loading KBase narrative...");
-        driver.get("https://narrative.kbase.us/narrative/" + configuration.getNarrativeIdentifier());
-
-        // Let things load
-        // TODO: Detect the loaded page reactively
-        Thread.sleep(3000);
-
-        // Initialize the authentication flow
-        SeleniumAuthenticationFlow authenticationFlow;
+    private SeleniumAuthenticationFlow getAuthFlow() {
         switch (configuration.getAuthenticationConfiguration().getFlowType()) {
             case GLOBUS:
-                authenticationFlow = new GlobusAuthenticationFlow(driver,
+                return new GlobusAuthenticationFlow(driver,
                         (GlobusAuthenticationConfiguration) configuration.getAuthenticationConfiguration());
-                break;
             default:
                 throw new IllegalArgumentException("Invalid authentication flow.");
         }
-
-        // Perform the authentication flow
-        authenticationFlow.authenticateSession();
-
-        // Wait a bit while, post-auth, the Jupyter backend initializes/provisions resources
-        // TODO: Detect the load completion reactively
-        Thread.sleep(15000);
-
-        // Mark initialization complete and indicate availability to the manager
-        initialized = true;
-        jobManager.indicateAvailability(this);
     }
 
     /**
