@@ -7,8 +7,8 @@ public class GlobusAuthenticationConfiguration extends SeleniumAuthenticationCon
     private String username;
     private String password;
 
-    public GlobusAuthenticationConfiguration(SeleniumAuthenticationFlows flowType, String username, String password) {
-        super(flowType);
+    public GlobusAuthenticationConfiguration(String username, String password) {
+        super(SeleniumAuthenticationFlows.GLOBUS);
         this.username = username;
         this.password = password;
     }
