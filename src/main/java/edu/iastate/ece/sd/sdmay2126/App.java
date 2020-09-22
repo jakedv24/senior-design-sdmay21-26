@@ -24,9 +24,10 @@ public class App
 {
 	public static GUIForm GUI;
 
-	public static void main( String[] args ) throws InterruptedException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+	public static void main( String[] args ) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
 		// Initialize the job manager
 		JobManager manager = new JobManager();
+		new Thread(manager).start();
 
 		// Initialize and add a Selenium runner to the manager
 		manager.initializeRunners(
