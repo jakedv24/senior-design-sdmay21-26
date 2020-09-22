@@ -45,7 +45,7 @@ public class App
 
 		//Give the GUI a more authentic feel according to use OS
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		GUI = new GUIForm();
+		GUI = new GUIForm(manager);
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

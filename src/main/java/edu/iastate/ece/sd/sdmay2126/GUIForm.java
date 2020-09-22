@@ -1,5 +1,6 @@
 package edu.iastate.ece.sd.sdmay2126;
 
+import edu.iastate.ece.sd.sdmay2126.orchestration.JobManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,6 +14,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class GUIForm extends JFrame {
+    private final JobManager jobManager;
+
     private JButton runDefaultSettingsButton;
     private JCheckBox fluxVariabilityAnalysis; //boolean, check is 1 unchecked is 0
     private JCheckBox simulateAllSingleKos; //boolean, check is 1 unchecked is 0
@@ -29,7 +32,9 @@ public class GUIForm extends JFrame {
 
     //TODO (DL): Set error message to red, set error message if number is outside of the range, set booleans to values, handoff to driver.
     //TODO (DL) Cont, comment new additions to code.
-    public GUIForm() {
+    public GUIForm(JobManager jobManager) {
+        this.jobManager = jobManager;
+
         add(MainPanel); //Display Panel
         setSize(500, 500); //Set a arbitrary size for the GUI
         //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Adds the X button to close
