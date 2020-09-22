@@ -1,7 +1,5 @@
 package edu.iastate.ece.sd.sdmay2126.runner.selenium.driver;
 
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.SeleniumWebDrivers;
-
 /**
  * Specifies web-driver configuration for Selenium automation.
  */
