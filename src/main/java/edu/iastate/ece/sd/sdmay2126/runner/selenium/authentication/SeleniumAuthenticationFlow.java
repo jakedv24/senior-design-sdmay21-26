@@ -1,4 +1,4 @@
-package edu.iastate.ece.sd.sdmay2126.runner.selenium;
+package edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication;
 
 import org.openqa.selenium.WebDriver;
 
