@@ -2,10 +2,11 @@ package edu.iastate.ece.sd.sdmay2126.runner.selenium;
 
 import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
     private WebDriver driver;
@@ -17,6 +18,9 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
     @Override
     public void programInputs(Job job) {
         FBAParameters params = (FBAParameters) job.getParameters();
+
+        // Reset the FBA Application
+        resetFBAIfRequired();
 
         WebElement codeBox = new WebDriverWait(driver, 10).until(d -> d.findElements(By.cssSelector("div[class^='cell code_cell']"))).get(2);
         codeBox.click();
@@ -53,11 +57,23 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
             simKo.click();
         }
 
-
         //finds clear and sets the value of the activeCoefficient value
         WebElement activCoeParent = driver.findElement(By.cssSelector("div[data-parameter='activation_coefficient']"));
         WebElement activCoe = activCoeParent.findElement(By.cssSelector("input[class='form-control']"));
         activCoe.clear();
         activCoe.sendKeys(Float.toString(params.getActivationCoefficient()));
+    }
+
+    private void resetFBAIfRequired() {
+        try {
+            clickButtonWithCssSelector("button[class='btn btn-default -rerun']");
+            clickButtonWithCssSelector("button[class='btn btn-primary']");
+        } catch (NoSuchElementException e) {
+            // No-Op : App does not need reset - no action required.
+        }
+    }
+
+    private void clickButtonWithCssSelector(String selector) {
+        new WebDriverWait(driver, Duration.ofSeconds(30)).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(selector))).click();
     }
 }
