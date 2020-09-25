@@ -1,7 +1,5 @@
 package edu.iastate.ece.sd.sdmay2126.orchestration;
 
-import edu.iastate.ece.sd.sdmay2126.application.ApplicationOutput;
-
 /**
  * Callback for taking action after an application's execution was canceled for some reason. Action may include storing
  * the unexecuted job and parameters for later execution.

@@ -1,8 +1,8 @@
 package edu.iastate.ece.sd.sdmay2126.orchestration;
 
-import edu.iastate.ece.sd.sdmay2126.application.ApplicationType;
 import edu.iastate.ece.sd.sdmay2126.application.ApplicationOutput;
 import edu.iastate.ece.sd.sdmay2126.application.ApplicationParameters;
+import edu.iastate.ece.sd.sdmay2126.application.ApplicationType;
 import org.jetbrains.annotations.NotNull;
 
 /**
