@@ -1,7 +1,6 @@
 package edu.iastate.ece.sd.sdmay2126.runner;
 
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
-import edu.iastate.ece.sd.sdmay2126.orchestration.JobManager;
 
 /**
  * Responsible for executing applications with parameters specified by jobs.

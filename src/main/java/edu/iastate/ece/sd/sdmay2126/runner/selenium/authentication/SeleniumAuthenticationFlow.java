@@ -1,7 +1,5 @@
 package edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication;
 
-import org.openqa.selenium.WebDriver;
-
 /**
  * Perform an authentication flow, such as Globus OAuth, to some session.
  */
