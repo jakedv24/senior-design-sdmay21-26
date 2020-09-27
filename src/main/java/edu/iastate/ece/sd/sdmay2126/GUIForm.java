@@ -90,7 +90,8 @@ public class GUIForm extends JFrame {
                     // Create and queue a job from the user's inputs
                     try {
                         // Setup the parameters
-                        FBAParameters params = new FBAParameters(fluxVariabilityAnalysisValue, minimizeFluxValue, simulateAllSingleKosValue);
+                        FBAParameters params = new FBAParameters(fluxVariabilityAnalysisValue,
+                                minimizeFluxValue, simulateAllSingleKosValue);
                         params.setActivationCoefficient(Float.parseFloat(activationCoefficientString));
 
                         // Queue the job

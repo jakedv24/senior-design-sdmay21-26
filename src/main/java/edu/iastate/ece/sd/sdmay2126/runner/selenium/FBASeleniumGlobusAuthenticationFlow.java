@@ -1,5 +1,6 @@
 package edu.iastate.ece.sd.sdmay2126.runner.selenium;
 
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.SeleniumAuthenticationFlow;
 import org.openqa.selenium.WebDriver;
 
 import javax.annotation.Nonnull;
