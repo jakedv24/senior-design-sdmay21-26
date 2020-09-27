@@ -20,7 +20,7 @@ public class GUIForm extends JFrame {
     private JCheckBox simulateAllSingleKos; //boolean, check is 1 unchecked is 0
     private JCheckBox minimizeFlux; //boolean, check is 1 unchecked is 0
     private JTextField activationCoefficientText; //Float, Range between 0-1
-    public float activationCoefficient; //the float that stores the coefficient
+    public float activationCoefficient = (float) 0.0; //the float that stores the coefficient
     public String activationCoefficientString; //the string to be converted
     public JPanel MainPanel;
     private JTextField ErrorTextField;
@@ -61,16 +61,15 @@ public class GUIForm extends JFrame {
                 formError = false;
                 activationCoefficientString = activationCoefficientText.getText(); //Save the activation coefficient
                 try {
-                    activationCoefficient = Float.parseFloat(activationCoefficientString);
+                    //Check if the user left the value as a default value
+                    if(!activationCoefficientString.equals("Activation Coefficient [0,1]")) {
+                        activationCoefficient = Float.parseFloat(activationCoefficientString); //if not default set as user value
+                    }
+
                 } catch (NumberFormatException k) {
-                    ErrorTextField.setVisible(true);
-                    //TODO color change no working, Make error message more noticeable.
-                    ErrorTextField.setSelectionColor(Color.red);
-                    MainPanel.revalidate();
-                    MainPanel.repaint();
-                    ErrorTextField.setText("Activation Coefficient must be an integer between 0-1 inclusive");
-                    formError = true;
+                    FloatException("Activation Coefficient", 0, 1);
                 }
+                validationRange(0.0,1.0,activationCoefficient, "Activation Coefficient");
                 //Viewing the checklists of the 3 booleans and setting the values appropriately.
                 fluxVariabilityAnalysisValue = fluxVariabilityAnalysis.isSelected();
                 simulateAllSingleKosValue = simulateAllSingleKos.isSelected();
@@ -98,5 +97,26 @@ public class GUIForm extends JFrame {
         });
 
     }
-
+    /*
+    simple method to validate if the user enters a value that is within the range of values acceptable
+     */
+    private void validationRange(double min, double max, Float userValue, String valueField){
+        if(!(userValue >= min && userValue <= max)){
+            formError = true;
+            FloatException(valueField, min, max);
+        }
+    }
+    /*
+    this code runs to validate if the float value is a integer value.
+    if it is not an integer value, then the error message pops up and we stop the runner from executing until we have good values
+     */
+    private void FloatException(String valueField, double min, double max){
+        ErrorTextField.setVisible(true);
+        //TODO Make error message more noticeable.
+        ErrorTextField.setForeground(Color.red);
+        MainPanel.revalidate();
+        MainPanel.repaint();
+        ErrorTextField.setText(valueField + " must be an integer between " +  min + "-" + max + " inclusive");
+        formError = true;
+    }
 }

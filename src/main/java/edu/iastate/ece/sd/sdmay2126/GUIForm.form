@@ -70,7 +70,8 @@
           </grid>
         </constraints>
         <properties>
-          <text value="Test"/>
+          <foreground color="-65536"/>
+          <text value=""/>
         </properties>
       </component>
     </children>
