@@ -29,8 +29,6 @@ public class GUIForm extends JFrame {
     public boolean minimizeFluxValue = false; //Value read from the checkbox.
     private boolean formError = false; //try catches will signal this.
 
-    //TODO (DL): Set error message to red, set error message if number is outside of the range, set booleans to values, handoff to driver.
-    //TODO (DL) Cont, comment new additions to code.
     public GUIForm(JobManager jobManager) {
         this.jobManager = jobManager;
 
