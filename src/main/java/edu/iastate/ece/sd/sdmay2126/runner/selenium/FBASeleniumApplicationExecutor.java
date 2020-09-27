@@ -24,7 +24,7 @@ public class FBASeleniumApplicationExecutor implements SeleniumApplicationExecut
                     .get(2) // FBA is the 3rd application on the page, thus the 3rd run button (0-indexed)
                     .click();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            throw new Exception("Executor failed to locate the run button.", e);
         }
     }
 }
