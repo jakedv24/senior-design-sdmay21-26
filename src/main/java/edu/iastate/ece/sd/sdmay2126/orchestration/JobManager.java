@@ -113,6 +113,9 @@ public class JobManager implements Runnable {
     public void notifyOfFailure(Job job, Throwable cause) {
         if (job.getFailureCallback() != null)
             job.getFailureCallback().onFailure(job, cause);
+        else
+            // Fallback to the console if the UI isn't handling it
+            cause.printStackTrace();
     }
 
     @Override
