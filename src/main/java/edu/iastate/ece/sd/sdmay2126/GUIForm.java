@@ -36,6 +36,8 @@ public class GUIForm extends JFrame {
     public GUIForm(JobManager jobManager) {
         this.jobManager = jobManager;
 
+        mainPanel.setLayout(new GridLayout(5, 6)); // Sln. for NPEs: https://stackoverflow.com/a/10603083
+
         add(mainPanel); //Display Panel
         setSize(500, 500); //Set a arbitrary size for the GUI
         //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Adds the X button to close

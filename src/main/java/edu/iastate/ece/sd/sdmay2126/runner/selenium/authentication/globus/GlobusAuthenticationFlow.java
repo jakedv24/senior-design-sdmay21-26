@@ -1,5 +1,7 @@
 package edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus;
 
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.SeleniumIdentificationException;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.SeleniumUtilities;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.SeleniumAuthenticationFlow;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -7,6 +9,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import javax.annotation.Nonnull;
+import java.time.Duration;
+import java.util.List;
 
 /**
  * A Selenium automation flow for 3rd-party authentication provider, Globus.
@@ -24,52 +28,62 @@ public class GlobusAuthenticationFlow implements SeleniumAuthenticationFlow {
     }
 
     @Override
-    public void authenticateSession() {
+    public void authenticateSession() throws SeleniumIdentificationException, InterruptedException {
         System.out.println("Initiating Globus authentication...");
 
         // Locate the login iframe
-        WebElement loginFrame = new WebDriverWait(driver, 10)
+        System.out.println("Finding auth provider iframe...");
+        WebElement authProviderFrame = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(d -> d.findElement(By.tagName("iframe")));
 
-        // Swap the driver context into the frame
-        driver.switchTo().frame(loginFrame);
+        driver.switchTo().frame(authProviderFrame);
 
-        // Locate and click the Globus auth
-        new WebDriverWait(driver, 10)
-                .until(d -> d.findElements(By.className("signin-button")))
-                .get(2) // Globus is #3
-                .click();
+        // Wait for the login buttons to load
+        System.out.println("Looking for login buttons...");
+        List<WebElement> loginButtons = SeleniumUtilities.waitForNMatches(
+                driver, By.className("signin-button"), 3, Duration.ofSeconds(10));
+
+        // Click the Globus auth button (we'll wait for it to render)
+        System.out.println("Clicking Globus login...");
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(d -> loginButtons.get(2).isDisplayed());
+        loginButtons.get(2).click();
 
         // Switch back to the window (from the iframe)
         driver.switchTo().defaultContent();
 
         // Locate the Globus "continue" button
-        new WebDriverWait(driver, 10)
+        System.out.println("Watching for Continue button...");
+        new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(d -> d.findElement(By.name("identity_provider")))
                 .click();
 
         // Locate and fill the username and password fields
-        new WebDriverWait(driver, 10)
+        System.out.println("Filling form...");
+        new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(d -> d.findElement(By.id("ember24")))
-                .sendKeys("sdmay2126");
-        new WebDriverWait(driver, 10)
+                .sendKeys(username);
+        new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(d -> d.findElement(By.id("ember25")))
-                .sendKeys("sdmay2126pw");
+                .sendKeys(password);
 
         // Submit the login form
-        new WebDriverWait(driver, 10)
+        System.out.println("Submitting form...");
+        new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(d -> d.findElement(By.cssSelector("input[type=\"submit\"]")))
                 .click();
 
         // Locate the confirmation iframe
-        WebElement confirmFrame = new WebDriverWait(driver, 10)
+        System.out.println("Locating confirmation iframe...");
+        WebElement confirmFrame = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(d -> d.findElement(By.tagName("iframe")));
 
-        // Swap the driver context into the frame
+        // Switch to the account confirmation frame
         driver.switchTo().frame(confirmFrame);
 
         // Acknowledge account
-        new WebDriverWait(driver, 10)
+        System.out.println("Acknowledging account...");
+        new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(d -> d.findElement(By.tagName("button")))
                 .click();
 

@@ -1,8 +1,7 @@
 package edu.iastate.ece.sd.sdmay2126.runner.selenium;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
@@ -20,11 +19,17 @@ public class SeleniumUtilities {
      * @param desiredVisibility The visibility to wait for.
      * @param maxWait How long to wait for.
      */
-    public static void waitForVisibilityChange(WebElement element, boolean desiredVisibility, Duration maxWait) {
+    public static void waitForVisibilityChange(WebElement element, boolean desiredVisibility, Duration maxWait)
+            throws SeleniumIdentificationException {
         long startTime = System.currentTimeMillis();
         try {
             // Loop while element doesn't match desired visibility until max time elapsed
-            while ((desiredVisibility && element.isDisplayed()) && System.currentTimeMillis() - startTime < maxWait.toMillis()) {
+            while (desiredVisibility != element.isDisplayed()) {
+                // Fail if we've exceeded our wait period
+                if (System.currentTimeMillis() - startTime >= maxWait.toMillis()) {
+                    throw new SeleniumIdentificationException("Failed to detect a visibility change within the wait period.");
+                }
+
                 // Reduce spinning with polling delay
                 Thread.sleep(POLLING_DELAY_MILLIS);
             }
@@ -34,22 +39,45 @@ public class SeleniumUtilities {
     }
 
     /**
+     * Will attempt to click something, even if obscured, until successful. Note that this is necessary since we can't
+     * determine if something is obscured until we try to interact with it.
+     * @param element The element to click.
+     * @param maxWait How long to try before failing.
+     */
+    public static void clickUntilSuccessful(WebElement element, Duration maxWait) throws InterruptedException,
+            SeleniumIdentificationException {
+        long startTime = System.currentTimeMillis();
+        while (System.currentTimeMillis() - startTime < maxWait.toMillis()) {
+            try {
+                element.click();
+                return;
+            } catch (ElementClickInterceptedException ignored) {
+                // Sleep to avoid unnecessary spinning
+                Thread.sleep(POLLING_DELAY_MILLIS);
+            }
+        }
+        throw new SeleniumIdentificationException("Could not successfully click the element in the wait period.");
+    }
+
+    /**
      * Waits until N elements matching the query are available.
-     * @param parent The parent to query under.
+     * @param driver The driver to query with.
      * @param query The query whose results to consider.
      * @param minMatches The minimum-matches of the query to unblock.
      * @param maxWait The maximum time to wait before failing.
      * @return The matches, which will have a size of >= minMatches.
      * @throws SeleniumIdentificationException If N results don't come available within the maxWait period.
      */
-    public static List<WebElement> waitForNMatches(WebElement parent, By query, int minMatches, Duration maxWait) throws InterruptedException, SeleniumIdentificationException {
+    public static List<WebElement> waitForNMatches(WebDriver driver, By query, int minMatches, Duration maxWait)
+            throws InterruptedException, SeleniumIdentificationException {
         long startTime = System.currentTimeMillis();
         List<WebElement> elements;
 
         // Loop until we find N elements or timeout
         do {
             // Apply the query
-            elements = parent.findElements(query);
+            elements = new WebDriverWait(driver, Duration.ofMillis(POLLING_DELAY_MILLIS))
+                    .until(d -> d.findElements(query));
 
             // Check if we've found the minimum-required
             if (elements.size() >= minMatches) {
@@ -58,7 +86,7 @@ public class SeleniumUtilities {
 
             // Reduce spinning with polling delay
             Thread.sleep(POLLING_DELAY_MILLIS);
-        } while(System.currentTimeMillis() - startTime < maxWait.toMillis());
+        } while (System.currentTimeMillis() - startTime < maxWait.toMillis());
 
         throw new SeleniumIdentificationException("Could not identify " + minMatches + " elements within duration.");
     }
