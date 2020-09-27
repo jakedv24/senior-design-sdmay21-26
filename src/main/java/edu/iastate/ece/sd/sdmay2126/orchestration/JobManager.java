@@ -105,6 +105,16 @@ public class JobManager implements Runnable {
         stopped = true;
     }
 
+    /**
+     * Used to notify the manager and possibly caller of a job failure, depending on job configuration.
+     * @param job The job which has failed during execution.
+     * @param cause Optionally, a cause for the failure.
+     */
+    public void notifyOfFailure(Job job, Throwable cause) {
+        if (job.getFailureCallback() != null)
+            job.getFailureCallback().onFailure(job, cause);
+    }
+
     @Override
     public void run() {
         // First we have the execution loop
