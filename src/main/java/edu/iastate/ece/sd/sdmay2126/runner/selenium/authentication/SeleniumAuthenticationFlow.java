@@ -1,4 +1,4 @@
-package edu.iastate.ece.sd.sdmay2126.runner.selenium;
+package edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication;
 
 /**
  * Perform an authentication flow, such as Globus OAuth, to some session.

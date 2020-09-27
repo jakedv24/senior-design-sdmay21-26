@@ -2,10 +2,11 @@ package edu.iastate.ece.sd.sdmay2126.runner.demonstration;
 
 import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
+import edu.iastate.ece.sd.sdmay2126.orchestration.JobManager;
+import edu.iastate.ece.sd.sdmay2126.orchestration.JobManagerStoppedException;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobResult;
 import edu.iastate.ece.sd.sdmay2126.runner.Runner;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotReadyException;
-import edu.iastate.ece.sd.sdmay2126.runner.RunnerReady;
 import edu.iastate.ece.sd.sdmay2126.util.RandomUtil;
 
 import java.text.SimpleDateFormat;
@@ -15,15 +16,15 @@ import java.util.concurrent.SynchronousQueue;
 
 public class DemonstrationRunner implements Runner {
     private final int runnerIdentifier; // For nicer console output
-    private final RunnerReady runnerReady;
+    private final JobManager jobManager;
     private final BlockingQueue<Job> nextJob;
 
     private boolean initialized = false;
     private boolean waiting = true;
     private boolean stopped = false;
 
-    public DemonstrationRunner(RunnerReady runnerReady, int runnerIdentifier) {
-        this.runnerReady = runnerReady;
+    public DemonstrationRunner(JobManager jobManager, int runnerIdentifier) {
+        this.jobManager = jobManager;
         this.runnerIdentifier = runnerIdentifier;
         this.nextJob = new SynchronousQueue<>();
 
@@ -73,7 +74,7 @@ public class DemonstrationRunner implements Runner {
                 // Reopen availability and notify the manager
                 waiting = true;
                 print("Indicating availability to manager");
-                runnerReady.runnerReady(this);
+                jobManager.indicateAvailability(this);
             }
             print("Stopped processing jobs");
         } catch (Exception e) {
@@ -81,7 +82,7 @@ public class DemonstrationRunner implements Runner {
         }
     }
 
-    private void initialize() throws InterruptedException {
+    private void initialize() throws InterruptedException, JobManagerStoppedException {
         print("Beginning initialization");
 
         // Sleep random duration between 1 and 5 secs
@@ -89,7 +90,7 @@ public class DemonstrationRunner implements Runner {
         Thread.sleep(millis);
 
         initialized = true;
-        runnerReady.runnerReady(this);
+        jobManager.indicateAvailability(this);
 
         print("Initialization complete in " + millis + " millis");
     }

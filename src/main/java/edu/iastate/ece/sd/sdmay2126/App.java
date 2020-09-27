@@ -1,5 +1,9 @@
 package edu.iastate.ece.sd.sdmay2126;
 
+import edu.iastate.ece.sd.sdmay2126.orchestration.JobManager;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.SeleniumConfiguration;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.SeleniumRunner;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDrivers;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,21 +17,44 @@ import javax.swing.*;
  * Basic KBase driver for narrative interaction.
  */
 public class App {
-    private static final GUIForm GUI = new GUIForm();
+    public static GUIForm GUI;
 
-    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException,
-            InstantiationException, IllegalAccessException {
+    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+        // Initialize the job manager
+        JobManager manager = new JobManager();
+        new Thread(manager).start();
+
+        // Initialize and add a Selenium runner to the manager
+        manager.initializeRunners(
+                jobManager -> new SeleniumRunner(
+                        manager,
+                        new SeleniumConfiguration(
+                                "sdmay2126",
+                                "sdmay2126pw",
+                                SeleniumDrivers.CHROME,
+                                "./drivers/chromedriver",
+                                72313
+                        )
+                ),
+                1 // Let's leave it at a single runner for now
+        );
+
         //Give the GUI a more authentic feel according to use OS
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        SwingUtilities.invokeLater(() -> {
-            //Generate our GUI, this has control of the web driver.
-            GUI.setVisible(true);
+        GUI = new GUIForm(manager);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                //Generate our GUI, this has control of the web driver.
+                GUI.setVisible(true);
+            }
         });
     }
 
     /**
      * Produces a web driver for automation.
      */
+    @Deprecated()
     static WebDriver getDriver() {
         /*
          * When we begin to decrease the hackiness and make this user-friendly,
@@ -44,7 +71,11 @@ public class App {
          * System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver");
          *
          * return new ChromeDriver(
+<<<<<<< HEAD
          *      new ChromeOptions().setHeadless(false)
+=======
+         *		new ChromeOptions().setHeadless(false)
+>>>>>>> ad7e31b3a6d4b70f68bfddaf7a0903b9fe108cc2
          * );
          */
 
@@ -64,6 +95,7 @@ public class App {
     /**
      * Performs a Globus authentication flow, assuming the login page is loaded.
      */
+    @Deprecated()
     static void performGlobusAuthFlow(WebDriver driver) throws InterruptedException {
         System.out.println("Initiating Globus authentication...");
 
@@ -144,5 +176,4 @@ public class App {
 		Thread.sleep(20000);
 	}
 	*/
-
 }

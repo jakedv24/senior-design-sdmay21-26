@@ -9,18 +9,25 @@ import edu.iastate.ece.sd.sdmay2126.orchestration.JobResult;
 import edu.iastate.ece.sd.sdmay2126.runner.Runner;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotInitializedException;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotReadyException;
-import edu.iastate.ece.sd.sdmay2126.runner.RunnerReady;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.SeleniumAuthenticationFlow;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus.GlobusAuthenticationConfiguration;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus.GlobusAuthenticationFlow;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverChrome;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverConfiguration;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverFirefox;
 import org.openqa.selenium.WebDriver;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
+import static edu.iastate.ece.sd.sdmay2126.application.ApplicationType.FBA;
+
 /**
  * KBase job runner using Selenium WebDrivers.
  */
 public class SeleniumRunner implements Runner {
+    private final JobManager jobManager;
     private final SeleniumConfiguration configuration;
-    private final RunnerReady runnerReady;
     private WebDriver driver;
 
     /**
@@ -35,9 +42,9 @@ public class SeleniumRunner implements Runner {
     private boolean waiting = true;
     private boolean stopped = false;
 
-    public SeleniumRunner(SeleniumConfiguration configuration, RunnerReady runnerReady, JobManager manager) {
+    public SeleniumRunner(JobManager jobManager, SeleniumConfiguration configuration) {
+        this.jobManager = jobManager;
         this.configuration = configuration;
-        this.runnerReady = runnerReady;
 
         nextJob = new SynchronousQueue<>();
     }
@@ -61,7 +68,8 @@ public class SeleniumRunner implements Runner {
         // Perform runner initialization asynchronously from the construction
         try {
             initializeRunner();
-        } catch (JobManagerStoppedException e) { /* TODO */
+        } catch (JobManagerStoppedException | InterruptedException e) {
+            // TODO: Better handling
             e.printStackTrace();
             return;
         }
@@ -86,47 +94,88 @@ public class SeleniumRunner implements Runner {
                     e.printStackTrace();
                 } catch (InvalidApplicationException e) { /* TODO */
                     e.printStackTrace();
+                } catch (SeleniumIdentificationException e) { /* TODO */
+                    e.printStackTrace();
                 }
 
                 // Reopen availability and notify the manager
                 waiting = true;
-                runnerReady.runnerReady(this);
+                jobManager.indicateAvailability(this);
             }
-        } catch (InterruptedException e) { /* TODO */
+        } catch (InterruptedException | JobManagerStoppedException e) { /* TODO */
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Performs KBase authentication flows and, ultimately, produces a ready-to-run narrative session.
+     */
+    private void initializeRunner() throws JobManagerStoppedException, InterruptedException {
+        // Initialize the web driver
+        driver = getDriver();
+
+        // Perform the initial narrative load
+        System.out.println("Loading KBase narrative...");
+        driver.get("https://narrative.kbase.us/narrative/" + configuration.getNarrativeIdentifier());
+
+        // Let things load
+        // TODO: Detect the loaded page reactively
+        Thread.sleep(3000);
+
+        // Initialize and perform the authentication flow
+        getAuthFlow().authenticateSession();
+
+        // Wait a bit while, post-auth, the Jupyter backend initializes/provisions resources
+        // TODO: Detect the load completion reactively
+        Thread.sleep(15000);
+
+        // Mark initialization complete and indicate availability to the manager
+        initialized = true;
+        jobManager.indicateAvailability(this);
     }
 
     /**
      * Provides a Selenium WebDriver to automate through.
      */
     private WebDriver getDriver() {
-        String driverLoc = configuration.getWebDriverLocation();
-        return null; // TODO
+        /*
+         * TODO:
+         * When we begin to decrease the hackiness and make this user-friendly,
+         * we may want to explore downloading this into the user's home directory.
+         *
+         * Note that these drivers are device and browser specific. Docs/drivers:
+         * https://www.selenium.dev/documentation/en/webdriver/driver_requirements/
+         */
+
+        SeleniumDriverConfiguration driverConfiguration = configuration.getDriverConfiguration();
+        switch (driverConfiguration.getDriverType()) {
+            case CHROME:
+                return new SeleniumDriverChrome().initializeDriver(driverConfiguration);
+            case FIREFOX:
+                return new SeleniumDriverFirefox().initializeDriver(driverConfiguration);
+            default:
+                throw new IllegalArgumentException("Invalid web-driver type.");
+        }
     }
 
     /**
-     * Performs KBase authentication flows and, ultimately, produces a ready-to-run narrative session.
+     * Provides an authentication flow to automate.
      */
-    private void initializeRunner() throws JobManagerStoppedException {
-        // Initialize the authentication flow
-        // TODO: Can we make this configurable (Globus vs. other OAuth flows)
-        SeleniumAuthenticationFlow authenticationFlow
-                = new FBASeleniumGlobusAuthenticationFlow(driver,
-                configuration.getGlobusUsername(), configuration.getGlobusPassword());
-
-        // Perform the authentication flow
-        authenticationFlow.authenticateSession();
-
-        // Mark initialization complete and indicate availability to the manager
-        initialized = true;
-        runnerReady.runnerReady(this);
+    private SeleniumAuthenticationFlow getAuthFlow() {
+        switch (configuration.getAuthenticationConfiguration().getFlowType()) {
+            case GLOBUS:
+                return new GlobusAuthenticationFlow(driver,
+                        (GlobusAuthenticationConfiguration) configuration.getAuthenticationConfiguration());
+            default:
+                throw new IllegalArgumentException("Invalid authentication flow.");
+        }
     }
 
     /**
      * Given some job, executes the runner with an initialized session.
      */
-    private void executeRunner(Job job) throws RunnerNotInitializedException, InvalidApplicationException {
+    private void executeRunner(Job job) throws
+            RunnerNotInitializedException, InvalidApplicationException, SeleniumIdentificationException {
         if (!initialized) {
             throw new RunnerNotInitializedException();
         }
@@ -143,7 +192,8 @@ public class SeleniumRunner implements Runner {
     /**
      * Executes an FBA application using the provided job.
      */
-    private void executeFBARunner(Job job) throws InvalidApplicationException {
+    private void executeFBARunner(Job job) throws
+            InvalidApplicationException, SeleniumIdentificationException {
         if (job.getApplication() != ApplicationType.FBA) {
             throw new InvalidApplicationException();
         }
@@ -155,6 +205,7 @@ public class SeleniumRunner implements Runner {
         new FBASeleniumApplicationExecutor(driver).executeApplication(job);
 
         // Lastly collect results
-        job.setOutput(new FBASeleniumOutputCollector(driver).collectOutput(job));
+        // TODO: Uncomment once the executor is working (else errors on unfound output elements)
+        // job.setOutput(new FBASeleniumOutputCollector(driver).collectOutput(job));
     }
 }
