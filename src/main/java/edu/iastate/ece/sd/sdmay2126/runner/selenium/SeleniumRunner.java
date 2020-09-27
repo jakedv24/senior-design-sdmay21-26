@@ -15,8 +15,10 @@ import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus.Globus
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverChrome;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverConfiguration;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverFirefox;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import java.time.Duration;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
@@ -68,7 +70,7 @@ public class SeleniumRunner implements Runner {
         // Perform runner initialization asynchronously from the construction
         try {
             initializeRunner();
-        } catch (JobManagerStoppedException | InterruptedException e) {
+        } catch (JobManagerStoppedException e) {
             // TODO: Better handling
             e.printStackTrace();
             return;
@@ -115,7 +117,7 @@ public class SeleniumRunner implements Runner {
     /**
      * Performs KBase authentication flows and, ultimately, produces a ready-to-run narrative session.
      */
-    private void initializeRunner() throws JobManagerStoppedException, InterruptedException {
+    private void initializeRunner() throws JobManagerStoppedException {
         // Initialize the web driver
         driver = getDriver();
 
@@ -123,16 +125,15 @@ public class SeleniumRunner implements Runner {
         System.out.println("Loading KBase narrative...");
         driver.get("https://narrative.kbase.us/narrative/" + configuration.getNarrativeIdentifier());
 
-        // Let things load
-        // TODO: Detect the loaded page reactively
-        Thread.sleep(3000);
-
         // Initialize and perform the authentication flow
         getAuthFlow().authenticateSession();
 
         // Wait a bit while, post-auth, the Jupyter backend initializes/provisions resources
-        // TODO: Detect the load completion reactively
-        Thread.sleep(15000);
+        SeleniumUtilities.waitForVisibilityChange(
+                driver.findElement(By.id("kb-loading-blocker")),
+                false, // Wait for the loading indicator to become invisible
+                Duration.ofSeconds(10)
+        );
 
         // Mark initialization complete and indicate availability to the manager
         initialized = true;
