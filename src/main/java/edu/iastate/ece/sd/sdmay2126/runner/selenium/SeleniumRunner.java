@@ -79,20 +79,29 @@ public class SeleniumRunner implements Runner {
                     // Execute the job, provided that the session is ready
                     executeRunner(nextJob);
 
-                    // Update the job's result status
-                    // TODO: Set to FAILURE for the recoverable and job-specific failures
+                    // If we made it here, things should've been a success
                     nextJob.setResult(JobResult.SUCCESS);
                 }
-                catch (RunnerNotInitializedException e) { /* TODO */ e.printStackTrace(); }
-                catch (InvalidApplicationException e) { /* TODO */ e.printStackTrace(); }
-                catch (SeleniumIdentificationException e) { /* TODO */ e.printStackTrace(); }
+                catch (RunnerNotInitializedException | InvalidApplicationException | SeleniumIdentificationException e) {
+                    // TODO: Either scope logging to the runner, or delegate this to the job's callback with a faillback to the manager
+                    System.err.println("A job has failed, but the runner will reset and continue execution.");
+
+                    // Flag the job as failed
+                    nextJob.setResult(JobResult.FAILURE);
+
+                    // Notify the manager of the failure
+                    jobManager.notifyOfFailure(nextJob, e);
+                }
 
                 // Reopen availability and notify the manager
                 waiting = true;
                 jobManager.indicateAvailability(this);
             }
         }
-        catch (InterruptedException | JobManagerStoppedException e) { /* TODO */ e.printStackTrace(); }
+        catch (InterruptedException | JobManagerStoppedException e) {
+            System.err.println("A runner has unrecoverably failed. It will need to be reinitialized with the manager.");
+            e.printStackTrace();
+        }
     }
 
     /**
