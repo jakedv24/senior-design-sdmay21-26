@@ -15,15 +15,15 @@ import java.awt.event.MouseEvent;
 public class GUIForm extends JFrame {
     private final JobManager jobManager;
 
+    //GUI Components
     private JButton runDefaultSettingsButton;
     private JCheckBox fluxVariabilityAnalysis; //boolean, check is 1 unchecked is 0
     private JCheckBox simulateAllSingleKos; //boolean, check is 1 unchecked is 0
     private JCheckBox minimizeFlux; //boolean, check is 1 unchecked is 0
-    private JTextField activationCoefficientText; //Float, Range between 0-1
-    public float activationCoefficient = (float) 0.5; //the float that stores the coefficient. default is 0.5
-    public String activationCoefficientString; //the string to be converted
-    public JPanel MainPanel;
     private JTextField ErrorTextField;
+
+    //Float values
+    private JTextField activationCoefficientText; //Float, Range between 0-1
     private JTextField CarbonUptake;
     private JTextField NitrogenUptake;
     private JTextField PhosphateUptake;
@@ -32,9 +32,32 @@ public class GUIForm extends JFrame {
     private JTextField reactionToMaximize;
     private JTextField expressionThreshold;
     private JTextField expressionUncertainty;
+
+    //Strings for floats
+    public String activationCoefficientString; //the string to be converted
+    public String CarbonString;
+    public String NitrogenString;
+    public String PhosphateString;
+    public String SulfurString;
+    public String OxygenString;
+    public String ExpressionThreshold;
+    public String ExpressionUncertainty;
+
+    public JPanel MainPanel;
+
+    //GUI Form variables to send to driver. Some have defaults set here, some do not.
     public boolean fluxVariabilityAnalysisValue = true; //Value read from the checkbox. Default = 1
     public boolean simulateAllSingleKosValue = true; //Value read from the checkbox. Default = 1
     public boolean minimizeFluxValue = true; //Value read from the checkbox. Default = 1
+    public float activationCoefficient = (float) 0.5; //the float that stores the coefficient. default is 0.5
+    public float CarbonValue; //no default
+    public float NitrogenValue; //no default
+    public float PhosphateValue; //no default
+    public float SulfurValue; //no default
+    public float OxygenValue; //no default
+    public float ExpressionThresholdValue = (float) 0.5;
+    public float ExpressionUncertaintyValue = (float) 0.1;
+
     private boolean formError = false; //try catches will signal this.
 
     public GUIForm(JobManager jobManager) {
@@ -44,7 +67,18 @@ public class GUIForm extends JFrame {
         setSize(500, 500); //Set a arbitrary size for the GUI
         //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Adds the X button to close
         activationCoefficientText.setText("Activation Coefficient [0,1]");
+
+        //Give all the text that "hint" look in the GUI
         activationCoefficientText.setForeground(Color.gray);
+        CarbonUptake.setForeground(Color.gray);
+        NitrogenUptake.setForeground(Color.gray);
+        PhosphateUptake.setForeground(Color.gray);
+        sulfurUptake.setForeground(Color.gray);
+        oxygenUptake.setForeground(Color.gray);
+        reactionToMaximize.setForeground(Color.gray);
+        expressionThreshold.setForeground(Color.gray);
+        expressionUncertainty.setForeground(Color.gray);
+
         activationCoefficientText.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -52,6 +86,17 @@ public class GUIForm extends JFrame {
                 if (activationCoefficientText.getText().equals("Activation Coefficient [0,1]")) {
                     activationCoefficientText.setText("");
                     activationCoefficientText.setForeground(Color.BLACK);
+                }
+                activationCoefficientString = activationCoefficientText.getText();
+            }
+        });
+        CarbonUptake.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (CarbonUptake.getText().equals("Activation Coefficient [0,1]")) {
+                    CarbonUptake.setText("");
+                    CarbonUptake.setForeground(Color.BLACK);
                 }
                 activationCoefficientString = activationCoefficientText.getText();
             }
