@@ -85,6 +85,7 @@ public class SeleniumRunner implements Runner {
                 }
                 catch (RunnerNotInitializedException e) { /* TODO */ e.printStackTrace(); }
                 catch (InvalidApplicationException e) { /* TODO */ e.printStackTrace(); }
+                catch (SeleniumIdentificationException e) { /* TODO */ e.printStackTrace(); }
 
                 // Reopen availability and notify the manager
                 waiting = true;
@@ -161,7 +162,7 @@ public class SeleniumRunner implements Runner {
     /**
      * Given some job, executes the runner with an initialized session.
      */
-    private void executeRunner(Job job) throws RunnerNotInitializedException, InvalidApplicationException {
+    private void executeRunner(Job job) throws RunnerNotInitializedException, InvalidApplicationException, SeleniumIdentificationException {
         if (!initialized)
             throw new RunnerNotInitializedException();
 
@@ -177,7 +178,7 @@ public class SeleniumRunner implements Runner {
     /**
      * Executes an FBA application using the provided job.
      */
-    private void executeFBARunner(Job job) throws InvalidApplicationException {
+    private void executeFBARunner(Job job) throws InvalidApplicationException, SeleniumIdentificationException {
         if (job.getApplication() != ApplicationType.FBA)
             throw new InvalidApplicationException();
 
