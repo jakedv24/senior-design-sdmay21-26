@@ -16,9 +16,15 @@ public class FBASeleniumApplicationExecutor implements SeleniumApplicationExecut
 
     @Override
     public void executeApplication(Job job) {
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(d -> d.findElements(By.cssSelector("button[data-button='runApp']")))
-                .get(2) // FBA is the 3rd application on the page, thus the 3rd run button (0-indexed)
-                .click();
+        try {
+            // Wait until the run button is enabled after a reset.
+            Thread.sleep(2000);
+            new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(d -> d.findElements(By.cssSelector("button[data-button='runApp']")))
+                    .get(2) // FBA is the 3rd application on the page, thus the 3rd run button (0-indexed)
+                    .click();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
