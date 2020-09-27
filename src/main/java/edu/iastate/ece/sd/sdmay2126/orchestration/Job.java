@@ -1,8 +1,8 @@
 package edu.iastate.ece.sd.sdmay2126.orchestration;
 
-import edu.iastate.ece.sd.sdmay2126.application.ApplicationType;
 import edu.iastate.ece.sd.sdmay2126.application.ApplicationOutput;
 import edu.iastate.ece.sd.sdmay2126.application.ApplicationParameters;
+import edu.iastate.ece.sd.sdmay2126.application.ApplicationType;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -20,7 +20,8 @@ public class Job {
         this(parameters, null, null);
     }
 
-    public Job(@NotNull ApplicationParameters parameters, JobCompleted completionCallback, JobCanceled cancellationCallback) {
+    public Job(@NotNull ApplicationParameters parameters, JobCompleted completionCallback,
+               JobCanceled cancellationCallback) {
         this.parameters = parameters;
         this.completionCallback = completionCallback;
         this.cancellationCallback = cancellationCallback;

@@ -6,7 +6,8 @@ import javax.annotation.Nonnull;
 
 public class FBASeleniumGlobusAuthenticationFlow implements SeleniumAuthenticationFlow {
     private final WebDriver driver;
-    private final String username, password;
+    private final String username;
+    private final String password;
 
     FBASeleniumGlobusAuthenticationFlow(@Nonnull WebDriver driver, String username, String password) {
         this.driver = driver;

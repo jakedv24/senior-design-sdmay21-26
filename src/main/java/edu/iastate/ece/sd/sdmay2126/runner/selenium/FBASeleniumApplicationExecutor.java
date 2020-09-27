@@ -1,6 +1,5 @@
 package edu.iastate.ece.sd.sdmay2126.runner.selenium;
 
-import edu.iastate.ece.sd.sdmay2126.application.InvalidApplicationException;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
 import org.openqa.selenium.WebDriver;
 

@@ -23,11 +23,17 @@ public class SeleniumRunner implements Runner {
     private final RunnerReady runnerReady;
     private WebDriver driver;
 
-    /** Synchronizes job delegation from the manager with the runner. */
+    /**
+     * Synchronizes job delegation from the manager with the runner.
+     */
     private final BlockingQueue<Job> nextJob;
 
-    /** Indicates runner status and availability. */
-    private boolean initialized = false, waiting = true, stopped = false;
+    /**
+     * Indicates runner status and availability.
+     */
+    private boolean initialized = false;
+    private boolean waiting = true;
+    private boolean stopped = false;
 
     public SeleniumRunner(SeleniumConfiguration configuration, RunnerReady runnerReady, JobManager manager) {
         this.configuration = configuration;
@@ -43,8 +49,9 @@ public class SeleniumRunner implements Runner {
 
     @Override
     public void runJob(Job job) throws RunnerNotReadyException, InterruptedException {
-        if (!initialized || !waiting)
+        if (!initialized || !waiting) {
             throw new RunnerNotReadyException();
+        }
 
         nextJob.put(job);
     }
@@ -54,7 +61,10 @@ public class SeleniumRunner implements Runner {
         // Perform runner initialization asynchronously from the construction
         try {
             initializeRunner();
-        } catch (JobManagerStoppedException e) { /* TODO */ e.printStackTrace(); return; }
+        } catch (JobManagerStoppedException e) { /* TODO */
+            e.printStackTrace();
+            return;
+        }
 
         // Begin processing jobs
         try {
@@ -65,24 +75,26 @@ public class SeleniumRunner implements Runner {
                 // Mark the runner busy
                 waiting = false;
 
-                try
-                {
+                try {
                     // Execute the job, provided that the session is ready
                     executeRunner(nextJob);
 
                     // Update the job's result status
                     // TODO: Set to FAILURE for the recoverable and job-specific failures
                     nextJob.setResult(JobResult.SUCCESS);
+                } catch (RunnerNotInitializedException e) { /* TODO */
+                    e.printStackTrace();
+                } catch (InvalidApplicationException e) { /* TODO */
+                    e.printStackTrace();
                 }
-                catch (RunnerNotInitializedException e) { /* TODO */ e.printStackTrace(); }
-                catch (InvalidApplicationException e) { /* TODO */ e.printStackTrace(); }
 
                 // Reopen availability and notify the manager
                 waiting = true;
                 runnerReady.runnerReady(this);
             }
+        } catch (InterruptedException e) { /* TODO */
+            e.printStackTrace();
         }
-        catch (InterruptedException e) { /* TODO */ e.printStackTrace(); }
     }
 
     /**
@@ -101,7 +113,7 @@ public class SeleniumRunner implements Runner {
         // TODO: Can we make this configurable (Globus vs. other OAuth flows)
         SeleniumAuthenticationFlow authenticationFlow
                 = new FBASeleniumGlobusAuthenticationFlow(driver,
-                    configuration.getGlobusUsername(), configuration.getGlobusPassword());
+                configuration.getGlobusUsername(), configuration.getGlobusPassword());
 
         // Perform the authentication flow
         authenticationFlow.authenticateSession();
@@ -115,8 +127,9 @@ public class SeleniumRunner implements Runner {
      * Given some job, executes the runner with an initialized session.
      */
     private void executeRunner(Job job) throws RunnerNotInitializedException, InvalidApplicationException {
-        if (!initialized)
+        if (!initialized) {
             throw new RunnerNotInitializedException();
+        }
 
         switch (job.getApplication()) {
             case FBA:
@@ -131,8 +144,9 @@ public class SeleniumRunner implements Runner {
      * Executes an FBA application using the provided job.
      */
     private void executeFBARunner(Job job) throws InvalidApplicationException {
-        if (job.getApplication() != ApplicationType.FBA)
+        if (job.getApplication() != ApplicationType.FBA) {
             throw new InvalidApplicationException();
+        }
 
         // First program the application
         new FBASeleniumInputProgrammer(driver).programInputs(job);
