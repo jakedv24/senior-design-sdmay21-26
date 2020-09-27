@@ -89,8 +89,10 @@ public class SeleniumRunner implements Runner {
 
                     // If we made it here, things should've been a success
                     nextJob.setResult(JobResult.SUCCESS);
-                } catch (RunnerNotInitializedException | InvalidApplicationException | SeleniumIdentificationException e) {
-                    // TODO: Either scope logging to the runner, or delegate this to the job's callback with a faillback to the manager
+                } catch (RunnerNotInitializedException | InvalidApplicationException
+                        | SeleniumIdentificationException e) {
+                    // TODO: Either scope logging to the runner, or delegate this to the job's
+                    //  callback with a faillback to the manager
                     System.err.println("A job has failed, but the runner will reset and continue execution.");
 
                     // Flag the job as failed

@@ -120,11 +120,12 @@ public class JobManager implements Runnable {
      * @param cause Optionally, a cause for the failure.
      */
     public void notifyOfFailure(Job job, Throwable cause) {
-        if (job.getFailureCallback() != null)
+        if (job.getFailureCallback() != null) {
             job.getFailureCallback().onFailure(job, cause);
-        else
+        } else {
             // Fallback to the console if the UI isn't handling it
             cause.printStackTrace();
+        }
     }
 
     @Override
