@@ -113,7 +113,7 @@ public class GUIForm extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                formError = false;
+                formError = false; //update if any variables fail the conditional checks
                 activationCoefficientString = activationCoefficientText.getText(); //Save the activation coefficient
                 CarbonString = CarbonUptake.getText(); //save the Carbon coefficient at run time.
                 try {
