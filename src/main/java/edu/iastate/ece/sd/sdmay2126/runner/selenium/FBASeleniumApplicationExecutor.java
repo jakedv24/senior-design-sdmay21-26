@@ -15,7 +15,7 @@ public class FBASeleniumApplicationExecutor implements SeleniumApplicationExecut
     }
 
     @Override
-    public void executeApplication(Job job) {
+    public void executeApplication(Job job) throws SeleniumIdentificationException {
         try {
             // Wait until the run button is enabled after a reset.
             Thread.sleep(2000);
@@ -24,7 +24,7 @@ public class FBASeleniumApplicationExecutor implements SeleniumApplicationExecut
                     .get(2) // FBA is the 3rd application on the page, thus the 3rd run button (0-indexed)
                     .click();
         } catch (InterruptedException e) {
-            throw new Exception("Executor failed to locate the run button.", e);
+            throw new SeleniumIdentificationException("Executor failed to locate the run button.", e);
         }
     }
 }
