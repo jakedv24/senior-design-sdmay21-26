@@ -22,8 +22,8 @@ public class GUIForm extends JFrame {
     private JCheckBox minimizeFlux; //boolean, check is 1 unchecked is 0
     private JTextField ErrorTextField;
 
-    //Float values
-    private JTextField activationCoefficientText; //Float, Range between 0-1
+    //Float values GUI fields
+    private JTextField activationCoefficientText;
     private JTextField CarbonUptake;
     private JTextField NitrogenUptake;
     private JTextField PhosphateUptake;
@@ -63,6 +63,11 @@ public class GUIForm extends JFrame {
     public GUIForm(JobManager jobManager) {
         this.jobManager = jobManager;
 
+        //Set checkboxes to true as this is the default
+        fluxVariabilityAnalysis.setSelected(true);
+        simulateAllSingleKos.setSelected(true);
+        minimizeFlux.setSelected(true);
+
         add(MainPanel); //Display Panel
         setSize(500, 500); //Set a arbitrary size for the GUI
         //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Adds the X button to close
@@ -94,11 +99,11 @@ public class GUIForm extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if (CarbonUptake.getText().equals("Activation Coefficient [0,1]")) {
+                if (CarbonUptake.getText().equals("*Carbon Uptake [0,100]")) {
                     CarbonUptake.setText("");
                     CarbonUptake.setForeground(Color.BLACK);
                 }
-                activationCoefficientString = activationCoefficientText.getText();
+                CarbonString = CarbonUptake.getText();
             }
         });
         runDefaultSettingsButton.addActionListener(new ActionListener() {
@@ -110,9 +115,13 @@ public class GUIForm extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 formError = false;
                 activationCoefficientString = activationCoefficientText.getText(); //Save the activation coefficient
+                CarbonString = CarbonUptake.getText(); //save the Carbon coefficient at run time.
                 try {
                     //Check if the user left the value as a default value
-                    if(!activationCoefficientString.equals("Activation Coefficient [0,1]")) {
+                    if(activationCoefficientString.equals("") || activationCoefficientString.equals("Activation Coefficient [0,1]")){
+                        activationCoefficient = (float) 0.5;
+                    }
+                    else if(!activationCoefficientString.equals("Activation Coefficient [0,1]")) {
                         activationCoefficient = Float.parseFloat(activationCoefficientString); //if not default set as user value
                     }
 
@@ -120,6 +129,23 @@ public class GUIForm extends JFrame {
                     FloatException("Activation Coefficient", 0, 1);
                 }
                 validationRange(0.0,1.0,activationCoefficient, "Activation Coefficient");
+
+                //Setting the Carbon string from the GUI for the web driver
+                try {
+                    //Check if the user left the value as a default value
+                    if(CarbonString.equals("*Carbon Uptake [0,100]") || CarbonString.equals("")){ //this value can't be left blank, no specified default
+                        formError = true;
+                        ErrorTextField.setText("Carbon Uptake Field is required. Range: 0-100");
+                    }
+                    else{
+                        CarbonValue = Float.parseFloat(CarbonString); //if not default set as user value
+                    }
+
+                } catch (NumberFormatException k) {
+                    FloatException("Carbon Uptake", 0, 100);
+                }
+                validationRange(0.0,100.0, CarbonValue, "Carbon Uptake");
+
                 //Viewing the checklists of the 3 booleans and setting the values appropriately.
                 fluxVariabilityAnalysisValue = fluxVariabilityAnalysis.isSelected();
                 simulateAllSingleKosValue = simulateAllSingleKos.isSelected();
@@ -134,7 +160,7 @@ public class GUIForm extends JFrame {
                     try {
                         // Setup the parameters
                         FBAParameters params = new FBAParameters(fluxVariabilityAnalysisValue, minimizeFluxValue, simulateAllSingleKosValue);
-                        params.setActivationCoefficient(Float.parseFloat(activationCoefficientString));
+                        params.setActivationCoefficient(activationCoefficient);
 
                         // Queue the job
                         jobManager.scheduleJob(new Job(params));
@@ -166,7 +192,7 @@ public class GUIForm extends JFrame {
         ErrorTextField.setForeground(Color.red);
         MainPanel.revalidate();
         MainPanel.repaint();
-        ErrorTextField.setText(valueField + " must be an integer between " +  min + "-" + max + " inclusive");
+        ErrorTextField.setText(valueField + " must be an integer between " +  min + " - " + max + " inclusive");
         formError = true;
     }
 }
