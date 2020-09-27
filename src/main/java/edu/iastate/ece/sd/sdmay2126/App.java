@@ -1,17 +1,16 @@
 package edu.iastate.ece.sd.sdmay2126;
 
+import edu.iastate.ece.sd.sdmay2126.configuration.ConfigurationLoader;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManager;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.SeleniumConfiguration;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.SeleniumRunner;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.InvalidSeleniumDriverException;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverUtilities;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDrivers;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import javax.swing.*;
+import java.io.IOException;
+import java.util.Properties;
 
 /**
  * Basic KBase driver for narrative interaction.
@@ -21,6 +20,38 @@ public class App {
 
     public static void main(String[] args) throws ClassNotFoundException,
             UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+        // Load configuration files
+        Properties appProps;
+        Properties envProps;
+        try {
+            ConfigurationLoader configuration = new ConfigurationLoader();
+            configuration.loadConfiguration();
+
+            appProps = configuration.getApplicationProperties();
+            envProps = configuration.getEnvironmentProperties();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        // Pull specific configuration values from the files
+        String globusUser;
+        String globusPass;
+        String driverPath;
+        SeleniumDrivers driverType;
+        int narrativeIdentifier;
+        try {
+            globusUser = appProps.getProperty("kbase.auth.globus.user");
+            globusPass = appProps.getProperty("kbase.auth.globus.pass");
+            driverType = SeleniumDriverUtilities.getDriverFromString(envProps.getProperty("selenium.driver.type"));
+            driverPath = envProps.getProperty("selenium.driver.path");
+            narrativeIdentifier = Integer.parseInt(appProps.getProperty("kbase.narrative_identifier"));
+        } catch (InvalidSeleniumDriverException e) {
+            System.err.println("Invalid Selenium driver specified in configuration.");
+            e.printStackTrace();
+            return;
+        }
+
         // Initialize the job manager
         JobManager manager = new JobManager();
         new Thread(manager).start();
@@ -29,13 +60,7 @@ public class App {
         manager.initializeRunners(
                 jobManager -> new SeleniumRunner(
                         manager,
-                        new SeleniumConfiguration(
-                                "sdmay2126",
-                                "sdmay2126pw",
-                                SeleniumDrivers.CHROME,
-                                "./drivers/chromedriver",
-                                72313
-                        )
+                        new SeleniumConfiguration(globusUser, globusPass, driverType, driverPath, narrativeIdentifier)
                 ),
                 1 // Let's leave it at a single runner for now
         );
@@ -51,130 +76,4 @@ public class App {
             }
         });
     }
-
-    /**
-     * Produces a web driver for automation.
-     */
-    @Deprecated()
-    static WebDriver getDriver() {
-        /*
-         * When we begin to decrease the hackiness and make this user-friendly,
-         * we may want to explore downloading this into the user's home directory.
-         *
-         * Note that these drivers are device and browser specific. Docs/drivers:
-         * https://www.selenium.dev/documentation/en/webdriver/driver_requirements/
-         */
-
-        /*
-         * ===== CHROME =====
-         * Chrome driver: https://chromedriver.storage.googleapis.com/index.html
-         *
-         * System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver");
-         *
-         * return new ChromeDriver(
-<<<<<<< HEAD
-         *      new ChromeOptions().setHeadless(false)
-=======
-         *		new ChromeOptions().setHeadless(false)
->>>>>>> ad7e31b3a6d4b70f68bfddaf7a0903b9fe108cc2
-         * );
-         */
-
-        /*
-         * ===== FIREFOX =====
-         * Firefox driver: https://github.com/mozilla/geckodriver/releases
-         */
-
-        System.setProperty("webdriver.gecko.driver", "./drivers/geckodriver");
-
-        return new FirefoxDriver(
-                // I wanna watch it
-                new FirefoxOptions().setHeadless(false)
-        );
-    }
-
-    /**
-     * Performs a Globus authentication flow, assuming the login page is loaded.
-     */
-    @Deprecated()
-    static void performGlobusAuthFlow(WebDriver driver) throws InterruptedException {
-        System.out.println("Initiating Globus authentication...");
-
-        // Locate the login iframe
-        WebElement loginFrame = new WebDriverWait(driver, 10)
-                .until(d -> d.findElement(By.tagName("iframe")));
-
-        // Swap the driver context into the frame
-        driver.switchTo().frame(loginFrame);
-
-        // Locate and click the Globus auth
-        new WebDriverWait(driver, 10)
-                .until(d -> d.findElements(By.className("signin-button")))
-                .get(2) // Globus is #3
-                .click();
-
-        // Switch back to the window (from the iframe)
-        driver.switchTo().defaultContent();
-
-        // Locate the Globus "continue" button
-        new WebDriverWait(driver, 10)
-                .until(d -> d.findElement(By.name("identity_provider")))
-                .click();
-
-        // Locate and fill the username and password fields
-        new WebDriverWait(driver, 10)
-                .until(d -> d.findElement(By.id("ember24")))
-                .sendKeys("sdmay2126");
-        new WebDriverWait(driver, 10)
-                .until(d -> d.findElement(By.id("ember25")))
-                .sendKeys("sdmay2126pw");
-
-        // Submit the login form
-        new WebDriverWait(driver, 10)
-                .until(d -> d.findElement(By.cssSelector("input[type=\"submit\"]")))
-                .click();
-
-        // Locate the confirmation iframe
-        WebElement confirmFrame = new WebDriverWait(driver, 10)
-                .until(d -> d.findElement(By.tagName("iframe")));
-
-        // Swap the driver context into the frame
-        driver.switchTo().frame(confirmFrame);
-
-        // Acknowledge account
-        new WebDriverWait(driver, 10)
-                .until(d -> d.findElement(By.tagName("button")))
-                .click();
-
-        // Swap back to the window
-        driver.switchTo().defaultContent();
-    }
-
-	/*
-	private static int incrementingRunnerIdentifier = 1;
-	private static int incrementingJobIdentifier = 1;
-
-	public static void runnerTesting_main(String[] args) throws InterruptedException, JobManagerStoppedException {
-		// Start the manager with demo. runners (they'll start initializing)
-		JobManager manager = new JobManager((byte) 5,
-				onReady -> new DemonstrationRunner(onReady, incrementingRunnerIdentifier++));
-		new Thread(manager).start();
-
-		// Wait just long enough for initialization to complete
-		Thread.sleep(6000);
-
-		// Start throwing jobs onto the queue
-		for (int i = 0; i < 20; i++) {
-			FBAParameters params = new FBAParameters(false, false, false);
-			params.setActivationCoefficient(incrementingJobIdentifier++);
-
-			System.out.println("Application scheduling job " + incrementingJobIdentifier);
-			manager.scheduleJob(new Job(params));
-
-			Thread.sleep(RandomUtil.getRandInRange(500, 1500));
-		}
-
-		Thread.sleep(20000);
-	}
-	*/
 }
