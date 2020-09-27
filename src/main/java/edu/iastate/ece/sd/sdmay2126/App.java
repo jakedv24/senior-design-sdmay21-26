@@ -17,9 +17,10 @@ import javax.swing.*;
  * Basic KBase driver for narrative interaction.
  */
 public class App {
-    public static GUIForm GUI;
+    private static GUIForm gui;
 
-    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+    public static void main(String[] args) throws ClassNotFoundException,
+            UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         // Initialize the job manager
         JobManager manager = new JobManager();
         new Thread(manager).start();
@@ -41,12 +42,12 @@ public class App {
 
         //Give the GUI a more authentic feel according to use OS
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        GUI = new GUIForm(manager);
+        gui = new GUIForm(manager);
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 //Generate our GUI, this has control of the web driver.
-                GUI.setVisible(true);
+                gui.setVisible(true);
             }
         });
     }
@@ -71,7 +72,11 @@ public class App {
          * System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver");
          *
          * return new ChromeDriver(
+<<<<<<< HEAD
+         *      new ChromeOptions().setHeadless(false)
+=======
          *		new ChromeOptions().setHeadless(false)
+>>>>>>> ad7e31b3a6d4b70f68bfddaf7a0903b9fe108cc2
          * );
          */
 
@@ -172,5 +177,4 @@ public class App {
 		Thread.sleep(20000);
 	}
 	*/
-
 }

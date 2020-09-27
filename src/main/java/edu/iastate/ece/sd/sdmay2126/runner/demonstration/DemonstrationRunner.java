@@ -11,22 +11,22 @@ import edu.iastate.ece.sd.sdmay2126.util.RandomUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
 public class DemonstrationRunner implements Runner {
+    private final int runnerIdentifier; // For nicer console output
     private final JobManager jobManager;
     private final BlockingQueue<Job> nextJob;
-    private final Random random;
-    private final int runnerIdentifier; // For nicer console output
-    private boolean initialized = false, waiting = true, stopped = false;
+
+    private boolean initialized = false;
+    private boolean waiting = true;
+    private boolean stopped = false;
 
     public DemonstrationRunner(JobManager jobManager, int runnerIdentifier) {
         this.jobManager = jobManager;
         this.runnerIdentifier = runnerIdentifier;
         this.nextJob = new SynchronousQueue<>();
-        random = new Random();
 
         print("Constructed");
     }
@@ -39,8 +39,9 @@ public class DemonstrationRunner implements Runner {
 
     @Override
     public void runJob(Job job) throws RunnerNotReadyException, InterruptedException {
-        if (!initialized || !waiting)
+        if (!initialized || !waiting) {
             throw new RunnerNotReadyException();
+        }
 
         print("Queuing job");
         nextJob.put(job);
@@ -48,8 +49,7 @@ public class DemonstrationRunner implements Runner {
 
     @Override
     public void run() {
-        try
-        {
+        try {
             initialize();
 
             print("Beginning to process jobs");
@@ -77,8 +77,9 @@ public class DemonstrationRunner implements Runner {
                 jobManager.indicateAvailability(this);
             }
             print("Stopped processing jobs");
+        } catch (Exception e) {
+            // no-op
         }
-        catch (Exception e) {}
     }
 
     private void initialize() throws InterruptedException, JobManagerStoppedException {
@@ -107,6 +108,7 @@ public class DemonstrationRunner implements Runner {
     }
 
     private void print(String msg) {
-        System.out.println(runnerIdentifier + " " + new SimpleDateFormat("HH:mm:ss.SSS").format(new Date()) + ": " + msg);
+        System.out.println(runnerIdentifier + " "
+                + new SimpleDateFormat("HH:mm:ss.SSS").format(new Date()) + ": " + msg);
     }
 }

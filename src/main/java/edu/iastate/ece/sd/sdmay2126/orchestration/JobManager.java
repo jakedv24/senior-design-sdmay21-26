@@ -16,11 +16,17 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class JobManager implements Runnable {
     private static final int DEFAULT_RUNNER_COUNT = 2;
 
-    /** All of this manager's runners. */
+    /**
+     * All of this manager's runners.
+     */
     private final List<Runner> runners;
-    /** Runners which have indicated resource availability to process a job. */
+    /**
+     * Runners which have indicated resource availability to process a job.
+     */
     private final BlockingQueue<Runner> availableRunners;
-    /** Jobs which have been prepared and queued for execution. */
+    /**
+     * Jobs which have been prepared and queued for execution.
+     */
     private final BlockingQueue<Job> jobQueue;
 
     // Graceful stop indicator, even if mid-queue
@@ -65,14 +71,16 @@ public class JobManager implements Runnable {
      * @throws JobManagerStoppedException Thrown if the manager was stopped.
      */
     public void scheduleJob(Job job) throws JobManagerStoppedException {
-        if (stopped)
+        if (stopped) {
             throw new JobManagerStoppedException();
+        }
 
         jobQueue.add(job);
     }
 
     /**
-     * Attempts to unschedule the specified job. Note that this call depends on the caller beating the runners to the job.
+     * Attempts to unschedule the specified job.
+     * Note that this call depends on the caller beating the runners to the job.
      */
     public void unscheduleJob(Job job) {
         jobQueue.remove(job);
@@ -84,15 +92,16 @@ public class JobManager implements Runnable {
      * @throws JobManagerStoppedException Thrown if the manager was stopped.
      */
     public void indicateAvailability(Runner runner) throws JobManagerStoppedException {
-        if (stopped)
+        if (stopped) {
             throw new JobManagerStoppedException();
+        }
 
         availableRunners.add(runner);
     }
 
     /**
-     * Attempts to cancel the specified runner's resource availability. Note that this depends on the caller beating
-     * some job being queued for processing.
+     * Attempts to cancel the specified runner's resource availability.
+     * Note that this depends on the caller beating some job being queued for processing.
      */
     public void cancelAvailability(Runner runner) {
         availableRunners.remove(runner);
@@ -111,11 +120,12 @@ public class JobManager implements Runnable {
      * @param cause Optionally, a cause for the failure.
      */
     public void notifyOfFailure(Job job, Throwable cause) {
-        if (job.getFailureCallback() != null)
+        if (job.getFailureCallback() != null) {
             job.getFailureCallback().onFailure(job, cause);
-        else
+        } else {
             // Fallback to the console if the UI isn't handling it
             cause.printStackTrace();
+        }
     }
 
     @Override
@@ -136,7 +146,8 @@ public class JobManager implements Runnable {
 
                 // Instruct the runner to take this job
                 try {
-                    System.out.println("Job Manager: Processing job " + ((FBAParameters) nextJob.getParameters()).getActivationCoefficient());
+                    System.out.println("Job Manager: Processing job "
+                            + ((FBAParameters) nextJob.getParameters()).getActivationCoefficient());
                     // Note that this is asynchronous, and the runner has callback responsibility
                     runner.runJob(nextJob);
                 } catch (RunnerNotReadyException e) {
@@ -148,8 +159,9 @@ public class JobManager implements Runnable {
         } catch (InterruptedException e) { /* TODO: Something reasonable */ }
 
         // Stop our runners
-        for (Runner runner : runners)
+        for (Runner runner : runners) {
             runner.stopRunner();
+        }
 
         // We're gracefully stopping; provide an opportunity to save-off pending jobs
         if (!jobQueue.isEmpty()) {

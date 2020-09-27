@@ -3,7 +3,6 @@ package edu.iastate.ece.sd.sdmay2126.runner.selenium;
 import edu.iastate.ece.sd.sdmay2126.FakeWebElement;
 import edu.iastate.ece.sd.sdmay2126.application.FBAOutput;
 import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
-import edu.iastate.ece.sd.sdmay2126.application.InvalidApplicationException;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,52 +28,62 @@ public class SeleniumSeleniumOutputCollectorTest {
 
     @Before
     public void setUp() {
-        when(mockWebDriver.findElement(By.xpath(OBJECTIVE_VALUE_LABEL_PATH))).thenThrow(new NoSuchElementException("no element found"));
-        when(mockWebDriver.findElement(By.xpath(OBJECTIVE_VALUE_VALUE_TAG_NAME))).thenThrow(new NoSuchElementException("no element found"));
-        when(mockWebDriver.findElement(By.xpath(JOB_STATUS_BUTTON_PATH))).thenThrow(new NoSuchElementException("no element found"));
-        when(mockWebDriver.findElements(By.xpath(LOG_TEXT_CLASS_NAME))).thenThrow(new NoSuchElementException("no element found"));
+        when(mockWebDriver.findElement(By.xpath(OBJECTIVE_VALUE_LABEL_PATH)))
+                .thenThrow(new NoSuchElementException("no element found"));
+        when(mockWebDriver.findElement(By.xpath(OBJECTIVE_VALUE_VALUE_TAG_NAME)))
+                .thenThrow(new NoSuchElementException("no element found"));
+        when(mockWebDriver.findElement(By.xpath(JOB_STATUS_BUTTON_PATH)))
+                .thenThrow(new NoSuchElementException("no element found"));
+        when(mockWebDriver.findElements(By.xpath(LOG_TEXT_CLASS_NAME)))
+                .thenThrow(new NoSuchElementException("no element found"));
 
         classToTest = new FBASeleniumOutputCollector(mockWebDriver);
     }
 
     @Test
-    public void collectorWillReturnDefaultOfNegOneObjectiveValueIfLabelNotFound() throws InvalidApplicationException {
-        FBAOutput result = (FBAOutput) classToTest.collectOutput(new Job(new FBAParameters(false, false, false)));
+    public void collectorWillReturnDefaultOfNegOneObjectiveValueIfLabelNotFound() {
+        Job job = new Job(new FBAParameters(false, false, false));
+        FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
 
         assertThat(result.getObjectiveValue(), is(-1f));
     }
 
     @Test
-    public void collectorWillReturnDefaultOfEmptyCollectionIfLogElementsAreNotFound() throws InvalidApplicationException {
-        FBAOutput result = (FBAOutput) classToTest.collectOutput(new Job(new FBAParameters(false, false, false)));
+    public void collectorWillReturnDefaultOfEmptyCollectionIfLogElementsAreNotFound() {
+        Job job = new Job(new FBAParameters(false, false, false));
+        FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
 
         assertTrue(result.getJobLogs().isEmpty());
     }
 
     @Test
-    public void collectorWillReturnDefaultOfNegOneObjectiveValueIfLabelCannotBeParsedToFloat() throws InvalidApplicationException {
+    public void collectorWillReturnDefaultOfNegOneObjectiveValueIfLabelCannotBeParsedToFloat() {
         FakeWebElement labelElement = new FakeWebElement();
         doReturn(labelElement).when(mockWebDriver).findElement(By.xpath(OBJECTIVE_VALUE_LABEL_PATH));
-        doReturn(new FakeWebElement("not a float")).when(mockWebDriver).findElement(withTagName(OBJECTIVE_VALUE_VALUE_TAG_NAME).toRightOf(labelElement));
+        doReturn(new FakeWebElement("not a float"))
+                .when(mockWebDriver).findElement(withTagName(OBJECTIVE_VALUE_VALUE_TAG_NAME).toRightOf(labelElement));
 
-        FBAOutput result = (FBAOutput) classToTest.collectOutput(new Job(new FBAParameters(false, false, false)));
+        Job job = new Job(new FBAParameters(false, false, false));
+        FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
 
         assertThat(result.getObjectiveValue(), is(-1f));
     }
 
     @Test
-    public void collectorWillReturnFloatObjectiveValueIfLabelCanBeParsedToFloat() throws InvalidApplicationException {
+    public void collectorWillReturnFloatObjectiveValueIfLabelCanBeParsedToFloat() {
         FakeWebElement labelElement = new FakeWebElement();
         doReturn(labelElement).when(mockWebDriver).findElement(By.xpath(OBJECTIVE_VALUE_LABEL_PATH));
-        doReturn(new FakeWebElement("2.9")).when(mockWebDriver).findElement(withTagName(OBJECTIVE_VALUE_VALUE_TAG_NAME).toRightOf(labelElement));
+        doReturn(new FakeWebElement("2.9"))
+                .when(mockWebDriver).findElement(withTagName(OBJECTIVE_VALUE_VALUE_TAG_NAME).toRightOf(labelElement));
 
-        FBAOutput result = (FBAOutput) classToTest.collectOutput(new Job(new FBAParameters(false, false, false)));
+        Job job = new Job(new FBAParameters(false, false, false));
+        FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
 
         assertThat(result.getObjectiveValue(), is(2.9f));
     }
 
     @Test
-    public void collectorWillReturnLogsIfElementsFound() throws InvalidApplicationException {
+    public void collectorWillReturnLogsIfElementsFound() {
         List<FakeWebElement> webElementsToReturn = new ArrayList<>();
         webElementsToReturn.add(new FakeWebElement("foo"));
         webElementsToReturn.add(new FakeWebElement("bar"));
@@ -82,7 +91,8 @@ public class SeleniumSeleniumOutputCollectorTest {
         doReturn(new FakeWebElement()).when(mockWebDriver).findElement(By.xpath(JOB_STATUS_BUTTON_PATH));
         doReturn(webElementsToReturn).when(mockWebDriver).findElements(By.className(LOG_TEXT_CLASS_NAME));
 
-        FBAOutput result = (FBAOutput) classToTest.collectOutput(new Job(new FBAParameters(false, false, false)));
+        Job job = new Job(new FBAParameters(false, false, false));
+        FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
 
         assertThat(result.getJobLogs().size(), is(2));
         assertTrue(result.getJobLogs().contains("foo"));

@@ -13,9 +13,11 @@ import javax.annotation.Nonnull;
  */
 public class GlobusAuthenticationFlow implements SeleniumAuthenticationFlow {
     private final WebDriver driver;
-    private final String username, password;
+    private final String username;
+    private final String password;
 
-    public GlobusAuthenticationFlow(@Nonnull WebDriver driver, GlobusAuthenticationConfiguration authenticationConfiguration) {
+    public GlobusAuthenticationFlow(@Nonnull WebDriver driver,
+                                    GlobusAuthenticationConfiguration authenticationConfiguration) {
         this.driver = driver;
         username = authenticationConfiguration.getUsername();
         password = authenticationConfiguration.getPassword();

@@ -1,7 +1,8 @@
 package edu.iastate.ece.sd.sdmay2126.application;
 
 /**
- * Parameters for some particular KBase {@link ApplicationType} execution. May be considered, in aggregate, a sufficiently
+ * Parameters for some particular KBase {@link ApplicationType} execution.
+ * May be considered, in aggregate, a sufficiently
  * unique identifier to cache application execution results.
  */
 public interface ApplicationParameters {

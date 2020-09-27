@@ -22,12 +22,17 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         // Reset the FBA Application
         resetFBAIfRequired();
 
-        WebElement codeBox = new WebDriverWait(driver, 10).until(d -> d.findElements(By.cssSelector("div[class^='cell code_cell']"))).get(2);
+        WebElement codeBox = new WebDriverWait(driver, 10)
+                .until(d -> d.findElements(By.cssSelector("div[class^='cell code_cell']")))
+                .get(2);
         codeBox.click();
 
 
         //There are two buttons that show and hide adnaved options we want to click the second one
-        new WebDriverWait(driver, 10).until(d -> codeBox.findElements(By.cssSelector("button[title='show advanced']"))).get(1).click();
+        new WebDriverWait(driver, 10)
+                .until(d -> codeBox.findElements(By.cssSelector("button[title='show advanced']")))
+                .get(1)
+                .click();
 
 
         //WebElement fluxAnalysisBox = driver.findElements(By.cssSelector("div[class^='cell code_cell")).get(2);
@@ -74,6 +79,8 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
     }
 
     private void clickButtonWithCssSelector(String selector) {
-        new WebDriverWait(driver, Duration.ofSeconds(30)).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(selector))).click();
+        new WebDriverWait(driver, Duration.ofSeconds(30))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(selector)))
+                .click();
     }
 }
