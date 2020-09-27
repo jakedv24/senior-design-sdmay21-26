@@ -20,13 +20,21 @@ public class GUIForm extends JFrame {
     private JCheckBox simulateAllSingleKos; //boolean, check is 1 unchecked is 0
     private JCheckBox minimizeFlux; //boolean, check is 1 unchecked is 0
     private JTextField activationCoefficientText; //Float, Range between 0-1
-    public float activationCoefficient = (float) 0.0; //the float that stores the coefficient
+    public float activationCoefficient = (float) 0.5; //the float that stores the coefficient. default is 0.5
     public String activationCoefficientString; //the string to be converted
     public JPanel MainPanel;
     private JTextField ErrorTextField;
-    public boolean fluxVariabilityAnalysisValue = false; //Value read from the checkbox.
-    public boolean simulateAllSingleKosValue = false; //Value read from the checkbox.
-    public boolean minimizeFluxValue = false; //Value read from the checkbox.
+    private JTextField CarbonUptake;
+    private JTextField NitrogenUptake;
+    private JTextField PhosphateUptake;
+    private JTextField sulfurUptake;
+    private JTextField oxygenUptake;
+    private JTextField reactionToMaximize;
+    private JTextField expressionThreshold;
+    private JTextField expressionUncertainty;
+    public boolean fluxVariabilityAnalysisValue = true; //Value read from the checkbox. Default = 1
+    public boolean simulateAllSingleKosValue = true; //Value read from the checkbox. Default = 1
+    public boolean minimizeFluxValue = true; //Value read from the checkbox. Default = 1
     private boolean formError = false; //try catches will signal this.
 
     public GUIForm(JobManager jobManager) {
@@ -37,7 +45,6 @@ public class GUIForm extends JFrame {
         //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Adds the X button to close
         activationCoefficientText.setText("Activation Coefficient [0,1]");
         activationCoefficientText.setForeground(Color.gray);
-        ErrorTextField.setVisible(false);
         activationCoefficientText.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
