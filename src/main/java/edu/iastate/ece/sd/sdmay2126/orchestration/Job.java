@@ -13,17 +13,20 @@ public class Job {
     private ApplicationParameters parameters;
     private JobCompleted completionCallback;
     private JobCanceled cancellationCallback;
+    private JobFailed failureCallback;
     private ApplicationOutput output;
     private JobResult result = JobResult.UNKNOWN;
 
     public Job(ApplicationParameters parameters) {
-        this(parameters, null, null);
+        this(parameters, null, null, null);
     }
 
-    public Job(@NotNull ApplicationParameters parameters, JobCompleted completionCallback, JobCanceled cancellationCallback) {
+    public Job(@NotNull ApplicationParameters parameters, JobCompleted completionCallback,
+               JobCanceled cancellationCallback, JobFailed failureCallback) {
         this.parameters = parameters;
         this.completionCallback = completionCallback;
         this.cancellationCallback = cancellationCallback;
+        this.failureCallback = failureCallback;
     }
 
     public ApplicationType getApplication() {
@@ -48,6 +51,10 @@ public class Job {
 
     public JobCanceled getCancellationCallback() {
         return cancellationCallback;
+    }
+
+    public JobFailed getFailureCallback() {
+        return failureCallback;
     }
 
     public void setOutput(ApplicationOutput output) {
