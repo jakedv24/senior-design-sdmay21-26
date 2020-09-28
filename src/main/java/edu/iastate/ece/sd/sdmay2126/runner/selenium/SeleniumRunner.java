@@ -223,7 +223,8 @@ public class SeleniumRunner implements Runner {
         new FBASeleniumApplicationExecutor(driver).executeApplication(job);
 
         // Lastly collect results
-        // TODO: Uncomment once the executor is working (else errors on unfound output elements)
-        // job.setOutput(new FBASeleniumOutputCollector(driver).collectOutput(job));
+        job.setOutput(new FBASeleniumOutputCollector(driver).collectOutput(job));
+
+        System.out.println("Selenium Runner: Job complete!");
     }
 }

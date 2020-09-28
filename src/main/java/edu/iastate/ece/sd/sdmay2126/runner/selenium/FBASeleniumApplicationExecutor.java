@@ -32,7 +32,20 @@ public class FBASeleniumApplicationExecutor implements SeleniumApplicationExecut
         // FBA is the 3rd application on the page, thus the 3rd run button (0-indexed)
         System.out.println("Run buttons located; clicking the FBA run...");
         runButtons.get(2).click();
+        runButtons.get(2).click(); // And again to bypass the webdriver internal error (FF-specific?)
 
-        // TODO: Wait for execution to cease
+        // Locate the cancel buttons
+        System.out.println("Locating cancel buttons...");
+        List<WebElement> cancelButtons = SeleniumUtilities.waitForNMatches(
+                driver,
+                By.cssSelector("button[data-button='cancel']"),
+                3,
+                Duration.ofSeconds(10)
+        );
+
+        // Wait for the 3rd cancel to disappear, indicating the end of the simulation
+        System.out.println("Waiting for cancel button to disappear, indicating simulation completion...");
+        SeleniumUtilities.waitForVisibilityChange(cancelButtons.get(2), false, Duration.ofMinutes(30));
+        System.out.println("Simulation complete, as signaled by the cancel button");
     }
 }
