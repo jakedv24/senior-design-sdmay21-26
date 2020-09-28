@@ -31,13 +31,18 @@ public class FBASeleniumOutputCollector implements SeleniumOutputCollector {
     @Nonnull
     @Override
     public ApplicationOutput collectOutput(Job job) {
+        System.out.println("Calculating FBA output...");
         return new FBAOutput(getObjectiveValue(), getLogs());
     }
 
     @NotNull
     private Collection<String> getLogs() {
         try {
-            webDriver.findElement(By.xpath(JOB_STATUS_BUTTON_PATH)).click();
+            // Since FBA Application is the third and final app. And they all have job status buttons.
+            // TODO: This will be refactored by scoping FBA to a subset of the DOM
+            webDriver.findElements(By.xpath(JOB_STATUS_BUTTON_PATH))
+                    .get(2)
+                    .click();
 
             return webDriver.findElements(By.className(LOG_TEXT_CLASS_NAME))
                     .stream()
@@ -51,6 +56,8 @@ public class FBASeleniumOutputCollector implements SeleniumOutputCollector {
     }
 
     private float getObjectiveValue() {
+        System.out.println("Collecting FBA Objective Value...");
+
         float objectiveValue = -1f;
         try {
             WebElement objectiveValueLabel = webDriver.findElement(By.xpath(OBJECTIVE_VALUE_LABEL_PATH));
@@ -59,6 +66,7 @@ public class FBASeleniumOutputCollector implements SeleniumOutputCollector {
                     .getText();
 
             objectiveValue = Float.parseFloat(objectiveValueNumeric);
+            System.out.println("Objective value collected for FBA job...");
         } catch (NoSuchElementException e) {
             System.out.println("Unable to find objective value element.");
         } catch (NumberFormatException e) {

@@ -22,7 +22,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.openqa.selenium.support.locators.RelativeLocator.withTagName;
 
-public class SeleniumSeleniumOutputCollectorTest {
+public class FBASeleniumOutputCollectorTest {
     private WebDriver mockWebDriver = Mockito.mock(WebDriver.class);
     private FBASeleniumOutputCollector classToTest;
 
@@ -32,7 +32,7 @@ public class SeleniumSeleniumOutputCollectorTest {
                 .thenThrow(new NoSuchElementException("no element found"));
         when(mockWebDriver.findElement(By.xpath(OBJECTIVE_VALUE_VALUE_TAG_NAME)))
                 .thenThrow(new NoSuchElementException("no element found"));
-        when(mockWebDriver.findElement(By.xpath(JOB_STATUS_BUTTON_PATH)))
+        when(mockWebDriver.findElements(By.xpath(JOB_STATUS_BUTTON_PATH)))
                 .thenThrow(new NoSuchElementException("no element found"));
         when(mockWebDriver.findElements(By.xpath(LOG_TEXT_CLASS_NAME)))
                 .thenThrow(new NoSuchElementException("no element found"));
@@ -84,11 +84,16 @@ public class SeleniumSeleniumOutputCollectorTest {
 
     @Test
     public void collectorWillReturnLogsIfElementsFound() {
+        List<FakeWebElement> fakeLogStatusButtons = new ArrayList<>();
+        fakeLogStatusButtons.add(new FakeWebElement("a"));
+        fakeLogStatusButtons.add(new FakeWebElement("b"));
+        fakeLogStatusButtons.add(new FakeWebElement("c"));
+
         List<FakeWebElement> webElementsToReturn = new ArrayList<>();
         webElementsToReturn.add(new FakeWebElement("foo"));
         webElementsToReturn.add(new FakeWebElement("bar"));
 
-        doReturn(new FakeWebElement()).when(mockWebDriver).findElement(By.xpath(JOB_STATUS_BUTTON_PATH));
+        doReturn(fakeLogStatusButtons).when(mockWebDriver).findElements(By.xpath(JOB_STATUS_BUTTON_PATH));
         doReturn(webElementsToReturn).when(mockWebDriver).findElements(By.className(LOG_TEXT_CLASS_NAME));
 
         Job job = new Job(new FBAParameters(false, false, false));
