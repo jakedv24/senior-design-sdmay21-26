@@ -15,8 +15,12 @@ import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus.Globus
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverChrome;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverConfiguration;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverFirefox;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
@@ -68,7 +72,7 @@ public class SeleniumRunner implements Runner {
         // Perform runner initialization asynchronously from the construction
         try {
             initializeRunner();
-        } catch (JobManagerStoppedException | InterruptedException e) {
+        } catch (JobManagerStoppedException | InterruptedException | SeleniumIdentificationException e) {
             // TODO: Better handling
             e.printStackTrace();
             return;
@@ -115,26 +119,31 @@ public class SeleniumRunner implements Runner {
     /**
      * Performs KBase authentication flows and, ultimately, produces a ready-to-run narrative session.
      */
-    private void initializeRunner() throws JobManagerStoppedException, InterruptedException {
+    private void initializeRunner() throws JobManagerStoppedException, InterruptedException,
+            SeleniumIdentificationException {
         // Initialize the web driver
+        System.out.println("Initializing driver...");
         driver = getDriver();
 
         // Perform the initial narrative load
         System.out.println("Loading KBase narrative...");
         driver.get("https://narrative.kbase.us/narrative/" + configuration.getNarrativeIdentifier());
 
-        // Let things load
-        // TODO: Detect the loaded page reactively
-        Thread.sleep(3000);
-
         // Initialize and perform the authentication flow
+        System.out.println("Beginning authentication flow...");
         getAuthFlow().authenticateSession();
 
-        // Wait a bit while, post-auth, the Jupyter backend initializes/provisions resources
-        // TODO: Detect the load completion reactively
-        Thread.sleep(15000);
+        // Wait for the narrative to show the loading blocker
+        System.out.println("Locating the load blocker...");
+        WebElement loadingBlocker = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(d -> d.findElement(By.id("kb-loading-blocker")));
+
+        // Wait while the Jupyter backend initializes/provisions resources for the blocker to disappear
+        System.out.println("Blocker located; waiting for it to disappear");
+        SeleniumUtilities.waitForVisibilityChange(loadingBlocker, false, Duration.ofSeconds(30));
 
         // Mark initialization complete and indicate availability to the manager
+        System.out.println("Narrative loaded; indicating availability to the manager");
         initialized = true;
         jobManager.indicateAvailability(this);
     }
@@ -179,8 +188,10 @@ public class SeleniumRunner implements Runner {
     /**
      * Given some job, executes the runner with an initialized session.
      */
-    private void executeRunner(Job job) throws
-            RunnerNotInitializedException, InvalidApplicationException, SeleniumIdentificationException {
+    private void executeRunner(Job job) throws RunnerNotInitializedException, InvalidApplicationException,
+            SeleniumIdentificationException, InterruptedException {
+        System.out.println("Executing job...");
+
         if (!initialized) {
             throw new RunnerNotInitializedException();
         }
@@ -198,7 +209,9 @@ public class SeleniumRunner implements Runner {
      * Executes an FBA application using the provided job.
      */
     private void executeFBARunner(Job job) throws
-            InvalidApplicationException, SeleniumIdentificationException {
+            InvalidApplicationException, SeleniumIdentificationException, InterruptedException {
+        System.out.println("Executing FBA job...");
+
         if (job.getApplication() != ApplicationType.FBA) {
             throw new InvalidApplicationException();
         }
@@ -210,7 +223,8 @@ public class SeleniumRunner implements Runner {
         new FBASeleniumApplicationExecutor(driver).executeApplication(job);
 
         // Lastly collect results
-        // TODO: Uncomment once the executor is working (else errors on unfound output elements)
-        // job.setOutput(new FBASeleniumOutputCollector(driver).collectOutput(job));
+        job.setOutput(new FBASeleniumOutputCollector(driver).collectOutput(job));
+
+        System.out.println("Selenium Runner: Job complete!");
     }
 }
