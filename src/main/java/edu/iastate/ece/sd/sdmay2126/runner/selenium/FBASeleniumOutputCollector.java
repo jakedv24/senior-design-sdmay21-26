@@ -65,7 +65,8 @@ public class FBASeleniumOutputCollector implements SeleniumOutputCollector {
             WebElement objectiveValueLabel = new WebDriverWait(webDriver, Duration.ofSeconds(10))
                     .until(d -> d.findElement(By.xpath(OBJECTIVE_VALUE_LABEL_PATH)));
             String objectiveValueNumeric = new WebDriverWait(webDriver, Duration.ofSeconds(10))
-                    .until(d -> d.findElement(withTagName(OBJECTIVE_VALUE_VALUE_TAG_NAME).toRightOf(objectiveValueLabel)))
+                    .until(d -> d.findElement(
+                            withTagName(OBJECTIVE_VALUE_VALUE_TAG_NAME).toRightOf(objectiveValueLabel)))
                     .getText();
 
             objectiveValue = Float.parseFloat(objectiveValueNumeric);

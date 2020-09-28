@@ -27,7 +27,7 @@ public class SeleniumUtilities {
             while (desiredVisibility != element.isDisplayed()) {
                 // Fail if we've exceeded our wait period
                 if (System.currentTimeMillis() - startTime >= maxWait.toMillis()) {
-                    throw new SeleniumIdentificationException("Failed to detect a visibility change within the wait period.");
+                    throw new SeleniumIdentificationException("Failed to detect a visibility change.");
                 }
 
                 // Reduce spinning with polling delay
