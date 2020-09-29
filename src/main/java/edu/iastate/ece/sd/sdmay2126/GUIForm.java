@@ -106,6 +106,28 @@ public class GUIForm extends JFrame {
                 CarbonString = CarbonUptake.getText();
             }
         });
+        PhosphateUptake.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (PhosphateUptake.getText().equals("*Phosphate Uptake [0,100]")) {
+                    PhosphateUptake.setText("");
+                    PhosphateUptake.setForeground(Color.BLACK);
+                }
+                PhosphateString = PhosphateUptake.getText();
+            }
+        });
+        NitrogenUptake.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (NitrogenUptake.getText().equals("*Nitrogen Uptake [0,100]")) {
+                    NitrogenUptake.setText("");
+                    NitrogenUptake.setForeground(Color.BLACK);
+                }
+                NitrogenString = NitrogenUptake.getText();
+            }
+        });
         runDefaultSettingsButton.addActionListener(new ActionListener() {
             /*
             When the user presses the "run" button, We are going to save all the variables
@@ -114,8 +136,16 @@ public class GUIForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 formError = false; //update if any variables fail the conditional checks
+
+
+                //Set fields at time of button pressed
                 activationCoefficientString = activationCoefficientText.getText(); //Save the activation coefficient
                 CarbonString = CarbonUptake.getText(); //save the Carbon coefficient at run time.
+                PhosphateString = PhosphateUptake.getText();
+                NitrogenString = NitrogenUptake.getText();
+
+
+
                 try {
                     //Check if the user left the value as a default value
                     if(activationCoefficientString.equals("") || activationCoefficientString.equals("Activation Coefficient [0,1]")){
@@ -131,6 +161,7 @@ public class GUIForm extends JFrame {
                 validationRange(0.0,1.0,activationCoefficient, "Activation Coefficient");
 
                 //Setting the Carbon string from the GUI for the web driver
+//                GUIFloatValueSimplifier(CarbonString, 0, 100, "Carbon Uptake", CarbonValue);
                 try {
                     //Check if the user left the value as a default value
                     if(CarbonString.equals("*Carbon Uptake [0,100]") || CarbonString.equals("")){ //this value can't be left blank, no specified default
@@ -145,6 +176,38 @@ public class GUIForm extends JFrame {
                     FloatException("Carbon Uptake", 0, 100);
                 }
                 validationRange(0.0,100.0, CarbonValue, "Carbon Uptake");
+
+                //Phosphate code base
+                try {
+                    //Check if the user left the value as a default value
+                    if(PhosphateString.equals("*Phosphate Uptake [0,100]") || PhosphateString.equals("")){ //this value can't be left blank, no specified default
+                        formError = true;
+                        ErrorTextField.setText("Phosphate Uptake Field is required. Range: 0-100");
+                    }
+                    else{
+                        PhosphateValue = Float.parseFloat(PhosphateString); //if not default set as user value
+                    }
+
+                } catch (NumberFormatException k) {
+                    FloatException("Phosphate Uptake", 0, 100);
+                }
+                validationRange(0.0,100.0, PhosphateValue, "Phosphate Uptake");
+
+                //Nitrogen Code base
+                try {
+                    //Check if the user left the value as a default value
+                    if(NitrogenString.equals("*Nitrogen Uptake [0,100]") || NitrogenString.equals("")){ //this value can't be left blank, no specified default
+                        formError = true;
+                        ErrorTextField.setText("Nitrogen Uptake Field is required. Range: 0-100");
+                    }
+                    else{
+                        NitrogenValue = Float.parseFloat(NitrogenString); //if not default set as user value
+                    }
+
+                } catch (NumberFormatException k) {
+                    FloatException("Nitrogen Uptake", 0, 100);
+                }
+                validationRange(0.0,100.0, NitrogenValue, "Nitrogen Uptake");
 
                 //Viewing the checklists of the 3 booleans and setting the values appropriately.
                 fluxVariabilityAnalysisValue = fluxVariabilityAnalysis.isSelected();
@@ -194,5 +257,30 @@ public class GUIForm extends JFrame {
         MainPanel.repaint();
         ErrorTextField.setText(valueField + " must be an integer between " +  min + " - " + max + " inclusive");
         formError = true;
+    }
+
+    /*
+    TESTING NOT WORKING CURRENTLY
+    Method for refactoring duplicate code that each float value needs to run through on click.
+    ElementString ex: CarbonString
+    ElementMin ex: Carbon min value is 0
+    ElementMax ex: Carbon max value is 100
+    ElementUptake ex: "Carbon Uptake"
+     */
+    private void GUIFloatValueSimplifier(String ElementString, int ElementMin, int ElementMax, String ElementUptake, float ElementValue){
+        try {
+            //Check if the user left the value as a default value
+            if(ElementString.equals("*" + ElementUptake + " [" + ElementMin + "," + ElementMax + "]") || ElementString.equals("")){ //this value can't be left blank, no specified default
+                formError = true;
+                ErrorTextField.setText(ElementUptake + " Field is required. Range: " + ElementMin + "-" + ElementMax);
+            }
+            else{
+                ElementValue = Float.parseFloat(ElementString); //if not default set as user value
+            }
+
+        } catch (NumberFormatException k) {
+            FloatException(ElementUptake, 0, 100);
+        }
+        validationRange(0.0,100.0, ElementValue, ElementUptake);
     }
 }
