@@ -10,14 +10,17 @@ import java.util.List;
  * Provides basic, composable Selenium operations.
  */
 public class SeleniumUtilities {
-    /** Reduce spinning while waiting. */
+    /**
+     * Reduce spinning while waiting.
+     */
     private static final int POLLING_DELAY_MILLIS = 50;
 
     /**
      * Waits for an element's visibility to change.
-     * @param element The element to watch.
+     *
+     * @param element           The element to watch.
      * @param desiredVisibility The visibility to wait for.
-     * @param maxWait How long to wait for.
+     * @param maxWait           How long to wait for.
      */
     public static void waitForVisibilityChange(WebElement element, boolean desiredVisibility, Duration maxWait)
             throws SeleniumIdentificationException {
@@ -39,8 +42,19 @@ public class SeleniumUtilities {
     }
 
     /**
+     * Convenience method to call click until successful with a default value of 30 seconds.
+     *
+     * @param element the web element to attempt clicking
+     */
+    public static void clickUntilSuccessful(WebElement element) throws InterruptedException,
+            SeleniumIdentificationException {
+        clickUntilSuccessful(element, Duration.ofSeconds(30));
+    }
+
+    /**
      * Will attempt to click something, even if obscured, until successful. Note that this is necessary since we can't
      * determine if something is obscured until we try to interact with it.
+     *
      * @param element The element to click.
      * @param maxWait How long to try before failing.
      */
@@ -51,20 +65,24 @@ public class SeleniumUtilities {
             try {
                 element.click();
                 return;
-            } catch (ElementClickInterceptedException ignored) {
+            } catch (ElementClickInterceptedException ignore) {
                 // Sleep to avoid unnecessary spinning
                 Thread.sleep(POLLING_DELAY_MILLIS);
+            } catch (StaleElementReferenceException e) {
+                return;
             }
         }
+
         throw new SeleniumIdentificationException("Could not successfully click the element in the wait period.");
     }
 
     /**
      * Waits until N elements matching the query are available.
-     * @param driver The driver to query with.
-     * @param query The query whose results to consider.
+     *
+     * @param driver     The driver to query with.
+     * @param query      The query whose results to consider.
      * @param minMatches The minimum-matches of the query to unblock.
-     * @param maxWait The maximum time to wait before failing.
+     * @param maxWait    The maximum time to wait before failing.
      * @return The matches, which will have a size of >= minMatches.
      * @throws SeleniumIdentificationException If N results don't come available within the maxWait period.
      */
