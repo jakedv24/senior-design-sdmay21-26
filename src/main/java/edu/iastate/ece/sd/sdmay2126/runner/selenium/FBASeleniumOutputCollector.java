@@ -15,8 +15,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
-import static org.openqa.selenium.support.locators.RelativeLocator.withTagName;
-
 public class FBASeleniumOutputCollector implements SeleniumOutputCollector {
     static final String OBJECTIVE_VALUE_LABEL_PATH = "//b[text()='Objective value']";
     static final String JOB_STATUS_BUTTON_PATH = "//button[@title='Job Status']";
