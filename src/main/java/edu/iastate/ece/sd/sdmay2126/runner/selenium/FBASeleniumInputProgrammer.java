@@ -33,8 +33,10 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
 
         // There are two buttons that show and hide advanced options we want to click the second one
         System.out.println("Toggling advanced options...");
+        String showAdvancedCSSSelector = "button[title='show advanced']";
+        SeleniumUtilities.waitForNMatches(driver, By.cssSelector(showAdvancedCSSSelector), 2, Duration.ofSeconds(30));
         new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(d -> codeBox.findElements(By.cssSelector("button[title='show advanced']")))
+                .until(d -> codeBox.findElements(By.cssSelector(showAdvancedCSSSelector)))
                 .get(1)
                 .click();
 
