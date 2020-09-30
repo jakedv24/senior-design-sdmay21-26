@@ -95,37 +95,39 @@ public class GUIForm extends JFrame {
                 activationCoefficientString = activationCoefficientText.getText();
             }
         });
-        CarbonUptake.addMouseListener(new MouseAdapter() {
+
+        OnTouchListenerNoDefault(CarbonUptake, "Carbon Uptake");
+        CarbonString = CarbonUptake.getText();
+        OnTouchListenerNoDefault(PhosphateUptake, "Phosphate Uptake");
+        PhosphateString = PhosphateUptake.getText();
+        OnTouchListenerNoDefault(NitrogenUptake, "Nitrogen Uptake");
+        NitrogenString = NitrogenUptake.getText();
+        OnTouchListenerNoDefault(sulfurUptake, "Sulphur Uptake");
+        SulfurString = sulfurUptake.getText();
+        OnTouchListenerNoDefault(oxygenUptake, "Oxygen Uptake");
+        OxygenString = oxygenUptake.getText();
+
+
+        expressionThreshold.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if (CarbonUptake.getText().equals("*Carbon Uptake [0,100]")) {
-                    CarbonUptake.setText("");
-                    CarbonUptake.setForeground(Color.BLACK);
+                if (expressionThreshold.getText().equals("Expression Threshold [0,1]")) {
+                    expressionThreshold.setText("");
+                    expressionThreshold.setForeground(Color.BLACK);
                 }
-                CarbonString = CarbonUptake.getText();
+                ExpressionThreshold = expressionThreshold.getText();
             }
         });
-        PhosphateUptake.addMouseListener(new MouseAdapter() {
+        expressionUncertainty.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if (PhosphateUptake.getText().equals("*Phosphate Uptake [0,100]")) {
-                    PhosphateUptake.setText("");
-                    PhosphateUptake.setForeground(Color.BLACK);
+                if (expressionUncertainty.getText().equals("Expression Uncertainty [0,?]")) {
+                    expressionUncertainty.setText("");
+                    expressionUncertainty.setForeground(Color.BLACK);
                 }
-                PhosphateString = PhosphateUptake.getText();
-            }
-        });
-        NitrogenUptake.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (NitrogenUptake.getText().equals("*Nitrogen Uptake [0,100]")) {
-                    NitrogenUptake.setText("");
-                    NitrogenUptake.setForeground(Color.BLACK);
-                }
-                NitrogenString = NitrogenUptake.getText();
+                ExpressionUncertainty = expressionUncertainty.getText();
             }
         });
         runDefaultSettingsButton.addActionListener(new ActionListener() {
@@ -143,6 +145,10 @@ public class GUIForm extends JFrame {
                 CarbonString = CarbonUptake.getText(); //save the Carbon coefficient at run time.
                 PhosphateString = PhosphateUptake.getText();
                 NitrogenString = NitrogenUptake.getText();
+                SulfurString = sulfurUptake.getText();
+                OxygenString = oxygenUptake.getText();
+                ExpressionThreshold = expressionThreshold.getText();
+                ExpressionUncertainty = expressionUncertainty.getText();
 
 
 
@@ -209,6 +215,66 @@ public class GUIForm extends JFrame {
                 }
                 validationRange(0.0,100.0, NitrogenValue, "Nitrogen Uptake");
 
+                //Sulfur Code base
+                try {
+                    //Check if the user left the value as a default value
+                    if(SulfurString.equals("*Sulfur Uptake [0,100]") || SulfurString.equals("")){ //this value can't be left blank, no specified default
+                        formError = true;
+                        ErrorTextField.setText("Sulfur Uptake Field is required. Range: 0-100");
+                    }
+                    else{
+                        SulfurValue = Float.parseFloat(SulfurString); //if not default set as user value
+                    }
+
+                } catch (NumberFormatException k) {
+                    FloatException("Sulfur Uptake", 0, 100);
+                }
+                validationRange(0.0,100.0, SulfurValue, "Sulfur Uptake");
+
+                try {
+                    //Check if the user left the value as a default value
+                    if(OxygenString.equals("*Oxygen Uptake [0,100]") || OxygenString.equals("")){ //this value can't be left blank, no specified default
+                        formError = true;
+                        ErrorTextField.setText("Oxygen Uptake Field is required. Range: 0-100");
+                    }
+                    else{
+                        OxygenValue = Float.parseFloat(OxygenString); //if not default set as user value
+                    }
+
+                } catch (NumberFormatException k) {
+                    FloatException("Oxygen Uptake", 0, 100);
+                }
+                validationRange(0.0,100.0, OxygenValue, "Oxygen Uptake");
+
+                try {
+                    //Check if the user left the value as a default value
+                    if(ExpressionThreshold.equals("") || ExpressionThreshold.equals("Expression Threshold [0,1]")){
+                       ExpressionThresholdValue = (float) 0.5;
+                    }
+                    else if(!ExpressionThreshold.equals("Expression Threshold [0,1]")) {
+                        ExpressionThresholdValue = Float.parseFloat(ExpressionThreshold); //if not default set as user value
+                    }
+
+                } catch (NumberFormatException k) {
+                    FloatException("Expression Threshold", 0, 1);
+                }
+                validationRange(0.0,1.0,ExpressionThresholdValue, "Expression Threshold");
+
+                try {
+                    //Check if the user left the value as a default value
+                    if(ExpressionUncertainty.equals("") || ExpressionUncertainty.equals("Expression Uncertainty [0,?]")){
+                        ExpressionUncertaintyValue = (float) 0.5;
+                    }
+                    else if(!ExpressionUncertainty.equals("Expression Uncertainty [0,?]")) {
+                        ExpressionUncertaintyValue = Float.parseFloat(ExpressionUncertainty); //if not default set as user value
+                    }
+
+                } catch (NumberFormatException k) {
+                    FloatException("Expression Uncertainty", 0, Integer.MAX_VALUE);
+                }
+                validationRange(0.0,Integer.MAX_VALUE, ExpressionUncertaintyValue, "Expression Uncertainty");
+
+
                 //Viewing the checklists of the 3 booleans and setting the values appropriately.
                 fluxVariabilityAnalysisValue = fluxVariabilityAnalysis.isSelected();
                 simulateAllSingleKosValue = simulateAllSingleKos.isSelected();
@@ -258,7 +324,23 @@ public class GUIForm extends JFrame {
         ErrorTextField.setText(valueField + " must be an integer between " +  min + " - " + max + " inclusive");
         formError = true;
     }
-
+    /*
+    method to group similar code for the on touch fields in the GUI.
+    All the fields without a default can be done here.
+     */
+    private void OnTouchListenerNoDefault(JTextField uptake, String uptakeName){
+        uptake.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (uptake.getText().equals("*" + uptakeName + " [0,100]")) {
+                    uptake.setText("");
+                    uptake.setForeground(Color.BLACK);
+                }
+               // UptakeUpdateString = uptake.getText();
+            }
+        });
+    }
     /*
     TESTING NOT WORKING CURRENTLY
     Method for refactoring duplicate code that each float value needs to run through on click.
