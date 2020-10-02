@@ -133,10 +133,9 @@ public class GUIForm extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 formError = false; //update if any variables fail the conditional checks
 
-
                 //Set fields at time of button pressed
-                activationCoefficientString = activationCoefficientText.getText(); //Save the activation coefficient
-                carbonString = carbonUptake.getText(); //save the Carbon coefficient at run time.
+                activationCoefficientString = activationCoefficientText.getText();
+                carbonString = carbonUptake.getText();
                 phosphateString = phosphateUptake.getText();
                 nitrogenString = nitrogenUptake.getText();
                 sulfurString = sulfurUptake.getText();
@@ -147,8 +146,8 @@ public class GUIForm extends JFrame {
 
                 try {
                     //Check if the user left the value as a default value
-                    if (activationCoefficientString.equals("") ||
-                            activationCoefficientString.equals("Activation Coefficient [0,1]")) {
+                    if (activationCoefficientString.equals("")
+                            || activationCoefficientString.equals("Activation Coefficient [0,1]")) {
                         activationCoefficient = (float) 0.5;
                     } else if (!activationCoefficientString.equals("Activation Coefficient [0,1]")) {
                         activationCoefficient = Float.parseFloat(activationCoefficientString);
@@ -242,8 +241,8 @@ public class GUIForm extends JFrame {
 
                 try {
                     //Check if the user left the value as a default value
-                    if (expressionthresholdString.equals("") ||
-                            expressionthresholdString.equals("Expression Threshold [0,1]")) {
+                    if (expressionthresholdString.equals("")
+                            || expressionthresholdString.equals("Expression Threshold [0,1]")) {
                         expressionThresholdValue = (float) 0.5;
                     } else if (!expressionthresholdString.equals("Expression Threshold [0,1]")) {
                         expressionThresholdValue = Float.parseFloat(expressionthresholdString);
@@ -257,8 +256,8 @@ public class GUIForm extends JFrame {
 
                 try {
                     //Check if the user left the value as a default value
-                    if (expressionUncertaintyString.equals("") ||
-                            expressionUncertaintyString.equals("Expression Uncertainty [0,?]")) {
+                    if (expressionUncertaintyString.equals("")
+                            || expressionUncertaintyString.equals("Expression Uncertainty [0,?]")) {
                         expressionUncertaintyValue = (float) 0.5;
                     } else if (!expressionUncertaintyString.equals("Expression Uncertainty [0,?]")) {
                         expressionUncertaintyValue = Float.parseFloat(expressionUncertaintyString);
@@ -356,8 +355,8 @@ public class GUIForm extends JFrame {
                                          String elementUptake, float elementValue) {
         try {
             //Check if the user left the value as a default value
-            if (elementString.equals("*" + elementUptake + " [" + elementMin + "," + elementMax + "]") ||
-                    elementString.equals("")) { //this value can't be left blank, no specified default
+            if (elementString.equals("*" + elementUptake + " [" + elementMin + "," + elementMax + "]")
+                    || elementString.equals("")) { //this value can't be left blank, no specified default
                 formError = true;
                 errorTextField.setText(elementUptake + " Field is required. Range: " + elementMin + "-" + elementMax);
             } else {
