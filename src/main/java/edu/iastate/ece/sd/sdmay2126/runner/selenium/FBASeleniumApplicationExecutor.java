@@ -3,9 +3,10 @@ package edu.iastate.ece.sd.sdmay2126.runner.selenium;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.WebElement;
 
 import java.time.Duration;
+import java.util.List;
 
 public class FBASeleniumApplicationExecutor implements SeleniumApplicationExecutor {
     private final WebDriver driver;
@@ -15,16 +16,35 @@ public class FBASeleniumApplicationExecutor implements SeleniumApplicationExecut
     }
 
     @Override
-    public void executeApplication(Job job) throws SeleniumIdentificationException {
-        try {
-            // Wait until the run button is enabled after a reset.
-            Thread.sleep(2000);
-            new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(d -> d.findElements(By.cssSelector("button[data-button='runApp']")))
-                    .get(2) // FBA is the 3rd application on the page, thus the 3rd run button (0-indexed)
-                    .click();
-        } catch (InterruptedException e) {
-            throw new SeleniumIdentificationException("Executor failed to locate the run button.", e);
-        }
+    public void executeApplication(Job job) throws SeleniumIdentificationException, InterruptedException {
+        System.out.println("Executing FBA application...");
+
+        // Wait until the run button is enabled after a reset
+        System.out.println("Locating 3 run buttons...");
+        List<WebElement> runButtons = SeleniumUtilities.waitForNMatches(
+                driver,
+                By.cssSelector("button[data-button='runApp']"),
+                3,
+                Duration.ofSeconds(10)
+        );
+
+        // FBA is the 3rd application on the page, thus the 3rd run button (0-indexed)
+        System.out.println("Run buttons located; clicking the FBA run...");
+        runButtons.get(2).click();
+        runButtons.get(2).click(); // And again to bypass the webdriver internal error (FF-specific?)
+
+        // Locate the cancel buttons
+        System.out.println("Locating cancel buttons...");
+        List<WebElement> cancelButtons = SeleniumUtilities.waitForNMatches(
+                driver,
+                By.cssSelector("button[data-button='cancel']"),
+                3,
+                Duration.ofSeconds(10)
+        );
+
+        // Wait for the 3rd cancel to disappear, indicating the end of the simulation
+        System.out.println("Waiting for cancel button to disappear, indicating simulation completion...");
+        SeleniumUtilities.waitForVisibilityChange(cancelButtons.get(2), false, Duration.ofMinutes(30));
+        System.out.println("Simulation complete, as signaled by the cancel button");
     }
 }

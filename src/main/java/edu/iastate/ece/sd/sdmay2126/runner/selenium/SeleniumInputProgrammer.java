@@ -9,5 +9,5 @@ public interface SeleniumInputProgrammer {
     /**
      * Given some job, should program the relevant application according to its parameters.
      */
-    void programInputs(Job job);
+    void programInputs(Job job) throws SeleniumIdentificationException, InterruptedException;
 }

@@ -15,10 +15,16 @@ import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus.Globus
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverChrome;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverConfiguration;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverFirefox;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
+
+import static edu.iastate.ece.sd.sdmay2126.application.ApplicationType.FBA;
 
 /**
  * KBase job runner using Selenium WebDrivers.
@@ -28,11 +34,17 @@ public class SeleniumRunner implements Runner {
     private final SeleniumConfiguration configuration;
     private WebDriver driver;
 
-    /** Synchronizes job delegation from the manager with the runner. */
+    /**
+     * Synchronizes job delegation from the manager with the runner.
+     */
     private final BlockingQueue<Job> nextJob;
 
-    /** Indicates runner status and availability. */
-    private boolean initialized = false, waiting = true, stopped = false;
+    /**
+     * Indicates runner status and availability.
+     */
+    private boolean initialized = false;
+    private boolean waiting = true;
+    private boolean stopped = false;
 
     public SeleniumRunner(JobManager jobManager, SeleniumConfiguration configuration) {
         this.jobManager = jobManager;
@@ -48,8 +60,9 @@ public class SeleniumRunner implements Runner {
 
     @Override
     public void runJob(Job job) throws RunnerNotReadyException, InterruptedException {
-        if (!initialized || !waiting)
+        if (!initialized || !waiting) {
             throw new RunnerNotReadyException();
+        }
 
         nextJob.put(job);
     }
@@ -59,7 +72,7 @@ public class SeleniumRunner implements Runner {
         // Perform runner initialization asynchronously from the construction
         try {
             initializeRunner();
-        } catch (JobManagerStoppedException | InterruptedException e) {
+        } catch (JobManagerStoppedException | InterruptedException | SeleniumIdentificationException e) {
             // TODO: Better handling
             e.printStackTrace();
             return;
@@ -74,50 +87,63 @@ public class SeleniumRunner implements Runner {
                 // Mark the runner busy
                 waiting = false;
 
-                try
-                {
+                try {
                     // Execute the job, provided that the session is ready
                     executeRunner(nextJob);
 
-                    // Update the job's result status
-                    // TODO: Set to FAILURE for the recoverable and job-specific failures
+                    // If we made it here, things should've been a success
                     nextJob.setResult(JobResult.SUCCESS);
+                } catch (RunnerNotInitializedException | InvalidApplicationException
+                        | SeleniumIdentificationException e) {
+                    // TODO: Either scope logging to the runner, or delegate this to the job's
+                    //  callback with a faillback to the manager
+                    System.err.println("A job has failed, but the runner will reset and continue execution.");
+
+                    // Flag the job as failed
+                    nextJob.setResult(JobResult.FAILURE);
+
+                    // Notify the manager of the failure
+                    jobManager.notifyOfFailure(nextJob, e);
                 }
-                catch (RunnerNotInitializedException e) { /* TODO */ e.printStackTrace(); }
-                catch (InvalidApplicationException e) { /* TODO */ e.printStackTrace(); }
-                catch (SeleniumIdentificationException e) { /* TODO */ e.printStackTrace(); }
 
                 // Reopen availability and notify the manager
                 waiting = true;
                 jobManager.indicateAvailability(this);
             }
+        } catch (InterruptedException | JobManagerStoppedException e) {
+            System.err.println("A runner has unrecoverably failed. It will need to be reinitialized with the manager.");
+            e.printStackTrace();
         }
-        catch (InterruptedException | JobManagerStoppedException e) { /* TODO */ e.printStackTrace(); }
     }
 
     /**
      * Performs KBase authentication flows and, ultimately, produces a ready-to-run narrative session.
      */
-    private void initializeRunner() throws JobManagerStoppedException, InterruptedException {
+    private void initializeRunner() throws JobManagerStoppedException, InterruptedException,
+            SeleniumIdentificationException {
         // Initialize the web driver
+        System.out.println("Initializing driver...");
         driver = getDriver();
 
         // Perform the initial narrative load
         System.out.println("Loading KBase narrative...");
         driver.get("https://narrative.kbase.us/narrative/" + configuration.getNarrativeIdentifier());
 
-        // Let things load
-        // TODO: Detect the loaded page reactively
-        Thread.sleep(3000);
-
         // Initialize and perform the authentication flow
+        System.out.println("Beginning authentication flow...");
         getAuthFlow().authenticateSession();
 
-        // Wait a bit while, post-auth, the Jupyter backend initializes/provisions resources
-        // TODO: Detect the load completion reactively
-        Thread.sleep(15000);
+        // Wait for the narrative to show the loading blocker
+        System.out.println("Locating the load blocker...");
+        WebElement loadingBlocker = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(d -> d.findElement(By.id("kb-loading-blocker")));
+
+        // Wait while the Jupyter backend initializes/provisions resources for the blocker to disappear
+        System.out.println("Blocker located; waiting for it to disappear");
+        SeleniumUtilities.waitForVisibilityChange(loadingBlocker, false, Duration.ofSeconds(30));
 
         // Mark initialization complete and indicate availability to the manager
+        System.out.println("Narrative loaded; indicating availability to the manager");
         initialized = true;
         jobManager.indicateAvailability(this);
     }
@@ -162,9 +188,13 @@ public class SeleniumRunner implements Runner {
     /**
      * Given some job, executes the runner with an initialized session.
      */
-    private void executeRunner(Job job) throws RunnerNotInitializedException, InvalidApplicationException, SeleniumIdentificationException {
-        if (!initialized)
+    private void executeRunner(Job job) throws RunnerNotInitializedException, InvalidApplicationException,
+            SeleniumIdentificationException, InterruptedException {
+        System.out.println("Executing job...");
+
+        if (!initialized) {
             throw new RunnerNotInitializedException();
+        }
 
         switch (job.getApplication()) {
             case FBA:
@@ -178,9 +208,13 @@ public class SeleniumRunner implements Runner {
     /**
      * Executes an FBA application using the provided job.
      */
-    private void executeFBARunner(Job job) throws InvalidApplicationException, SeleniumIdentificationException {
-        if (job.getApplication() != ApplicationType.FBA)
+    private void executeFBARunner(Job job) throws
+            InvalidApplicationException, SeleniumIdentificationException, InterruptedException {
+        System.out.println("Executing FBA job...");
+
+        if (job.getApplication() != ApplicationType.FBA) {
             throw new InvalidApplicationException();
+        }
 
         // First program the application
         new FBASeleniumInputProgrammer(driver).programInputs(job);
@@ -189,7 +223,8 @@ public class SeleniumRunner implements Runner {
         new FBASeleniumApplicationExecutor(driver).executeApplication(job);
 
         // Lastly collect results
-        // TODO: Uncomment once the executor is working (else errors on unfound output elements)
-        // job.setOutput(new FBASeleniumOutputCollector(driver).collectOutput(job));
+        job.setOutput(new FBASeleniumOutputCollector(driver).collectOutput(job));
+
+        System.out.println("Selenium Runner: Job complete!");
     }
 }

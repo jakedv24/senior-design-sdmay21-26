@@ -1,5 +1,6 @@
 /target
 /drivers
+env.config
 /.settings
 
 # Eclipse
