@@ -14,25 +14,6 @@ import java.awt.event.MouseEvent;
 
 public class GUIForm extends JFrame {
     private final JobManager jobManager;
-
-    //GUI Components
-    private JButton runDefaultSettingsButton;
-    private JCheckBox fluxVariabilityAnalysis; //boolean, check is 1 unchecked is 0
-    private JCheckBox simulateAllSingleKos; //boolean, check is 1 unchecked is 0
-    private JCheckBox minimizeFlux; //boolean, check is 1 unchecked is 0
-    private JTextField ErrorTextField;
-
-    //Float values GUI fields
-    private JTextField activationCoefficientText;
-    private JTextField CarbonUptake;
-    private JTextField NitrogenUptake;
-    private JTextField PhosphateUptake;
-    private JTextField sulfurUptake;
-    private JTextField oxygenUptake;
-    private JTextField reactionToMaximize;
-    private JTextField expressionThreshold;
-    private JTextField expressionUncertainty;
-
     //Strings for floats
     public String activationCoefficientString; //the string to be converted
     public String CarbonString;
@@ -42,9 +23,7 @@ public class GUIForm extends JFrame {
     public String OxygenString;
     public String ExpressionThreshold;
     public String ExpressionUncertainty;
-
     public JPanel MainPanel;
-
     //GUI Form variables to send to driver. Some have defaults set here, some do not.
     public boolean fluxVariabilityAnalysisValue = true; //Value read from the checkbox. Default = 1
     public boolean simulateAllSingleKosValue = true; //Value read from the checkbox. Default = 1
@@ -57,7 +36,22 @@ public class GUIForm extends JFrame {
     public float OxygenValue; //no default
     public float ExpressionThresholdValue = (float) 0.5;
     public float ExpressionUncertaintyValue = (float) 0.1;
-
+    //GUI Components
+    private JButton runDefaultSettingsButton;
+    private JCheckBox fluxVariabilityAnalysis; //boolean, check is 1 unchecked is 0
+    private JCheckBox simulateAllSingleKos; //boolean, check is 1 unchecked is 0
+    private JCheckBox minimizeFlux; //boolean, check is 1 unchecked is 0
+    private JTextField ErrorTextField;
+    //Float values GUI fields
+    private JTextField activationCoefficientText;
+    private JTextField CarbonUptake;
+    private JTextField NitrogenUptake;
+    private JTextField PhosphateUptake;
+    private JTextField sulfurUptake;
+    private JTextField oxygenUptake;
+    private JTextField reactionToMaximize;
+    private JTextField expressionThreshold;
+    private JTextField expressionUncertainty;
     private boolean formError = false; //try catches will signal this.
 
     public GUIForm(JobManager jobManager) {
@@ -151,128 +145,119 @@ public class GUIForm extends JFrame {
                 ExpressionUncertainty = expressionUncertainty.getText();
 
 
-
                 try {
                     //Check if the user left the value as a default value
-                    if(activationCoefficientString.equals("") || activationCoefficientString.equals("Activation Coefficient [0,1]")){
+                    if (activationCoefficientString.equals("") || activationCoefficientString.equals("Activation Coefficient [0,1]")) {
                         activationCoefficient = (float) 0.5;
-                    }
-                    else if(!activationCoefficientString.equals("Activation Coefficient [0,1]")) {
+                    } else if (!activationCoefficientString.equals("Activation Coefficient [0,1]")) {
                         activationCoefficient = Float.parseFloat(activationCoefficientString); //if not default set as user value
                     }
 
                 } catch (NumberFormatException k) {
                     FloatException("Activation Coefficient", 0, 1);
                 }
-                validationRange(0.0,1.0,activationCoefficient, "Activation Coefficient");
+                validationRange(0.0, 1.0, activationCoefficient, "Activation Coefficient");
 
                 //Setting the Carbon string from the GUI for the web driver
 //                GUIFloatValueSimplifier(CarbonString, 0, 100, "Carbon Uptake", CarbonValue);
                 try {
                     //Check if the user left the value as a default value
-                    if(CarbonString.equals("*Carbon Uptake [0,100]") || CarbonString.equals("")){ //this value can't be left blank, no specified default
+                    if (CarbonString.equals("*Carbon Uptake [0,100]") || CarbonString.equals("")) { //this value can't be left blank, no specified default
                         formError = true;
                         ErrorTextField.setText("Carbon Uptake Field is required. Range: 0-100");
-                    }
-                    else{
+                    } else {
                         CarbonValue = Float.parseFloat(CarbonString); //if not default set as user value
                     }
 
                 } catch (NumberFormatException k) {
                     FloatException("Carbon Uptake", 0, 100);
                 }
-                validationRange(0.0,100.0, CarbonValue, "Carbon Uptake");
+                validationRange(0.0, 100.0, CarbonValue, "Carbon Uptake");
 
                 //Phosphate code base
                 try {
                     //Check if the user left the value as a default value
-                    if(PhosphateString.equals("*Phosphate Uptake [0,100]") || PhosphateString.equals("")){ //this value can't be left blank, no specified default
+                    if (PhosphateString.equals("*Phosphate Uptake [0,100]") || PhosphateString.equals("")) { //this value can't be left blank, no specified default
                         formError = true;
                         ErrorTextField.setText("Phosphate Uptake Field is required. Range: 0-100");
-                    }
-                    else{
+                    } else {
                         PhosphateValue = Float.parseFloat(PhosphateString); //if not default set as user value
                     }
 
                 } catch (NumberFormatException k) {
                     FloatException("Phosphate Uptake", 0, 100);
                 }
-                validationRange(0.0,100.0, PhosphateValue, "Phosphate Uptake");
+                validationRange(0.0, 100.0, PhosphateValue, "Phosphate Uptake");
 
                 //Nitrogen Code base
                 try {
                     //Check if the user left the value as a default value
-                    if(NitrogenString.equals("*Nitrogen Uptake [0,100]") || NitrogenString.equals("")){ //this value can't be left blank, no specified default
+                    if (NitrogenString.equals("*Nitrogen Uptake [0,100]") || NitrogenString.equals("")) { //this value can't be left blank, no specified default
                         formError = true;
                         ErrorTextField.setText("Nitrogen Uptake Field is required. Range: 0-100");
-                    }
-                    else{
+                    } else {
                         NitrogenValue = Float.parseFloat(NitrogenString); //if not default set as user value
                     }
 
                 } catch (NumberFormatException k) {
                     FloatException("Nitrogen Uptake", 0, 100);
                 }
-                validationRange(0.0,100.0, NitrogenValue, "Nitrogen Uptake");
+                validationRange(0.0, 100.0, NitrogenValue, "Nitrogen Uptake");
 
                 //Sulfur Code base
                 try {
                     //Check if the user left the value as a default value
-                    if(SulfurString.equals("*Sulfur Uptake [0,100]") || SulfurString.equals("")){ //this value can't be left blank, no specified default
+                    if (SulfurString.equals("*Sulfur Uptake [0,100]") || SulfurString.equals("")) { //this value can't be left blank, no specified default
                         formError = true;
                         ErrorTextField.setText("Sulfur Uptake Field is required. Range: 0-100");
-                    }
-                    else{
+                    } else {
                         SulfurValue = Float.parseFloat(SulfurString); //if not default set as user value
                     }
 
                 } catch (NumberFormatException k) {
                     FloatException("Sulfur Uptake", 0, 100);
                 }
-                validationRange(0.0,100.0, SulfurValue, "Sulfur Uptake");
+                validationRange(0.0, 100.0, SulfurValue, "Sulfur Uptake");
 
                 try {
                     //Check if the user left the value as a default value
-                    if(OxygenString.equals("*Oxygen Uptake [0,100]") || OxygenString.equals("")){ //this value can't be left blank, no specified default
+                    if (OxygenString.equals("*Oxygen Uptake [0,100]") || OxygenString.equals("")) { //this value can't be left blank, no specified default
                         formError = true;
                         ErrorTextField.setText("Oxygen Uptake Field is required. Range: 0-100");
-                    }
-                    else{
+                    } else {
                         OxygenValue = Float.parseFloat(OxygenString); //if not default set as user value
                     }
 
                 } catch (NumberFormatException k) {
                     FloatException("Oxygen Uptake", 0, 100);
                 }
-                validationRange(0.0,100.0, OxygenValue, "Oxygen Uptake");
+                validationRange(0.0, 100.0, OxygenValue, "Oxygen Uptake");
 
                 try {
                     //Check if the user left the value as a default value
-                    if(ExpressionThreshold.equals("") || ExpressionThreshold.equals("Expression Threshold [0,1]")){
-                       ExpressionThresholdValue = (float) 0.5;
-                    }
-                    else if(!ExpressionThreshold.equals("Expression Threshold [0,1]")) {
+                    if (ExpressionThreshold.equals("") || ExpressionThreshold.equals("Expression Threshold [0,1]")) {
+                        ExpressionThresholdValue = (float) 0.5;
+                    } else if (!ExpressionThreshold.equals("Expression Threshold [0,1]")) {
                         ExpressionThresholdValue = Float.parseFloat(ExpressionThreshold); //if not default set as user value
                     }
 
                 } catch (NumberFormatException k) {
                     FloatException("Expression Threshold", 0, 1);
                 }
-                validationRange(0.0,1.0,ExpressionThresholdValue, "Expression Threshold");
+                validationRange(0.0, 1.0, ExpressionThresholdValue, "Expression Threshold");
 
                 try {
                     //Check if the user left the value as a default value
-                    if(ExpressionUncertainty.equals("") || ExpressionUncertainty.equals("Expression Uncertainty [0,?]")){
+                    if (ExpressionUncertainty.equals("") || ExpressionUncertainty.equals("Expression Uncertainty [0,?]")) {
                         ExpressionUncertaintyValue = (float) 0.5;
-                    }
-                    else if(!ExpressionUncertainty.equals("Expression Uncertainty [0,?]")) {
+                    } else if (!ExpressionUncertainty.equals("Expression Uncertainty [0,?]")) {
                         ExpressionUncertaintyValue = Float.parseFloat(ExpressionUncertainty); //if not default set as user value
                     }
 
                 } catch (NumberFormatException k) {
                     FloatException("Expression Uncertainty", 0, Integer.MAX_VALUE);
                 }
-                validationRange(0.0,Integer.MAX_VALUE, ExpressionUncertaintyValue, "Expression Uncertainty");
+                validationRange(0.0, Integer.MAX_VALUE, ExpressionUncertaintyValue, "Expression Uncertainty");
 
 
                 //Viewing the checklists of the 3 booleans and setting the values appropriately.
@@ -302,33 +287,36 @@ public class GUIForm extends JFrame {
         });
 
     }
+
     /*
     simple method to validate if the user enters a value that is within the range of values acceptable
      */
-    private void validationRange(double min, double max, Float userValue, String valueField){
-        if(!(userValue >= min && userValue <= max)){
+    private void validationRange(double min, double max, Float userValue, String valueField) {
+        if (!(userValue >= min && userValue <= max)) {
             formError = true;
             FloatException(valueField, min, max);
         }
     }
+
     /*
     this code runs to validate if the float value is a integer value.
     if it is not an integer value, then the error message pops up and we stop the runner from executing until we have good values
      */
-    private void FloatException(String valueField, double min, double max){
+    private void FloatException(String valueField, double min, double max) {
         ErrorTextField.setVisible(true);
         //TODO Make error message more noticeable.
         ErrorTextField.setForeground(Color.red);
         MainPanel.revalidate();
         MainPanel.repaint();
-        ErrorTextField.setText(valueField + " must be an integer between " +  min + " - " + max + " inclusive");
+        ErrorTextField.setText(valueField + " must be an integer between " + min + " - " + max + " inclusive");
         formError = true;
     }
+
     /*
     method to group similar code for the on touch fields in the GUI.
     All the fields without a default can be done here.
      */
-    private void OnTouchListenerNoDefault(JTextField uptake, String uptakeName){
+    private void OnTouchListenerNoDefault(JTextField uptake, String uptakeName) {
         uptake.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -337,10 +325,11 @@ public class GUIForm extends JFrame {
                     uptake.setText("");
                     uptake.setForeground(Color.BLACK);
                 }
-               // UptakeUpdateString = uptake.getText();
+                // UptakeUpdateString = uptake.getText();
             }
         });
     }
+
     /*
     TESTING NOT WORKING CURRENTLY
     Method for refactoring duplicate code that each float value needs to run through on click.
@@ -349,20 +338,19 @@ public class GUIForm extends JFrame {
     ElementMax ex: Carbon max value is 100
     ElementUptake ex: "Carbon Uptake"
      */
-    private void GUIFloatValueSimplifier(String ElementString, int ElementMin, int ElementMax, String ElementUptake, float ElementValue){
+    private void GUIFloatValueSimplifier(String ElementString, int ElementMin, int ElementMax, String ElementUptake, float ElementValue) {
         try {
             //Check if the user left the value as a default value
-            if(ElementString.equals("*" + ElementUptake + " [" + ElementMin + "," + ElementMax + "]") || ElementString.equals("")){ //this value can't be left blank, no specified default
+            if (ElementString.equals("*" + ElementUptake + " [" + ElementMin + "," + ElementMax + "]") || ElementString.equals("")) { //this value can't be left blank, no specified default
                 formError = true;
                 ErrorTextField.setText(ElementUptake + " Field is required. Range: " + ElementMin + "-" + ElementMax);
-            }
-            else{
+            } else {
                 ElementValue = Float.parseFloat(ElementString); //if not default set as user value
             }
 
         } catch (NumberFormatException k) {
             FloatException(ElementUptake, 0, 100);
         }
-        validationRange(0.0,100.0, ElementValue, ElementUptake);
+        validationRange(0.0, 100.0, ElementValue, ElementUptake);
     }
 }
