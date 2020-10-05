@@ -6,6 +6,8 @@ import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManager;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManagerStoppedException;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobResult;
+import edu.iastate.ece.sd.sdmay2126.output.JSONJobOutputWriter;
+import edu.iastate.ece.sd.sdmay2126.output.JobOutputWriter;
 import edu.iastate.ece.sd.sdmay2126.runner.Runner;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotInitializedException;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotReadyException;
@@ -226,5 +228,8 @@ public class SeleniumRunner implements Runner {
         job.setOutput(new FBASeleniumOutputCollector(driver).collectOutput(job));
 
         System.out.println("Selenium Runner: Job complete!");
+
+        JobOutputWriter jobOutputWriter = new JSONJobOutputWriter();
+        jobOutputWriter.outputToFile(job, "FBAJson");
     }
 }
