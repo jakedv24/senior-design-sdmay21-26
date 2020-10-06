@@ -31,6 +31,13 @@ public class FBASeleniumOutputCollector implements SeleniumOutputCollector {
     @Nonnull
     @Override
     public ApplicationOutput collectOutput(Job job) {
+        try {
+            // try to sleep to let output load
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         System.out.println("Calculating FBA output...");
         return new FBAOutput(getObjectiveValue(), getLogs());
     }
@@ -38,17 +45,20 @@ public class FBASeleniumOutputCollector implements SeleniumOutputCollector {
     @NotNull
     private Collection<String> getLogs() {
         try {
+            // sleep to let logs load from outpout
             // Since FBA Application is the third and final app. And they all have job status buttons.
             // TODO: This will be refactored by scoping FBA to a subset of the DOM
             webDriver.findElements(By.xpath(JOB_STATUS_BUTTON_PATH))
                     .get(2)
                     .click();
 
+            Thread.sleep(2000);
+
             return webDriver.findElements(By.className(LOG_TEXT_CLASS_NAME))
                     .stream()
                     .map(WebElement::getText)
                     .collect(Collectors.toList());
-        } catch (NoSuchElementException e) {
+        } catch (NoSuchElementException | InterruptedException e) {
             System.out.println("Unable to find log elements.");
 
             return Collections.emptySet();
