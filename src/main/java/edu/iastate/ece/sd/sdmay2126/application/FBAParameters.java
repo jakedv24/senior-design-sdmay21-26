@@ -12,7 +12,7 @@ public class FBAParameters implements ApplicationParameters {
     private float maxNitrogenUptake;
     private float maxSulfurUptake;
     private float maxOxygenUptake;
-    // TODO reactionToMaximize
+    private String reactionToMaximize;
     private float expressionThreshold;
     private float expressionUncertainty;
     // TODO geneKnockouts
@@ -59,6 +59,7 @@ public class FBAParameters implements ApplicationParameters {
     public void setActivationCoefficient(float activationCoefficient) {
         this.activationCoefficient = activationCoefficient;
     }
+
 
     public float getMaxCarbonUptake() {
         return maxCarbonUptake;
@@ -107,6 +108,10 @@ public class FBAParameters implements ApplicationParameters {
     public void setExpressionUncertainty(float expressionUncertainty) {
         this.expressionUncertainty = expressionUncertainty;
     }
+
+    public void setReactionToMaximize(String reactionToMaximize) {this.reactionToMaximize = reactionToMaximize;}
+
+    public String getReactionToMaximize(){return  reactionToMaximize;}
 
     @Override
     public ApplicationType getApplication() {

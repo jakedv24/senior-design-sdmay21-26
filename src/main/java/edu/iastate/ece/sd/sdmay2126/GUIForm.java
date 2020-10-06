@@ -29,6 +29,8 @@ public class GUIForm extends JFrame {
     private boolean formError = false; //try catches will signal this.
 
     public JPanel mainPanel;
+    private JTextField reactionToMaximize; //name of the reaction to Maximize
+    private  String reactionToMaximizeString;
 
     //TODO (DL): Set error message to red, set error message if number is outside
     // of the range, set booleans to values, handoff to driver.
@@ -55,6 +57,21 @@ public class GUIForm extends JFrame {
                 activationCoefficientString = activationCoefficientText.getText();
             }
         });
+
+        reactionToMaximize.setForeground(Color.gray);
+        reactionToMaximize.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+            super.mouseClicked(e);
+            if(reactionToMaximize.getText().equals("Reaction To Maximize")) {
+                reactionToMaximize.setText("");
+                reactionToMaximize.setForeground((Color.black));
+            }
+            reactionToMaximizeString = reactionToMaximize.getText();
+        }});
+
         runDefaultSettingsButton.addActionListener(new ActionListener() {
             /*
             When the user presses the "run" button, We are going to save all the variables
@@ -68,13 +85,15 @@ public class GUIForm extends JFrame {
                     activationCoefficient = Float.parseFloat(activationCoefficientString);
                 } catch (NumberFormatException k) {
                     errorTextField.setVisible(true);
-                    //TODO color change no working, Make error message more noticeable.
+
                     errorTextField.setSelectionColor(Color.red);
+                    errorTextField.setForeground(Color.red);
                     mainPanel.revalidate();
                     mainPanel.repaint();
                     errorTextField.setText("Activation Coefficient must be an integer between 0-1 inclusive");
                     formError = true;
                 }
+                reactionToMaximizeString = reactionToMaximize.getText(); //save name of reaction to maximize
                 //Viewing the checklists of the 3 booleans and setting the values appropriately.
                 fluxVariabilityAnalysisValue = fluxVariabilityAnalysis.isSelected();
                 simulateAllSingleKosValue = simulateAllSingleKos.isSelected();
@@ -91,6 +110,7 @@ public class GUIForm extends JFrame {
                         FBAParameters params = new FBAParameters(fluxVariabilityAnalysisValue,
                                 minimizeFluxValue, simulateAllSingleKosValue);
                         params.setActivationCoefficient(Float.parseFloat(activationCoefficientString));
+                        params.setReactionToMaximize(reactionToMaximizeString);
 
                         // Queue the job
                         jobManager.scheduleJob(new Job(params));
