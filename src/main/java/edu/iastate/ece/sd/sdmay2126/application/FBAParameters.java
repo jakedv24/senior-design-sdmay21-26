@@ -109,9 +109,13 @@ public class FBAParameters implements ApplicationParameters {
         this.expressionUncertainty = expressionUncertainty;
     }
 
-    public void setReactionToMaximize(String reactionToMaximize) {this.reactionToMaximize = reactionToMaximize;}
+    public void setReactionToMaximize(String reactionToMaximize) {
+        this.reactionToMaximize = reactionToMaximize;
+    }
 
-    public String getReactionToMaximize(){return  reactionToMaximize;}
+    public String getReactionToMaximize(){
+        return  reactionToMaximize;
+    }
 
     @Override
     public ApplicationType getApplication() {

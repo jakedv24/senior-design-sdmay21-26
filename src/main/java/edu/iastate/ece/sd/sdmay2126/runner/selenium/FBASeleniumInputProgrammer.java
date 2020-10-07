@@ -2,15 +2,10 @@ package edu.iastate.ece.sd.sdmay2126.runner.selenium;
 
 import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
-
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-
 import java.time.Duration;
-import java.util.LinkedList;
 import java.util.List;
 
 public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
@@ -85,32 +80,31 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         //Set reaction to maximize
         System.out.println("Setting reaction to Maximize");
         //clear out any old selections
-        WebElement reactionToMaximizeArea = codeBox.findElement(By.cssSelector("div[data-parameter='target_reaction']"));
+        WebElement reactionToMaximizeArea = codeBox
+                .findElement(By.cssSelector("div[data-parameter='target_reaction']"));
         
 
 
-        WebElement selectedItemsRM = reactionToMaximizeArea.findElement(By.cssSelector("div[data-element='selected-items']"));
-        List<WebElement> alreadySelectedRM =  selectedItemsRM.findElements(By.cssSelector("span[class='fa fa-minus-circle']"));
+        WebElement selectedItemsRM = reactionToMaximizeArea
+                .findElement(By.cssSelector("div[data-element='selected-items']"));
+        List<WebElement> alreadySelectedRM = selectedItemsRM
+                .findElements(By.cssSelector("span[class='fa fa-minus-circle']"));
 
 
-        if(!alreadySelectedRM.isEmpty())
-        {
-
-
+        if (!alreadySelectedRM.isEmpty()) {
             alreadySelectedRM.get(0).click();
-
-
-
         }
         //search for item
-        WebElement reactionToMaxSearchBox = reactionToMaximizeArea.findElement(By.cssSelector("input[class='form-contol']")); //control is misspelled on the kbase html
+        WebElement reactionToMaxSearchBox = reactionToMaximizeArea
+                .findElement(By.cssSelector("input[class='form-contol']")); //control is misspelled on the kbase html
         reactionToMaxSearchBox.clear();
         reactionToMaxSearchBox.sendKeys(params.getReactionToMaximize());
-        WebElement availableRMItems = reactionToMaximizeArea.findElement(By.cssSelector("div[data-element='available-items"));
-        List<WebElement> foundRMItem = availableRMItems.findElements(By.cssSelector("span[class='kb-btn-icon']"));
-        if(foundRMItem.size()==0)
-        {
-            System.out.println("Unable to find "+params.getReactionToMaximize()+". defaulting to bio1");
+        WebElement availableRMItems = reactionToMaximizeArea
+                .findElement(By.cssSelector("div[data-element='available-items"));
+        List<WebElement> foundRMItem = availableRMItems
+                .findElements(By.cssSelector("span[class='kb-btn-icon']"));
+        if (foundRMItem.size()==0) {
+            System.out.println("Unable to find " + params.getReactionToMaximize() + ". defaulting to bio1");
             reactionToMaxSearchBox.clear();
             reactionToMaxSearchBox.sendKeys("bio1");
             foundRMItem = availableRMItems.findElements(By.cssSelector("span[class='kb-btn-icon']"));

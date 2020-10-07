@@ -65,12 +65,12 @@ public class GUIForm extends JFrame {
                 super.mouseClicked(e);
 
             super.mouseClicked(e);
-            if(reactionToMaximize.getText().equals("Reaction To Maximize")) {
+            if (reactionToMaximize.getText().equals("Reaction To Maximize")) {
                 reactionToMaximize.setText("");
                 reactionToMaximize.setForeground((Color.black));
             }
             reactionToMaximizeString = reactionToMaximize.getText();
-        }});
+        } } );
 
         runDefaultSettingsButton.addActionListener(new ActionListener() {
             /*
