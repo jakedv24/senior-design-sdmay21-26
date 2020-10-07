@@ -70,7 +70,7 @@ public class GUIForm extends JFrame {
                 reactionToMaximize.setForeground((Color.black));
             }
             reactionToMaximizeString = reactionToMaximize.getText();
-        } } );
+        } });
 
         runDefaultSettingsButton.addActionListener(new ActionListener() {
             /*

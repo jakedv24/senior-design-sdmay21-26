@@ -113,7 +113,7 @@ public class FBAParameters implements ApplicationParameters {
         this.reactionToMaximize = reactionToMaximize;
     }
 
-    public String getReactionToMaximize(){
+    public String getReactionToMaximize() {
         return  reactionToMaximize;
     }
 

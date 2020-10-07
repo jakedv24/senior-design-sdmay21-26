@@ -82,7 +82,6 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         //clear out any old selections
         WebElement reactionToMaximizeArea = codeBox
                 .findElement(By.cssSelector("div[data-parameter='target_reaction']"));
-        
 
 
         WebElement selectedItemsRM = reactionToMaximizeArea
@@ -103,7 +102,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
                 .findElement(By.cssSelector("div[data-element='available-items"));
         List<WebElement> foundRMItem = availableRMItems
                 .findElements(By.cssSelector("span[class='kb-btn-icon']"));
-        if (foundRMItem.size()==0) {
+        if (foundRMItem.size() == 0) {
             System.out.println("Unable to find " + params.getReactionToMaximize() + ". defaulting to bio1");
             reactionToMaxSearchBox.clear();
             reactionToMaxSearchBox.sendKeys("bio1");
