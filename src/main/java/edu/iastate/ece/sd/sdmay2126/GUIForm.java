@@ -57,26 +57,7 @@ public class GUIForm extends JFrame {
     public GUIForm(JobManager jobManager) {
         this.jobManager = jobManager;
 
-        //Set checkboxes to true as this is the default
-        fluxVariabilityAnalysis.setSelected(true);
-        simulateAllSingleKos.setSelected(true);
-        minimizeFlux.setSelected(true);
-
-        add(mainPanel); //Display Panel
-        setSize(500, 500); //Set a arbitrary size for the GUI
-        //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Adds the X button to close
-        activationCoefficientText.setText("Activation Coefficient [0,1]");
-
-        //Give all the text that "hint" look in the GUI
-        activationCoefficientText.setForeground(Color.gray);
-        carbonUptake.setForeground(Color.gray);
-        nitrogenUptake.setForeground(Color.gray);
-        phosphateUptake.setForeground(Color.gray);
-        sulfurUptake.setForeground(Color.gray);
-        oxygenUptake.setForeground(Color.gray);
-        reactionToMaximize.setForeground(Color.gray);
-        expressionThreshold.setForeground(Color.gray);
-        expressionUncertainty.setForeground(Color.gray);
+        guiInitialization();
 
         activationCoefficientText.addMouseListener(new MouseAdapter() {
             @Override
@@ -96,7 +77,7 @@ public class GUIForm extends JFrame {
         phosphateString = phosphateUptake.getText();
         onTouchListenerNoDefault(nitrogenUptake, "Nitrogen Uptake");
         nitrogenString = nitrogenUptake.getText();
-        onTouchListenerNoDefault(sulfurUptake, "Sulphur Uptake");
+        onTouchListenerNoDefault(sulfurUptake, "Sulfur Uptake");
         sulfurString = sulfurUptake.getText();
         onTouchListenerNoDefault(oxygenUptake, "Oxygen Uptake");
         oxygenString = oxygenUptake.getText();
@@ -334,6 +315,8 @@ public class GUIForm extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                System.out.println(uptake.getText());
+                System.out.print("*" + uptakeName + " [0,100]");
                 if (uptake.getText().equals("*" + uptakeName + " [0,100]")) {
                     uptake.setText("");
                     uptake.setForeground(Color.BLACK);
@@ -341,6 +324,32 @@ public class GUIForm extends JFrame {
                 // UptakeUpdateString = uptake.getText();
             }
         });
+    }
+
+    /*
+    Iniitilize GUI Variables and Values
+     */
+    private void guiInitialization(){
+        //Set checkboxes to true as this is the default
+        fluxVariabilityAnalysis.setSelected(true);
+        simulateAllSingleKos.setSelected(true);
+        minimizeFlux.setSelected(true);
+
+        add(mainPanel); //Display Panel
+        setSize(500, 500); //Set a arbitrary size for the GUI
+        //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Adds the X button to close
+        activationCoefficientText.setText("Activation Coefficient [0,1]");
+
+        //Give all the text that "hint" look in the GUI
+        activationCoefficientText.setForeground(Color.gray);
+        carbonUptake.setForeground(Color.gray);
+        nitrogenUptake.setForeground(Color.gray);
+        phosphateUptake.setForeground(Color.gray);
+        sulfurUptake.setForeground(Color.gray);
+        oxygenUptake.setForeground(Color.gray);
+        reactionToMaximize.setForeground(Color.gray);
+        expressionThreshold.setForeground(Color.gray);
+        expressionUncertainty.setForeground(Color.gray);
     }
 
     /*
