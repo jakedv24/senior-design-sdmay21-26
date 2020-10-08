@@ -187,11 +187,10 @@ public class GUIForm extends JFrame {
     }
 
 
-
     /*
     Iniitilize GUI Variables and Values
      */
-    private void guiInitialization(){
+    private void guiInitialization() {
         //Set checkboxes to true as this is the default
         fluxVariabilityAnalysis.setSelected(true);
         simulateAllSingleKos.setSelected(true);
@@ -213,13 +212,14 @@ public class GUIForm extends JFrame {
         expressionThreshold.setForeground(Color.gray);
         expressionUncertainty.setForeground(Color.gray);
     }
+
     /*
     Method used for checking that values exist where required and makes sure they are within
     the specified range.
     Used in guiValidator
      */
     private void guiValidationCheck(String element, String elementDefault, String errorMessage,
-                                    float elementValue, int min, int max, String defaultString){
+                                    float elementValue, int min, int max, String defaultString) {
         try {
             //Check if the user left the value as a default value
             if (element.equals(elementDefault) || element.equals("")) {
@@ -236,7 +236,7 @@ public class GUIForm extends JFrame {
         validationRange(min, max, elementValue, defaultString);
     }
 
-    private void guiValidator(){
+    private void guiValidator() {
         formError = false; //update if any variables fail the conditional checks
 
         //Set fields at time of button pressed
@@ -267,7 +267,7 @@ public class GUIForm extends JFrame {
 
         //Setting the Carbon string from the GUI for the web driver
         guiValidationCheck(carbonString, "*Carbon Uptake [0,100]",
-                "Carbon Uptake Field is required. Range: 0-100", carbonValue, 0,100,
+                "Carbon Uptake Field is required. Range: 0-100", carbonValue, 0, 100,
                 "Carbon Uptake");
 
         //Phosphate code base
@@ -282,7 +282,7 @@ public class GUIForm extends JFrame {
 
         //Sulfur Code base
         guiValidationCheck(sulfurString, "*Sulfur Uptake [0,100]",
-                "Sulfur Uptake Field is required. Range: 0-100", sulfurValue, 0,100,
+                "Sulfur Uptake Field is required. Range: 0-100", sulfurValue, 0, 100,
                 "Sulfur Uptake");
 
         guiValidationCheck(oxygenString, "*Oxygen Uptake [0,100]",
@@ -320,6 +320,7 @@ public class GUIForm extends JFrame {
         validationRange(0.0, Integer.MAX_VALUE, expressionUncertaintyValue,
                 "Expression Uncertainty");
     }
+
     /*
     TESTING NOT WORKING CURRENTLY
     Method for refactoring duplicate code that each float value needs to run through on click.
