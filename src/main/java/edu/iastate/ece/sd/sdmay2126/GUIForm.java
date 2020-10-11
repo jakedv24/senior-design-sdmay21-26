@@ -54,6 +54,7 @@ public class GUIForm extends JFrame {
     private JTextField expressionUncertainty;
     private boolean formError = false; //try catches will signal this.
 
+
     public GUIForm(JobManager jobManager) {
         this.jobManager = jobManager;
 
@@ -70,6 +71,7 @@ public class GUIForm extends JFrame {
                 activationCoefficientString = activationCoefficientText.getText();
             }
         });
+
 
         onTouchListenerNoDefault(carbonUptake, "Carbon Uptake");
         carbonString = carbonUptake.getText();
@@ -105,6 +107,7 @@ public class GUIForm extends JFrame {
                 expressionUncertaintyString = expressionUncertainty.getText();
             }
         });
+
         runDefaultSettingsButton.addActionListener(new ActionListener() {
             /*
             When the user presses the "run" button, We are going to save all the variables
@@ -112,7 +115,9 @@ public class GUIForm extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 guiValidator();
+
 
                 //Viewing the checklists of the 3 booleans and setting the values appropriately.
                 fluxVariabilityAnalysisValue = fluxVariabilityAnalysis.isSelected();
@@ -129,7 +134,9 @@ public class GUIForm extends JFrame {
                         // Setup the parameters
                         FBAParameters params = new FBAParameters(fluxVariabilityAnalysisValue,
                                 minimizeFluxValue, simulateAllSingleKosValue);
+
                         params.setActivationCoefficient(activationCoefficient);
+
 
                         // Queue the job
                         jobManager.scheduleJob(new Job(params));

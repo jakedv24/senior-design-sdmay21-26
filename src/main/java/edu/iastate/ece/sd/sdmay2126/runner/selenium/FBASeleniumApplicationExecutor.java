@@ -2,6 +2,7 @@ package edu.iastate.ece.sd.sdmay2126.runner.selenium;
 
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -31,7 +32,11 @@ public class FBASeleniumApplicationExecutor implements SeleniumApplicationExecut
         // FBA is the 3rd application on the page, thus the 3rd run button (0-indexed)
         System.out.println("Run buttons located; clicking the FBA run...");
         runButtons.get(2).click();
-        runButtons.get(2).click(); // And again to bypass the webdriver internal error (FF-specific?)
+        try {
+            runButtons.get(2).click(); // And again to bypass the webdriver internal error (FF-specific?)
+        } catch (ElementNotVisibleException e) {
+            //just ignore?
+        }
 
         // Locate the cancel buttons
         System.out.println("Locating cancel buttons...");

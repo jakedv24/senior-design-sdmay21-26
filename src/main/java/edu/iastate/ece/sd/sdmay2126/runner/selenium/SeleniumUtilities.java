@@ -71,6 +71,7 @@ public class SeleniumUtilities {
             } catch (StaleElementReferenceException e) {
                 return;
             }
+
         }
 
         throw new SeleniumIdentificationException("Could not successfully click the element in the wait period.");
