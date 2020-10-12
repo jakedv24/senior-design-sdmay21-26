@@ -23,6 +23,7 @@ public class GUIForm extends JFrame {
     public String oxygenString;
     public String expressionthresholdString;
     public String expressionUncertaintyString;
+    public String reactionToMaximizeString;
     public JPanel mainPanel;
     //GUI Form variables to send to driver. Some have defaults set here, some do not.
     public boolean fluxVariabilityAnalysisValue = true; //Value read from the checkbox. Default = 1
@@ -107,6 +108,19 @@ public class GUIForm extends JFrame {
                 expressionUncertaintyString = expressionUncertainty.getText();
             }
         });
+        reactionToMaximize.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (reactionToMaximize.getText().equals("Expression Uncertainty [0,?]")) {
+                    reactionToMaximize.setText("");
+                    reactionToMaximize.setForeground(Color.BLACK);
+                }
+                reactionToMaximizeString = reactionToMaximize.getText();
+            }
+        });
+
+
 
         runDefaultSettingsButton.addActionListener(new ActionListener() {
             /*
@@ -136,6 +150,7 @@ public class GUIForm extends JFrame {
                                 minimizeFluxValue, simulateAllSingleKosValue);
 
                         params.setActivationCoefficient(activationCoefficient);
+                        params.setReactionToMaximize(reactionToMaximizeString);
 
 
                         // Queue the job
@@ -255,6 +270,8 @@ public class GUIForm extends JFrame {
         oxygenString = oxygenUptake.getText();
         expressionthresholdString = expressionThreshold.getText();
         expressionUncertaintyString = expressionUncertainty.getText();
+        reactionToMaximizeString = reactionToMaximize.getText();
+
 
 
         try {
