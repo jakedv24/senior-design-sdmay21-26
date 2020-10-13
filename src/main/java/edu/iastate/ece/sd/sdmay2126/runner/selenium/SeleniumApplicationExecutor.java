@@ -10,5 +10,6 @@ public interface SeleniumApplicationExecutor {
     /**
      * Given some job, should execute its application. Preconditions include parameters having already been applied.
      */
-    void executeApplication(Job job, WebElement scopedElement) throws SeleniumIdentificationException, InterruptedException;
+    void executeApplication(Job job, WebElement scopedElement) throws SeleniumIdentificationException,
+            InterruptedException;
 }

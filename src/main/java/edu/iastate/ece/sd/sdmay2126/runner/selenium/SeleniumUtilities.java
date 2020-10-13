@@ -88,7 +88,8 @@ public class SeleniumUtilities {
      * @return The matches, which will have a size of >= minMatches.
      * @throws SeleniumIdentificationException If N results don't come available within the maxWait period.
      */
-    public static List<WebElement> waitForNMatches(WebDriver driver, By query, int minMatches, Duration maxWait, @Nullable WebElement parentElement)
+    public static List<WebElement> waitForNMatches(WebDriver driver, By query, int minMatches, Duration maxWait,
+                                                   @Nullable WebElement parentElement)
             throws InterruptedException, SeleniumIdentificationException {
         long startTime = System.currentTimeMillis();
         List<WebElement> elements;

@@ -17,7 +17,8 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
     }
 
     @Override
-    public void programInputs(Job job, WebElement scopedFBACard) throws SeleniumIdentificationException, InterruptedException {
+    public void programInputs(Job job, WebElement scopedFBACard) throws SeleniumIdentificationException,
+            InterruptedException {
         System.out.println("Programming FBA inputs...");
 
         FBAParameters params = (FBAParameters) job.getParameters();
@@ -31,7 +32,8 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         // There are two buttons that show and hide advanced options we want to click the second one
         System.out.println("Toggling advanced options...");
         String showAdvancedCSSSelector = "button[title='show advanced']";
-        SeleniumUtilities.waitForNMatches(driver, By.cssSelector(showAdvancedCSSSelector), 2, Duration.ofSeconds(30), scopedFBACard);
+        SeleniumUtilities.waitForNMatches(driver, By.cssSelector(showAdvancedCSSSelector),
+                2, Duration.ofSeconds(30), scopedFBACard);
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(d -> scopedFBACard.findElement(By.cssSelector(showAdvancedCSSSelector)))
                 .click();

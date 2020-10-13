@@ -14,7 +14,8 @@ public class FBASeleniumApplicationExecutor implements SeleniumApplicationExecut
     }
 
     @Override
-    public void executeApplication(Job job, WebElement scopedFBACard) throws SeleniumIdentificationException, InterruptedException {
+    public void executeApplication(Job job, WebElement scopedFBACard) throws SeleniumIdentificationException,
+            InterruptedException {
         System.out.println("Executing FBA application...");
 
         // Wait until the run button is enabled after a reset
