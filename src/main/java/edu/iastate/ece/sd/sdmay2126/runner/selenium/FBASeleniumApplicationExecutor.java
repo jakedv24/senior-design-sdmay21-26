@@ -1,10 +1,7 @@
 package edu.iastate.ece.sd.sdmay2126.runner.selenium;
 
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
-import org.openqa.selenium.By;
-import org.openqa.selenium.ElementNotVisibleException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 
 import java.time.Duration;
 import java.util.List;
@@ -34,7 +31,7 @@ public class FBASeleniumApplicationExecutor implements SeleniumApplicationExecut
         runButtons.get(2).click();
         try {
             runButtons.get(2).click(); // And again to bypass the webdriver internal error (FF-specific?)
-        } catch (ElementNotVisibleException e) {
+        } catch (ElementNotInteractableException e) {
             //just ignore?
         }
 

@@ -218,8 +218,11 @@ public class SeleniumRunner implements Runner {
             throw new InvalidApplicationException();
         }
 
+        System.out.println("Looking for FBA code cell to scope searches...");
+        WebElement fbaCardScope = getFBACardScope();
+
         // First program the application
-        new FBASeleniumInputProgrammer(driver).programInputs(job);
+        new FBASeleniumInputProgrammer(driver).programInputs(job, fbaCardScope);
 
         // Next execute the application
         new FBASeleniumApplicationExecutor(driver).executeApplication(job);
@@ -231,5 +234,12 @@ public class SeleniumRunner implements Runner {
 
         JobOutputWriter jobOutputWriter = new JSONJobOutputWriter();
         jobOutputWriter.outputToFile(job, "FBAJson");
+    }
+
+    private WebElement getFBACardScope() {
+        System.out.println("Looking for code cell...");
+        return new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(d -> d.findElements(By.cssSelector("div[class^='cell code_cell']")))
+                .get(2);
     }
 }
