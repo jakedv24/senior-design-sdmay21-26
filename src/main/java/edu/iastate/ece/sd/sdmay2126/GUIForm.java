@@ -1,5 +1,5 @@
 package edu.iastate.ece.sd.sdmay2126;
-
+//TODO DL: set up random logic when enabled, Fix grey text bug. Maybe make it search for any keyword in the text?
 import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManager;
@@ -24,6 +24,7 @@ public class GUIForm extends JFrame {
     public String expressionthresholdString;
     public String expressionUncertaintyString;
     public String reactionToMaximizeString;
+    public String numberJobsString;
     public JPanel mainPanel;
     //GUI Form variables to send to driver. Some have defaults set here, some do not.
     public boolean fluxVariabilityAnalysisValue = true; //Value read from the checkbox. Default = 1
@@ -37,6 +38,8 @@ public class GUIForm extends JFrame {
     public float oxygenValue; //no default
     public float expressionThresholdValue = (float) 0.5;
     public float expressionUncertaintyValue = (float) 0.1;
+    public int numberJobsValue = 1; //Default is one.
+    public boolean randomValue = false;
     //GUI Components
     private JButton runDefaultSettingsButton;
     private JCheckBox fluxVariabilityAnalysis; //boolean, check is 1 unchecked is 0
@@ -53,6 +56,8 @@ public class GUIForm extends JFrame {
     private JTextField reactionToMaximize;
     private JTextField expressionThreshold;
     private JTextField expressionUncertainty;
+    private JCheckBox randomCheckBox;
+    private JTextField numberJobs;
     private boolean formError = false; //try catches will signal this.
 
 
@@ -70,6 +75,18 @@ public class GUIForm extends JFrame {
                     activationCoefficientText.setForeground(Color.BLACK);
                 }
                 activationCoefficientString = activationCoefficientText.getText();
+            }
+        });
+
+        numberJobs.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (numberJobs.getText().equals("Number of Jobs")) {
+                    numberJobs.setText("");
+                    numberJobs.setForeground(Color.BLACK);
+                }
+                numberJobsString = numberJobs.getText();
             }
         });
 
@@ -121,7 +138,6 @@ public class GUIForm extends JFrame {
         });
 
 
-
         runDefaultSettingsButton.addActionListener(new ActionListener() {
             /*
             When the user presses the "run" button, We are going to save all the variables
@@ -132,11 +148,11 @@ public class GUIForm extends JFrame {
 
                 guiValidator();
 
-
                 //Viewing the checklists of the 3 booleans and setting the values appropriately.
                 fluxVariabilityAnalysisValue = fluxVariabilityAnalysis.isSelected();
                 simulateAllSingleKosValue = simulateAllSingleKos.isSelected();
                 minimizeFluxValue = minimizeFlux.isSelected();
+                randomValue = randomCheckBox.isSelected();
                 //Close the Jpanel and free the resources it used.
                 if (!formError) {
                     JComponent comp = (JComponent) e.getSource();
@@ -151,8 +167,8 @@ public class GUIForm extends JFrame {
                                 carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
                                 expressionThresholdValue, expressionUncertaintyValue);
 
-                                //duplicate code?
-                                setRunnerParameters(params);
+                        //duplicate code?
+                        setRunnerParameters(params);
 
                         // Queue the job
                         jobManager.scheduleJob(new Job(params));
@@ -183,11 +199,15 @@ public class GUIForm extends JFrame {
      */
     private void floatException(String valueField, double min, double max) {
         errorTextField.setVisible(true);
-        //TODO Make error message more noticeable.
         errorTextField.setForeground(Color.red);
         mainPanel.revalidate();
         mainPanel.repaint();
-        errorTextField.setText(valueField + " must be an integer between " + min + " - " + max + " inclusive");
+        if(min == 0 && max == 0){
+            errorTextField.setText(valueField + " must be an integer");
+        }
+        else {
+            errorTextField.setText(valueField + " must be an integer between " + min + " - " + max + " inclusive");
+        }
         formError = true;
     }
 
@@ -234,6 +254,7 @@ public class GUIForm extends JFrame {
         reactionToMaximize.setForeground(Color.gray);
         expressionThreshold.setForeground(Color.gray);
         expressionUncertainty.setForeground(Color.gray);
+        numberJobs.setForeground(Color.gray);
     }
 
     /*
@@ -265,6 +286,7 @@ public class GUIForm extends JFrame {
 
         //Set fields at time of button pressed
         activationCoefficientString = activationCoefficientText.getText();
+        numberJobsString = numberJobs.getText();
         carbonString = carbonUptake.getText();
         phosphateString = phosphateUptake.getText();
         nitrogenString = nitrogenUptake.getText();
@@ -273,7 +295,6 @@ public class GUIForm extends JFrame {
         expressionthresholdString = expressionThreshold.getText();
         expressionUncertaintyString = expressionUncertainty.getText();
         reactionToMaximizeString = reactionToMaximize.getText();
-
 
 
         try {
@@ -290,6 +311,18 @@ public class GUIForm extends JFrame {
             floatException("Activation Coefficient", 0, 1);
         }
         validationRange(0.0, 1.0, activationCoefficient, "Activation Coefficient");
+
+        try {
+            if (numberJobsString.equals("") || numberJobsString.equals("Number of Jobs")) {
+                numberJobsValue = 1; //Default value
+            } else if (!numberJobsString.equals("Number of Jobs")) {
+                numberJobsValue = Integer.parseInt(numberJobsString);
+            }
+        } catch (NumberFormatException k) {
+            floatException("Number of Jobs", 0, 0);
+        }
+
+        int X = getNumberJobs();
 
         //Setting the Carbon string from the GUI for the web driver
         carbonValue = guiValidationCheck(carbonString, "*Carbon Uptake [0,100]",
@@ -346,10 +379,11 @@ public class GUIForm extends JFrame {
         validationRange(0.0, Integer.MAX_VALUE, expressionUncertaintyValue,
                 "Expression Uncertainty");
     }
+
     /*
     Set Runner values after extracting values from the GUI
      */
-    private void setRunnerParameters(FBAParameters params){
+    private void setRunnerParameters(FBAParameters params) {
         params.setActivationCoefficient(activationCoefficient);
         params.setReactionToMaximize(reactionToMaximizeString);
         params.setMinimizeFlux(minimizeFluxValue);
@@ -363,6 +397,11 @@ public class GUIForm extends JFrame {
         params.setExpressionThreshold(expressionThresholdValue);
         params.setExpressionUncertainty(expressionUncertaintyValue);
     }
+
+    public int getNumberJobs(){
+        return numberJobsValue;
+    }
+
     /*
     TESTING NOT WORKING CURRENTLY
     Method for refactoring duplicate code that each float value needs to run through on click.
