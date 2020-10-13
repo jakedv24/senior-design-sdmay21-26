@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class FBASeleniumOutputCollector implements SeleniumOutputCollector {
     static final String OBJECTIVE_VALUE_LABEL_PATH = "//b[text()='Objective value']";
-    static final String JOB_STATUS_BUTTON_PATH = "//button[@title='Job Status']";
+    static final String JOB_STATUS_BUTTON_PATH = ".//button[@title='Job Status']";
     static final String FBA_OUTPUT_SECTION_PATH = "//div[contains(text(), 'Output from Run Flux Balance')]";
     static final String OBJECTIVE_VALUE_VALUE_PATH = "./../../*";
     static final String LOG_TEXT_CLASS_NAME = "kblog-text";
