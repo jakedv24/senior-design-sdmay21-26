@@ -41,7 +41,7 @@ public class GlobusAuthenticationFlow implements SeleniumAuthenticationFlow {
         // Wait for the login buttons to load
         System.out.println("Looking for login buttons...");
         List<WebElement> loginButtons = SeleniumUtilities.waitForNMatches(
-                driver, By.className("signin-button"), 3, Duration.ofSeconds(10));
+                driver, By.className("signin-button"), 3, Duration.ofSeconds(10), null);
 
         // Click the Globus auth button (we'll wait for it to render)
         System.out.println("Clicking Globus login...");

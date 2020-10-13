@@ -225,10 +225,10 @@ public class SeleniumRunner implements Runner {
         new FBASeleniumInputProgrammer(driver).programInputs(job, fbaCardScope);
 
         // Next execute the application
-        new FBASeleniumApplicationExecutor(driver).executeApplication(job);
+        new FBASeleniumApplicationExecutor(driver).executeApplication(job, fbaCardScope);
 
         // Lastly collect results
-        job.setOutput(new FBASeleniumOutputCollector(driver).collectOutput(job));
+        job.setOutput(new FBASeleniumOutputCollector(driver).collectOutput(job, fbaCardScope));
 
         System.out.println("Selenium Runner: Job complete!");
 

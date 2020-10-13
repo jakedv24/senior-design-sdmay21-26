@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ import static org.openqa.selenium.support.locators.RelativeLocator.withTagName;
 
 public class FBASeleniumOutputCollectorTest {
     private WebDriver mockWebDriver = Mockito.mock(WebDriver.class);
+    private WebElement mockFBACard = Mockito.mock(WebElement.class);
     private FBASeleniumOutputCollector classToTest;
 
     @Before
@@ -31,7 +33,7 @@ public class FBASeleniumOutputCollectorTest {
                 .thenThrow(new NoSuchElementException("no element found"));
         when(mockWebDriver.findElement(By.xpath(OBJECTIVE_VALUE_VALUE_PATH)))
                 .thenThrow(new NoSuchElementException("no element found"));
-        when(mockWebDriver.findElements(By.xpath(JOB_STATUS_BUTTON_PATH)))
+        when(mockFBACard.findElement(By.xpath(JOB_STATUS_BUTTON_PATH)))
                 .thenThrow(new NoSuchElementException("no element found"));
         when(mockWebDriver.findElements(By.xpath(LOG_TEXT_CLASS_NAME)))
                 .thenThrow(new NoSuchElementException("no element found"));
@@ -44,7 +46,7 @@ public class FBASeleniumOutputCollectorTest {
     @Test
     public void collectorWillReturnDefaultOfNegOneObjectiveValueIfLabelNotFound() {
         Job job = new Job(new FBAParameters(false, false, false));
-        FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
+        FBAOutput result = (FBAOutput) classToTest.collectOutput(job, mockFBACard);
 
         assertThat(result.getObjectiveValue(), is(-1f));
     }
@@ -52,7 +54,7 @@ public class FBASeleniumOutputCollectorTest {
     @Test
     public void collectorWillReturnDefaultOfEmptyCollectionIfLogElementsAreNotFound() {
         Job job = new Job(new FBAParameters(false, false, false));
-        FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
+        FBAOutput result = (FBAOutput) classToTest.collectOutput(job, mockFBACard);
 
         assertTrue(result.getJobLogs().isEmpty());
     }
@@ -65,27 +67,22 @@ public class FBASeleniumOutputCollectorTest {
                 .when(mockWebDriver).findElement(withTagName(OBJECTIVE_VALUE_VALUE_PATH).toRightOf(labelElement));
 
         Job job = new Job(new FBAParameters(false, false, false));
-        FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
+        FBAOutput result = (FBAOutput) classToTest.collectOutput(job, mockFBACard);
 
         assertThat(result.getObjectiveValue(), is(-1f));
     }
 
     @Test
     public void collectorWillReturnLogsIfElementsFound() {
-        List<FakeWebElement> fakeLogStatusButtons = new ArrayList<>();
-        fakeLogStatusButtons.add(new FakeWebElement("a"));
-        fakeLogStatusButtons.add(new FakeWebElement("b"));
-        fakeLogStatusButtons.add(new FakeWebElement("c"));
-
         List<FakeWebElement> webElementsToReturn = new ArrayList<>();
         webElementsToReturn.add(new FakeWebElement("foo"));
         webElementsToReturn.add(new FakeWebElement("bar"));
 
-        doReturn(fakeLogStatusButtons).when(mockWebDriver).findElements(By.xpath(JOB_STATUS_BUTTON_PATH));
-        doReturn(webElementsToReturn).when(mockWebDriver).findElements(By.className(LOG_TEXT_CLASS_NAME));
+        doReturn(new FakeWebElement("a")).when(mockFBACard).findElement(By.xpath(JOB_STATUS_BUTTON_PATH));
+        doReturn(webElementsToReturn).when(mockFBACard).findElements(By.className(LOG_TEXT_CLASS_NAME));
 
         Job job = new Job(new FBAParameters(false, false, false));
-        FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
+        FBAOutput result = (FBAOutput) classToTest.collectOutput(job, mockFBACard);
 
         assertThat(result.getJobLogs().size(), is(2));
         assertTrue(result.getJobLogs().contains("foo"));
