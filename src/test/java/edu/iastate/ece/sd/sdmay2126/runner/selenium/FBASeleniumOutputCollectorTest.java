@@ -43,7 +43,9 @@ public class FBASeleniumOutputCollectorTest {
 
     @Test
     public void collectorWillReturnDefaultOfNegOneObjectiveValueIfLabelNotFound() {
-        Job job = new Job(new FBAParameters(false, false, false));
+        Job job = new Job(new FBAParameters(false, false, false,
+                0,0,0,0,0,
+                0,0,0));
         FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
 
         assertThat(result.getObjectiveValue(), is(-1f));
@@ -51,7 +53,9 @@ public class FBASeleniumOutputCollectorTest {
 
     @Test
     public void collectorWillReturnDefaultOfEmptyCollectionIfLogElementsAreNotFound() {
-        Job job = new Job(new FBAParameters(false, false, false));
+        Job job = new Job(new FBAParameters(false, false, false,
+                0,0,0,0,0,
+                0,0,0));
         FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
 
         assertTrue(result.getJobLogs().isEmpty());
@@ -64,7 +68,9 @@ public class FBASeleniumOutputCollectorTest {
         doReturn(new FakeWebElement("not a float"))
                 .when(mockWebDriver).findElement(withTagName(OBJECTIVE_VALUE_VALUE_PATH).toRightOf(labelElement));
 
-        Job job = new Job(new FBAParameters(false, false, false));
+        Job job = new Job(new FBAParameters(false, false, false,
+                0,0,0,0,0,
+                0,0,0));
         FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
 
         assertThat(result.getObjectiveValue(), is(-1f));
@@ -84,7 +90,9 @@ public class FBASeleniumOutputCollectorTest {
         doReturn(fakeLogStatusButtons).when(mockWebDriver).findElements(By.xpath(JOB_STATUS_BUTTON_PATH));
         doReturn(webElementsToReturn).when(mockWebDriver).findElements(By.className(LOG_TEXT_CLASS_NAME));
 
-        Job job = new Job(new FBAParameters(false, false, false));
+        Job job = new Job(new FBAParameters(false, false, false,
+                0,0,0,0,0,
+                0,0,0));
         FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
 
         assertThat(result.getJobLogs().size(), is(2));

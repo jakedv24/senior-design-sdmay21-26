@@ -147,11 +147,12 @@ public class GUIForm extends JFrame {
                     try {
                         // Setup the parameters
                         FBAParameters params = new FBAParameters(fluxVariabilityAnalysisValue,
-                                minimizeFluxValue, simulateAllSingleKosValue);
+                                minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
+                                carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
+                                expressionThresholdValue, expressionUncertaintyValue);
 
-                        params.setActivationCoefficient(activationCoefficient);
-                        params.setReactionToMaximize(reactionToMaximizeString);
-
+                                //duplicate code?
+                                setRunnerParameters(params);
 
                         // Queue the job
                         jobManager.scheduleJob(new Job(params));
@@ -240,7 +241,7 @@ public class GUIForm extends JFrame {
     the specified range.
     Used in guiValidator
      */
-    private void guiValidationCheck(String element, String elementDefault, String errorMessage,
+    public float guiValidationCheck(String element, String elementDefault, String errorMessage,
                                     float elementValue, int min, int max, String defaultString) {
         try {
             //Check if the user left the value as a default value
@@ -256,6 +257,7 @@ public class GUIForm extends JFrame {
             floatException(defaultString, min, max);
         }
         validationRange(min, max, elementValue, defaultString);
+        return elementValue;
     }
 
     private void guiValidator() {
@@ -290,26 +292,26 @@ public class GUIForm extends JFrame {
         validationRange(0.0, 1.0, activationCoefficient, "Activation Coefficient");
 
         //Setting the Carbon string from the GUI for the web driver
-        guiValidationCheck(carbonString, "*Carbon Uptake [0,100]",
+        carbonValue = guiValidationCheck(carbonString, "*Carbon Uptake [0,100]",
                 "Carbon Uptake Field is required. Range: 0-100", carbonValue, 0, 100,
                 "Carbon Uptake");
 
         //Phosphate code base
-        guiValidationCheck(phosphateString, "*Phosphate Uptake [0,100]",
+        phosphateValue = guiValidationCheck(phosphateString, "*Phosphate Uptake [0,100]",
                 "Phosphate Uptake Field is required. Range: 0-100", phosphateValue, 0,
                 100, "Phosphate Uptake");
 
         //Nitrogen Code base
-        guiValidationCheck(nitrogenString, "*Nitrogen Uptake [0,100]",
+        nitrogenValue = guiValidationCheck(nitrogenString, "*Nitrogen Uptake [0,100]",
                 "Nitrogen Uptake Field is required. Range: 0-100", nitrogenValue, 0, 100,
                 "Nitrogen Uptake");
 
         //Sulfur Code base
-        guiValidationCheck(sulfurString, "*Sulfur Uptake [0,100]",
+        sulfurValue = guiValidationCheck(sulfurString, "*Sulfur Uptake [0,100]",
                 "Sulfur Uptake Field is required. Range: 0-100", sulfurValue, 0, 100,
                 "Sulfur Uptake");
 
-        guiValidationCheck(oxygenString, "*Oxygen Uptake [0,100]",
+        oxygenValue = guiValidationCheck(oxygenString, "*Oxygen Uptake [0,100]",
                 "Oxygen Uptake Field is required. Range: 0-100", oxygenValue, 0, 100,
                 "Oxygen Uptake");
 
@@ -344,7 +346,23 @@ public class GUIForm extends JFrame {
         validationRange(0.0, Integer.MAX_VALUE, expressionUncertaintyValue,
                 "Expression Uncertainty");
     }
-
+    /*
+    Set Runner values after extracting values from the GUI
+     */
+    private void setRunnerParameters(FBAParameters params){
+        params.setActivationCoefficient(activationCoefficient);
+        params.setReactionToMaximize(reactionToMaximizeString);
+        params.setMinimizeFlux(minimizeFluxValue);
+        params.setSimulateAllSingleKos(simulateAllSingleKosValue);
+        params.setActivationCoefficient(activationCoefficient);
+        params.setMaxCarbonUptake(carbonValue);
+        params.setMaxNitrogenUptake(nitrogenValue);
+        params.setMaxPhosphateValue(phosphateValue);
+        params.setMaxSulfurUptake(sulfurValue);
+        params.setMaxOxygenUptake(oxygenValue);
+        params.setExpressionThreshold(expressionThresholdValue);
+        params.setExpressionUncertainty(expressionUncertaintyValue);
+    }
     /*
     TESTING NOT WORKING CURRENTLY
     Method for refactoring duplicate code that each float value needs to run through on click.
