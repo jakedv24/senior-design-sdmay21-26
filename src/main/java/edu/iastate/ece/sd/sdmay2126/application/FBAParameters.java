@@ -1,5 +1,9 @@
 package edu.iastate.ece.sd.sdmay2126.application;
 
+
+import java.util.LinkedList;
+
+
 /**
  * Simulation parameters for Flux Balance Analysis.
  */
@@ -16,7 +20,7 @@ public class FBAParameters implements ApplicationParameters {
     private float expressionThreshold;
     private float expressionUncertainty;
     // TODO geneKnockouts
-    // TODO reactionKnockouts
+    private LinkedList<String> reactionKnockouts;
     // TODO customFluxBounds
     // TODO mediaSupplement
     // TODO expressionCondition
@@ -115,6 +119,14 @@ public class FBAParameters implements ApplicationParameters {
 
     public String getReactionToMaximize() {
         return  reactionToMaximize;
+    }
+
+    public void setReactionKnockouts(LinkedList<String> reactionKnockouts) {
+        this.reactionKnockouts = reactionKnockouts;
+    }
+
+    public LinkedList<String> getReactionKnockouts() {
+        return reactionKnockouts;
     }
 
     @Override
