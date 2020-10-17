@@ -5,7 +5,15 @@ import java.util.Random;
 public class RandomUtil {
     private static final Random RANDOM = new Random();
 
-    public static int getRandInRange(int min, int max) {
-        return RANDOM.nextInt((max - min) + 1) + min;
+    public static float getRandInRange(float min, float max) {
+        return min + RANDOM.nextFloat() * (max-min);
+    }
+
+    public static boolean getRandBoolean(int min, int max){
+        int x = RANDOM.nextDouble() >= 0.5? 1 : 0;
+        if(x == 1){
+            return true;
+        }
+        return  false;
     }
 }

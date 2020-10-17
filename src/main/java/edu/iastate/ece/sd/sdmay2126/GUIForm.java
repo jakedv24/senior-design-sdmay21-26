@@ -1,5 +1,5 @@
 package edu.iastate.ece.sd.sdmay2126;
-//TODO DL: set up random logic when enabled, Fix grey text bug. Maybe make it search for any keyword in the text?
+
 import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManager;
@@ -11,6 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import static edu.iastate.ece.sd.sdmay2126.util.RandomUtil.getRandBoolean;
+import static edu.iastate.ece.sd.sdmay2126.util.RandomUtil.getRandInRange;
 
 public class GUIForm extends JFrame {
     private final JobManager jobManager;
@@ -70,7 +73,8 @@ public class GUIForm extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if (activationCoefficientText.getText().equals("Activation Coefficient [0,1]")) {
+                if (activationCoefficientText.getText().contains("Coefficient") ||
+                        activationCoefficientText.getText().contains("Activation")) {
                     activationCoefficientText.setText("");
                     activationCoefficientText.setForeground(Color.BLACK);
                 }
@@ -82,7 +86,8 @@ public class GUIForm extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if (numberJobs.getText().equals("Number of Jobs")) {
+                if (numberJobs.getText().contains("Number")
+                        || numberJobs.getText().contains("jobs")) {
                     numberJobs.setText("");
                     numberJobs.setForeground(Color.BLACK);
                 }
@@ -107,7 +112,8 @@ public class GUIForm extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if (expressionThreshold.getText().equals("Expression Threshold [0,1]")) {
+                if (expressionThreshold.getText().contains("Expression")
+                || expressionThreshold.getText().contains("Threshold")) {
                     expressionThreshold.setText("");
                     expressionThreshold.setForeground(Color.BLACK);
                 }
@@ -118,7 +124,8 @@ public class GUIForm extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if (expressionUncertainty.getText().equals("Expression Uncertainty [0,?]")) {
+                if (expressionUncertainty.getText().contains("Expression")
+                        || expressionUncertainty.getText().contains("Uncertainty")) {
                     expressionUncertainty.setText("");
                     expressionUncertainty.setForeground(Color.BLACK);
                 }
@@ -129,7 +136,8 @@ public class GUIForm extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if (reactionToMaximize.getText().equals("Expression Uncertainty [0,?]")) {
+                if (reactionToMaximize.getText().contains("Reaction")
+                || reactionToMaximize.getText().contains("Maximize")) {
                     reactionToMaximize.setText("");
                     reactionToMaximize.setForeground(Color.BLACK);
                 }
@@ -145,15 +153,18 @@ public class GUIForm extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                guiValidator();
-
-                //Viewing the checklists of the 3 booleans and setting the values appropriately.
-                fluxVariabilityAnalysisValue = fluxVariabilityAnalysis.isSelected();
-                simulateAllSingleKosValue = simulateAllSingleKos.isSelected();
-                minimizeFluxValue = minimizeFlux.isSelected();
+                //randomValue will be 1 if the random box is selected, This means
+                //We will bypass all other GUI checks.
                 randomValue = randomCheckBox.isSelected();
-                //Close the Jpanel and free the resources it used.
+                if (!randomValue) {
+                    guiValidator();
+
+                    //Viewing the checklists of the 3 booleans and setting the values appropriately.
+                    fluxVariabilityAnalysisValue = fluxVariabilityAnalysis.isSelected();
+                    simulateAllSingleKosValue = simulateAllSingleKos.isSelected();
+                    minimizeFluxValue = minimizeFlux.isSelected();
+                    //Close the Jpanel and free the resources it used.
+                }
                 if (!formError) {
                     JComponent comp = (JComponent) e.getSource();
                     Window win = SwingUtilities.getWindowAncestor(comp);
@@ -162,15 +173,21 @@ public class GUIForm extends JFrame {
                     // Create and queue a job from the user's inputs
                     try {
                         // Setup the parameters
-                        FBAParameters params = new FBAParameters(fluxVariabilityAnalysisValue,
-                                minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
-                                carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
-                                expressionThresholdValue, expressionUncertaintyValue);
+                        FBAParameters params;
+                        if (randomValue) {
+                            params = new FBAParameters();
+                            randomChecked(params);
+                        } else {
+                            params = new FBAParameters(fluxVariabilityAnalysisValue,
+                                    minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
+                                    carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
+                                    expressionThresholdValue, expressionUncertaintyValue);
 
-                        //duplicate code?
-                        setRunnerParameters(params);
+                            //duplicate code?
+                            setRunnerParameters(params);
 
-                        // Queue the job
+                            // Queue the job
+                        }
                         jobManager.scheduleJob(new Job(params));
                     } catch (JobManagerStoppedException jobManagerStoppedException) {
                         // TODO: Handle better
@@ -202,10 +219,9 @@ public class GUIForm extends JFrame {
         errorTextField.setForeground(Color.red);
         mainPanel.revalidate();
         mainPanel.repaint();
-        if(min == 0 && max == 0){
+        if (min == 0 && max == 0) {
             errorTextField.setText(valueField + " must be an integer");
-        }
-        else {
+        } else {
             errorTextField.setText(valueField + " must be an integer between " + min + " - " + max + " inclusive");
         }
         formError = true;
@@ -220,7 +236,7 @@ public class GUIForm extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if (uptake.getText().equals("*" + uptakeName + " [0,100]")) {
+                if (uptake.getText().contains("*") || (uptake.getText().contains(uptakeName))){
                     uptake.setText("");
                     uptake.setForeground(Color.BLACK);
                 }
@@ -387,6 +403,7 @@ public class GUIForm extends JFrame {
         params.setActivationCoefficient(activationCoefficient);
         params.setReactionToMaximize(reactionToMaximizeString);
         params.setMinimizeFlux(minimizeFluxValue);
+        params.setFluxVariabilityAnalysis(fluxVariabilityAnalysisValue);
         params.setSimulateAllSingleKos(simulateAllSingleKosValue);
         params.setActivationCoefficient(activationCoefficient);
         params.setMaxCarbonUptake(carbonValue);
@@ -398,7 +415,23 @@ public class GUIForm extends JFrame {
         params.setExpressionUncertainty(expressionUncertaintyValue);
     }
 
-    public int getNumberJobs(){
+    private void randomChecked(FBAParameters params) {
+        params.setActivationCoefficient(getRandInRange(0, 1));
+        params.setReactionToMaximize(reactionToMaximizeString); //Not a randomizable variable
+        params.setMinimizeFlux(getRandBoolean(0, 1));
+        params.setSimulateAllSingleKos(getRandBoolean(0, 1));
+        params.setFluxVariabilityAnalysis(getRandBoolean(0, 1));
+        params.setActivationCoefficient(getRandInRange(0, 1));
+        params.setMaxCarbonUptake(getRandInRange(0, 100));
+        params.setMaxNitrogenUptake(getRandInRange(0, 100));
+        params.setMaxPhosphateValue(getRandInRange(0, 100));
+        params.setMaxSulfurUptake(getRandInRange(0, 100));
+        params.setMaxOxygenUptake(getRandInRange(0, 100));
+        params.setExpressionThreshold(getRandInRange(0, 1));
+        params.setExpressionUncertainty(getRandInRange(0, 100)); //MAY NEED TO CHANGE THE MAX
+    }
+
+    public int getNumberJobs() {
         return numberJobsValue;
     }
 

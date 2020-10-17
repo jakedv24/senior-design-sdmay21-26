@@ -22,7 +22,9 @@ public class FBAParameters implements ApplicationParameters {
     // TODO mediaSupplement
     // TODO expressionCondition
 
+    public FBAParameters(){
 
+    }
     public FBAParameters(boolean fluxVariabilityAnalysis, boolean minimizeFlux, boolean simulateAllSingleKos,
                          float activationCoefficient, float maxCarbonUptake, float maxNitrogenUptake,
                          float maxPhosphateValue, float maxSulfurUptake, float maxOxygenUptake,
