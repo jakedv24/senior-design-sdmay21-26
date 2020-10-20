@@ -28,6 +28,7 @@ public class GUIForm extends JFrame {
     public String expressionUncertaintyString;
     public String reactionToMaximizeString;
     public String numberJobsString;
+    public String geneKnockoutsString;
     public JPanel mainPanel;
     //GUI Form variables to send to driver. Some have defaults set here, some do not.
     public boolean fluxVariabilityAnalysisValue = true; //Value read from the checkbox. Default = 1
@@ -61,6 +62,7 @@ public class GUIForm extends JFrame {
     private JTextField expressionUncertainty;
     private JCheckBox randomCheckBox;
     private JTextField numberJobs;
+    private JTextField geneKnockouts;
     private boolean formError = false; //try catches will signal this.
 
 
@@ -142,6 +144,18 @@ public class GUIForm extends JFrame {
                     reactionToMaximize.setForeground(Color.BLACK);
                 }
                 reactionToMaximizeString = reactionToMaximize.getText();
+            }
+        });
+
+        geneKnockouts.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (geneKnockouts.getText().equals("Gene Knockouts")) {
+                    geneKnockouts.setText("");
+                    geneKnockouts.setForeground(Color.BLACK);
+                }
+                geneKnockoutsString = geneKnockouts.getText();
             }
         });
 
@@ -268,6 +282,7 @@ public class GUIForm extends JFrame {
         sulfurUptake.setForeground(Color.gray);
         oxygenUptake.setForeground(Color.gray);
         reactionToMaximize.setForeground(Color.gray);
+        geneKnockouts.setForeground(Color.gray);
         expressionThreshold.setForeground(Color.gray);
         expressionUncertainty.setForeground(Color.gray);
         numberJobs.setForeground(Color.gray);
@@ -311,6 +326,7 @@ public class GUIForm extends JFrame {
         expressionthresholdString = expressionThreshold.getText();
         expressionUncertaintyString = expressionUncertainty.getText();
         reactionToMaximizeString = reactionToMaximize.getText();
+        geneKnockoutsString = geneKnockouts.getText();
 
 
         try {
@@ -413,6 +429,7 @@ public class GUIForm extends JFrame {
         params.setMaxOxygenUptake(oxygenValue);
         params.setExpressionThreshold(expressionThresholdValue);
         params.setExpressionUncertainty(expressionUncertaintyValue);
+        params.setGeneKnockouts(geneKnockoutsString);
     }
 
     private void randomChecked(FBAParameters params) {

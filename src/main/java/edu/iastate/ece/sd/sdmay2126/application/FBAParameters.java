@@ -16,6 +16,7 @@ public class FBAParameters implements ApplicationParameters {
     private String reactionToMaximize;
     private float expressionThreshold;
     private float expressionUncertainty;
+    private String geneKnockouts;
     // TODO geneKnockouts
     // TODO reactionKnockouts
     // TODO customFluxBounds
@@ -140,6 +141,14 @@ public class FBAParameters implements ApplicationParameters {
 
     public String getReactionToMaximize() {
         return  reactionToMaximize;
+    }
+
+    public String getGeneKnockouts() {
+        return geneKnockouts;
+    }
+
+    public void setGeneKnockouts(String geneKnockouts) {
+        this.geneKnockouts = geneKnockouts;
     }
 
     @Override
