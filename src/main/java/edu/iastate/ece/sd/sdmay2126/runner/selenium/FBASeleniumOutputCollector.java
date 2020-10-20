@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class FBASeleniumOutputCollector implements SeleniumOutputCollector {
     static final String OBJECTIVE_VALUE_LABEL_PATH = "//b[text()='Objective value']";
-    static final String JOB_STATUS_BUTTON_PATH = "//button[@title='Job Status']";
+    static final String JOB_STATUS_BUTTON_PATH = ".//button[@title='Job Status']";
     static final String FBA_OUTPUT_SECTION_PATH = "//div[contains(text(), 'Output from Run Flux Balance')]";
     static final String OBJECTIVE_VALUE_VALUE_PATH = "./../../*";
     static final String LOG_TEXT_CLASS_NAME = "kblog-text";
@@ -30,7 +30,7 @@ public class FBASeleniumOutputCollector implements SeleniumOutputCollector {
 
     @Nonnull
     @Override
-    public ApplicationOutput collectOutput(Job job) {
+    public ApplicationOutput collectOutput(Job job, WebElement scopedFBACard) {
         try {
             // try to sleep to let output load
             Thread.sleep(2000);
@@ -39,22 +39,19 @@ public class FBASeleniumOutputCollector implements SeleniumOutputCollector {
         }
 
         System.out.println("Calculating FBA output...");
-        return new FBAOutput(getObjectiveValue(), getLogs());
+        return new FBAOutput(getObjectiveValue(), getLogs(scopedFBACard));
     }
 
     @NotNull
-    private Collection<String> getLogs() {
+    private Collection<String> getLogs(WebElement scopedFBACard) {
         try {
             // sleep to let logs load from outpout
-            // Since FBA Application is the third and final app. And they all have job status buttons.
-            // TODO: This will be refactored by scoping FBA to a subset of the DOM
-            webDriver.findElements(By.xpath(JOB_STATUS_BUTTON_PATH))
-                    .get(2)
+            scopedFBACard.findElement(By.xpath(JOB_STATUS_BUTTON_PATH))
                     .click();
 
             Thread.sleep(2000);
 
-            return webDriver.findElements(By.className(LOG_TEXT_CLASS_NAME))
+            return scopedFBACard.findElements(By.className(LOG_TEXT_CLASS_NAME))
                     .stream()
                     .map(WebElement::getText)
                     .collect(Collectors.toList());
@@ -77,7 +74,7 @@ public class FBASeleniumOutputCollector implements SeleniumOutputCollector {
             System.out.println("Output Section Collected, Finding Objective Value Label...");
 
             WebElement objectiveValueLabel = SeleniumUtilities.waitForNMatches(webDriver,
-                    By.xpath(OBJECTIVE_VALUE_LABEL_PATH), 1, Duration.ofSeconds(30))
+                    By.xpath(OBJECTIVE_VALUE_LABEL_PATH), 1, Duration.ofSeconds(30), null)
                     .get(0);
 
             System.out.println("Objective Value Label found, Finding Numeric Value to Right of");

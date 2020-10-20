@@ -3,6 +3,7 @@ package edu.iastate.ece.sd.sdmay2126.runner.selenium;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import javax.annotation.Nullable;
 import java.time.Duration;
 import java.util.List;
 
@@ -87,7 +88,8 @@ public class SeleniumUtilities {
      * @return The matches, which will have a size of >= minMatches.
      * @throws SeleniumIdentificationException If N results don't come available within the maxWait period.
      */
-    public static List<WebElement> waitForNMatches(WebDriver driver, By query, int minMatches, Duration maxWait)
+    public static List<WebElement> waitForNMatches(WebDriver driver, By query, int minMatches, Duration maxWait,
+                                                   @Nullable WebElement parentElement)
             throws InterruptedException, SeleniumIdentificationException {
         long startTime = System.currentTimeMillis();
         List<WebElement> elements;
@@ -96,7 +98,13 @@ public class SeleniumUtilities {
         do {
             // Apply the query
             elements = new WebDriverWait(driver, Duration.ofMillis(POLLING_DELAY_MILLIS))
-                    .until(d -> d.findElements(query));
+                    .until(d -> {
+                        if (parentElement != null) {
+                            return parentElement.findElements(query);
+                        } else {
+                            return d.findElements(query);
+                        }
+                    });
 
             // Check if we've found the minimum-required
             if (elements.size() >= minMatches) {
