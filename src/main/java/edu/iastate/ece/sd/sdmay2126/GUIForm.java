@@ -73,8 +73,8 @@ public class GUIForm extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if (activationCoefficientText.getText().contains("Coefficient") ||
-                        activationCoefficientText.getText().contains("Activation")) {
+                if (activationCoefficientText.getText().contains("Coefficient")
+                        || activationCoefficientText.getText().contains("Activation")) {
                     activationCoefficientText.setText("");
                     activationCoefficientText.setForeground(Color.BLACK);
                 }
@@ -113,7 +113,7 @@ public class GUIForm extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 if (expressionThreshold.getText().contains("Expression")
-                || expressionThreshold.getText().contains("Threshold")) {
+                        || expressionThreshold.getText().contains("Threshold")) {
                     expressionThreshold.setText("");
                     expressionThreshold.setForeground(Color.BLACK);
                 }
@@ -137,7 +137,7 @@ public class GUIForm extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 if (reactionToMaximize.getText().contains("Reaction")
-                || reactionToMaximize.getText().contains("Maximize")) {
+                        || reactionToMaximize.getText().contains("Maximize")) {
                     reactionToMaximize.setText("");
                     reactionToMaximize.setForeground(Color.BLACK);
                 }
@@ -236,7 +236,7 @@ public class GUIForm extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if (uptake.getText().contains("*") || (uptake.getText().contains(uptakeName))){
+                if (uptake.getText().contains("*") || (uptake.getText().contains(uptakeName))) {
                     uptake.setText("");
                     uptake.setForeground(Color.BLACK);
                 }

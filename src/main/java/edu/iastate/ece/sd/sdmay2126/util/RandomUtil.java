@@ -6,14 +6,11 @@ public class RandomUtil {
     private static final Random RANDOM = new Random();
 
     public static float getRandInRange(float min, float max) {
-        return min + RANDOM.nextFloat() * (max-min);
+        return min + RANDOM.nextFloat() * (max - min);
     }
 
-    public static boolean getRandBoolean(int min, int max){
-        int x = RANDOM.nextDouble() >= 0.5? 1 : 0;
-        if(x == 1){
-            return true;
-        }
-        return  false;
+    public static boolean getRandBoolean(int min, int max) {
+        int x = RANDOM.nextDouble() >= 0.5 ? 1 : 0;
+        return x == 1;
     }
 }
