@@ -451,7 +451,7 @@ public class GUIForm extends JFrame {
     public int getNumberJobs() {
         return numberJobsValue;
     }
-
+    //test
     /*
     TESTING NOT WORKING CURRENTLY
     Method for refactoring duplicate code that each float value needs to run through on click.
