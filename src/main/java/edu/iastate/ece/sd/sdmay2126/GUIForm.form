@@ -165,9 +165,6 @@
       <component id="be82" class="javax.swing.JTextField" binding="numberJobs">
         <constraints>
           <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-      <component id="79e23" class="javax.swing.JTextField" binding="geneKnockouts">
-        <constraints>
-          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
@@ -176,14 +173,6 @@
           <text value="Number of Jobs"/>
         </properties>
       </component>
-          <text value="GeneKnockouts"/>
-        </properties>
-      </component>
-      <vspacer id="357d6">
-        <constraints>
-          <grid row="7" column="4" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </vspacer>
     </children>
   </grid>
 </form>
