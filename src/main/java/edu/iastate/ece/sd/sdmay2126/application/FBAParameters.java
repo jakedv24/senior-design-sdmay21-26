@@ -10,6 +10,7 @@ public class FBAParameters implements ApplicationParameters {
     private float activationCoefficient;
     private float maxCarbonUptake;
     private float maxNitrogenUptake;
+    private float maxPhosphateUptake;
     private float maxSulfurUptake;
     private float maxOxygenUptake;
     private String reactionToMaximize;
@@ -24,7 +25,7 @@ public class FBAParameters implements ApplicationParameters {
 
 
     public FBAParameters(boolean fluxVariabilityAnalysis, boolean minimizeFlux, boolean simulateAllSingleKos,
-                         float activationCoefficient, float maxCarbonUptake, float maxNitrogenUptake,
+                         float activationCoefficient, float maxCarbonUptake, float maxNitrogenUptake, float maxPhosphateUptake,
                          float maxSulfurUptake, float maxOxygenUptake, String reactionToMaximize,
                          float expressionThreshold, float expressionUncertainty, String geneKnockouts) {
         this.fluxVariabilityAnalysis = fluxVariabilityAnalysis;
@@ -33,6 +34,7 @@ public class FBAParameters implements ApplicationParameters {
         this.activationCoefficient = activationCoefficient;
         this.maxCarbonUptake = maxCarbonUptake;
         this.maxNitrogenUptake = maxNitrogenUptake;
+        this.maxPhosphateUptake = maxPhosphateUptake;
         this.maxSulfurUptake = maxSulfurUptake;
         this.maxOxygenUptake = maxOxygenUptake;
         this.reactionToMaximize = reactionToMaximize;
@@ -89,6 +91,10 @@ public class FBAParameters implements ApplicationParameters {
     public void setMaxNitrogenUptake(float maxNitrogenUptake) {
         this.maxNitrogenUptake = maxNitrogenUptake;
     }
+
+    public float getMaxPhosphateUptake() { return maxPhosphateUptake; }
+
+    public void setMaxPhosphateUptake(float maxPhosphateUptake) { this.maxPhosphateUptake = maxPhosphateUptake; }
 
     public float getMaxSulfurUptake() {
         return maxSulfurUptake;
