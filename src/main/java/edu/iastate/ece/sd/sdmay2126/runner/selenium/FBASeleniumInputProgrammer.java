@@ -77,7 +77,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         //Finds clears and sets the value of the maxCarbonUptake value
         System.out.println("Setting max carbon uptake...");
         WebElement carbUp = scopedFBACard
-                .findElement(By.cssSelector(""))
+                .findElement(By.cssSelector("div[data-parameter='max_c_uptake']"))
                 .findElement(By.cssSelector("input[class='form-control']"));
         carbUp.clear();
         carbUp.sendKeys(Float.toString(params.getMaxCarbonUptake()));
@@ -85,7 +85,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         //Finds clears and sets the value of the maxNitrogenUptake value
         System.out.println("Setting max nitrogen uptake...");
         WebElement nitroUp = scopedFBACard
-                .findElement(By.cssSelector(""))
+                .findElement(By.cssSelector("div[data-parameter='max_n_uptake']"))
                 .findElement(By.cssSelector("input[class='form-control']"));
         nitroUp.clear();
         nitroUp.sendKeys(Float.toString(params.getMaxNitrogenUptake()));
@@ -93,7 +93,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         //Finds clears and sets the value of the maxPhosphateUptake value
         System.out.println("Setting max phosphate uptake...");
         WebElement phosUp = scopedFBACard
-                .findElement(By.cssSelector(""))
+                .findElement(By.cssSelector("div[data-parameter='max_p_uptake']"))
                 .findElement(By.cssSelector("input[class='form-control']"));
         phosUp.clear();
         phosUp.sendKeys(Float.toString(params.getMaxPhosphateUptake()));
@@ -101,7 +101,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         //Finds clears and sets the value of the maxSulfurUptake value
         System.out.println("Setting max sulfur uptake...");
         WebElement sulfUp = scopedFBACard
-                .findElement(By.cssSelector(""))
+                .findElement(By.cssSelector("div[data-parameter='max_s_uptake']"))
                 .findElement(By.cssSelector("input[class='form-control']"));
         sulfUp.clear();
         sulfUp.sendKeys(Float.toString(params.getMaxSulfurUptake()));
@@ -109,7 +109,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         //Finds clears and sets the value of the maxOxygenUptake value
         System.out.println("Setting max oxygen uptake...");
         WebElement oxyUp = scopedFBACard
-                .findElement(By.cssSelector(""))
+                .findElement(By.cssSelector("div[data-parameter='max_o_uptake']"))
                 .findElement(By.cssSelector("input[class='form-control']"));
         oxyUp.clear();
         oxyUp.sendKeys(Float.toString(params.getMaxOxygenUptake()));
@@ -117,7 +117,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         //Finds clears and sets the value of the expressionThreshold value
         System.out.println("Setting expression threshold...");
         WebElement expThresh = scopedFBACard
-                .findElement(By.cssSelector(""))
+                .findElement(By.cssSelector("div[data-parameter='exp_threshold_percentile']"))
                 .findElement(By.cssSelector("input[class='form-control']"));
         expThresh.clear();
         expThresh.sendKeys(Float.toString(params.getExpressionThreshold()));
@@ -125,7 +125,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         //Finds clears and sets the value of the expressionUncertainty value
         System.out.println("Setting expression uncertainty...");
         WebElement expUncer = scopedFBACard
-                .findElement(By.cssSelector(""))
+                .findElement(By.cssSelector("div[data-parameter='exp_threshold_margin']"))
                 .findElement(By.cssSelector("input[class='form-control']"));
         expUncer.clear();
         expUncer.sendKeys(Float.toString(params.getExpressionUncertainty()));
