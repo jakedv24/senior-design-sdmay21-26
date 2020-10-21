@@ -74,6 +74,38 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         activCoe.clear();
         activCoe.sendKeys(Float.toString(params.getActivationCoefficient()));
 
+        //Finds clears and sets the value of the maxCarbonUptake value
+        System.out.println("Setting max carbon uptake...");
+        WebElement carbUp = scopedFBACard
+                .findElement(By.cssSelector(""))
+                .findElement(By.cssSelector(""));
+        carbUp.clear();
+        carbUp.sendKeys(Float.toString(params.getMaxCarbonUptake()));
+
+        //Finds clears and sets the value of the maxNitrogenUptake value
+        System.out.println("Setting max nitrogen uptake...");
+        WebElement nitroUp = scopedFBACard
+                .findElement(By.cssSelector(""))
+                .findElement(By.cssSelector(""));
+        nitroUp.clear();
+        nitroUp.sendKeys(Float.toString(params.getMaxNitrogenUptake()));
+
+        //Finds clears and sets the value of the maxSulfurUptake value
+        System.out.println("Setting max sulfur uptake...");
+        WebElement sulfUp = scopedFBACard
+                .findElement(By.cssSelector(""))
+                .findElement(By.cssSelector(""));
+        sulfUp.clear();
+        sulfUp.sendKeys(Float.toString(params.getMaxSulfurUptake()));
+
+        //Finds clears and sets the value of the maxOxygenUptake value
+        System.out.println("Setting max oxygen uptake...");
+        WebElement oxyUp = scopedFBACard
+                .findElement(By.cssSelector(""))
+                .findElement(By.cssSelector(""));
+        oxyUp.clear();
+        oxyUp.sendKeys(Float.toString(params.getMaxOxygenUptake()));
+
         //Set reaction to maximize
         System.out.println("Setting reaction to Maximize");
         //clear out any old selections
