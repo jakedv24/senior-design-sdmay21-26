@@ -108,6 +108,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         }
         foundRMItem.get(0).click();
 
+
         //setting reaction knockouts
         System.out.println("Setting reaction knockouts");
         //clear out old selections if any
@@ -147,6 +148,19 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
                 }
             }
         }
+
+        System.out.println("Setting GeneKnockouts");
+        WebElement geneKnockouts = scopedFBACard
+                .findElement(By.cssSelector("div[data-parameter='feature_ko_list']"));
+        WebElement geneKnockoutsButton = geneKnockouts
+                .findElement(By.cssSelector("button[class='btn btn-default']"));
+            geneKnockoutsButton.click();
+
+        WebElement geneKnockoutsText = geneKnockouts
+                .findElement(By.cssSelector("input[class='form-control']"));
+        geneKnockoutsText.clear();
+        geneKnockoutsText.sendKeys(params.getGeneKnockouts());
+
 
 
         System.out.println("Programming FBA complete.");

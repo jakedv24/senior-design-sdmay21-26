@@ -19,6 +19,7 @@ public class FBAParameters implements ApplicationParameters {
     private String reactionToMaximize;
     private float expressionThreshold;
     private float expressionUncertainty;
+    private String geneKnockouts;
     // TODO geneKnockouts
     private LinkedList<String> reactionKnockouts;
     // TODO customFluxBounds
@@ -121,12 +122,21 @@ public class FBAParameters implements ApplicationParameters {
         return  reactionToMaximize;
     }
 
+
     public void setReactionKnockouts(LinkedList<String> reactionKnockouts) {
         this.reactionKnockouts = reactionKnockouts;
     }
 
     public LinkedList<String> getReactionKnockouts() {
         return reactionKnockouts;
+
+    public String getGeneKnockouts() {
+        return geneKnockouts;
+    }
+
+    public void setGeneKnockouts(String geneKnockouts) {
+        this.geneKnockouts = geneKnockouts;
+
     }
 
     @Override
