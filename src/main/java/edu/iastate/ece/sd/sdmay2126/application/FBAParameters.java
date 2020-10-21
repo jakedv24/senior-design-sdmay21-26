@@ -22,10 +22,23 @@ public class FBAParameters implements ApplicationParameters {
     // TODO mediaSupplement
     // TODO expressionCondition
 
-    public FBAParameters(boolean fluxVariabilityAnalysis, boolean minimizeFlux, boolean simulateAllSingleKos) {
+
+    public FBAParameters(boolean fluxVariabilityAnalysis, boolean minimizeFlux, boolean simulateAllSingleKos,
+                         float activationCoefficient, float maxCarbonUptake, float maxNitrogenUptake,
+                         float maxSulfurUptake, float maxOxygenUptake, String reactionToMaximize,
+                         float expressionThreshold, float expressionUncertainty, String geneKnockouts) {
         this.fluxVariabilityAnalysis = fluxVariabilityAnalysis;
         this.minimizeFlux = minimizeFlux;
         this.simulateAllSingleKos = simulateAllSingleKos;
+        this.activationCoefficient = activationCoefficient;
+        this.maxCarbonUptake = maxCarbonUptake;
+        this.maxNitrogenUptake = maxNitrogenUptake;
+        this.maxSulfurUptake = maxSulfurUptake;
+        this.maxOxygenUptake = maxOxygenUptake;
+        this.reactionToMaximize = reactionToMaximize;
+        this.expressionThreshold = expressionThreshold;
+        this.expressionUncertainty = expressionUncertainty;
+        this.geneKnockouts = geneKnockouts;
         // TODO add other parameters
     }
 
@@ -60,7 +73,6 @@ public class FBAParameters implements ApplicationParameters {
     public void setActivationCoefficient(float activationCoefficient) {
         this.activationCoefficient = activationCoefficient;
     }
-
 
     public float getMaxCarbonUptake() {
         return maxCarbonUptake;
