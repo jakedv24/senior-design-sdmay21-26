@@ -129,6 +129,7 @@ public class FBAParameters implements ApplicationParameters {
 
     public LinkedList<String> getReactionKnockouts() {
         return reactionKnockouts;
+    }
 
     public String getGeneKnockouts() {
         return geneKnockouts;
