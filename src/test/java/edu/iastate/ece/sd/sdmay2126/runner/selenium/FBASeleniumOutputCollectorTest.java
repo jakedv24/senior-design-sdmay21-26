@@ -49,8 +49,8 @@ public class FBASeleniumOutputCollectorTest {
         Job job = new Job(new FBAParameters(false, false, false,
                 0, 0, 0, 0, 0,
                 0, 0, 0));
-        FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
-       // FBAOutput result = (FBAOutput) classToTest.collectOutput(job, mockFBACard);
+        //FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
+       FBAOutput result = (FBAOutput) classToTest.collectOutput(job, mockFBACard);
 
         assertThat(result.getObjectiveValue(), is(-1f));
     }
@@ -60,8 +60,8 @@ public class FBASeleniumOutputCollectorTest {
         Job job = new Job(new FBAParameters(false, false, false,
                 0, 0, 0, 0, 0,
                 0, 0, 0));
-        FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
-        //FBAOutput result = (FBAOutput) classToTest.collectOutput(job, mockFBACard);
+        //FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
+        FBAOutput result = (FBAOutput) classToTest.collectOutput(job, mockFBACard);
 
         assertTrue(result.getJobLogs().isEmpty());
     }
@@ -76,8 +76,8 @@ public class FBASeleniumOutputCollectorTest {
         Job job = new Job(new FBAParameters(false, false, false,
                 0, 0, 0, 0, 0,
                 0, 0, 0));
-        FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
-       // FBAOutput result = (FBAOutput) classToTest.collectOutput(job, mockFBACard);
+        //FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
+       FBAOutput result = (FBAOutput) classToTest.collectOutput(job, mockFBACard);
 
         assertThat(result.getObjectiveValue(), is(-1f));
     }
@@ -94,9 +94,9 @@ public class FBASeleniumOutputCollectorTest {
         Job job = new Job(new FBAParameters(false, false, false,
                 0, 0, 0, 0, 0,
                 0, 0, 0));
-        FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
-        Job job = new Job(new FBAParameters(false, false, false));
-       // FBAOutput result = (FBAOutput) classToTest.collectOutput(job, mockFBACard);
+        //FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
+        //Job job = new Job(new FBAParameters(false, false, false));
+        FBAOutput result = (FBAOutput) classToTest.collectOutput(job, mockFBACard);
 
         assertThat(result.getJobLogs().size(), is(2));
         assertTrue(result.getJobLogs().contains("foo"));
