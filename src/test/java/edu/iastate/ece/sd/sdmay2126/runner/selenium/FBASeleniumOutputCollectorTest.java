@@ -19,7 +19,8 @@ import static edu.iastate.ece.sd.sdmay2126.runner.selenium.FBASeleniumOutputColl
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 import static org.openqa.selenium.support.locators.RelativeLocator.withTagName;
 
 public class FBASeleniumOutputCollectorTest {
@@ -45,15 +46,21 @@ public class FBASeleniumOutputCollectorTest {
 
     @Test
     public void collectorWillReturnDefaultOfNegOneObjectiveValueIfLabelNotFound() {
-        Job job = new Job(new FBAParameters(false, false, false));
-        FBAOutput result = (FBAOutput) classToTest.collectOutput(job, mockFBACard);
+        Job job = new Job(new FBAParameters(false, false, false,
+                0, 0, 0, 0, 0,
+                0, 0, 0));
+        //FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
+       FBAOutput result = (FBAOutput) classToTest.collectOutput(job, mockFBACard);
 
         assertThat(result.getObjectiveValue(), is(-1f));
     }
 
     @Test
     public void collectorWillReturnDefaultOfEmptyCollectionIfLogElementsAreNotFound() {
-        Job job = new Job(new FBAParameters(false, false, false));
+        Job job = new Job(new FBAParameters(false, false, false,
+                0, 0, 0, 0, 0,
+                0, 0, 0));
+        //FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
         FBAOutput result = (FBAOutput) classToTest.collectOutput(job, mockFBACard);
 
         assertTrue(result.getJobLogs().isEmpty());
@@ -66,8 +73,11 @@ public class FBASeleniumOutputCollectorTest {
         doReturn(new FakeWebElement("not a float"))
                 .when(mockWebDriver).findElement(withTagName(OBJECTIVE_VALUE_VALUE_PATH).toRightOf(labelElement));
 
-        Job job = new Job(new FBAParameters(false, false, false));
-        FBAOutput result = (FBAOutput) classToTest.collectOutput(job, mockFBACard);
+        Job job = new Job(new FBAParameters(false, false, false,
+                0, 0, 0, 0, 0,
+                0, 0, 0));
+        //FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
+       FBAOutput result = (FBAOutput) classToTest.collectOutput(job, mockFBACard);
 
         assertThat(result.getObjectiveValue(), is(-1f));
     }
@@ -81,7 +91,11 @@ public class FBASeleniumOutputCollectorTest {
         doReturn(new FakeWebElement("a")).when(mockFBACard).findElement(By.xpath(JOB_STATUS_BUTTON_PATH));
         doReturn(webElementsToReturn).when(mockFBACard).findElements(By.className(LOG_TEXT_CLASS_NAME));
 
-        Job job = new Job(new FBAParameters(false, false, false));
+        Job job = new Job(new FBAParameters(false, false, false,
+                0, 0, 0, 0, 0,
+                0, 0, 0));
+        //FBAOutput result = (FBAOutput) classToTest.collectOutput(job);
+        //Job job = new Job(new FBAParameters(false, false, false));
         FBAOutput result = (FBAOutput) classToTest.collectOutput(job, mockFBACard);
 
         assertThat(result.getJobLogs().size(), is(2));
