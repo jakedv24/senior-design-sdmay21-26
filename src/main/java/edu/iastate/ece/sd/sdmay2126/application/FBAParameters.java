@@ -23,9 +23,10 @@ public class FBAParameters implements ApplicationParameters {
     // TODO mediaSupplement
     // TODO expressionCondition
 
-    public FBAParameters(){
+    public FBAParameters() {
 
     }
+
     public FBAParameters(boolean fluxVariabilityAnalysis, boolean minimizeFlux, boolean simulateAllSingleKos,
                          float activationCoefficient, float maxCarbonUptake, float maxNitrogenUptake,
                          float maxPhosphateValue, float maxSulfurUptake, float maxOxygenUptake,
@@ -57,7 +58,6 @@ public class FBAParameters implements ApplicationParameters {
     }
 
 
-
     public void setMinimizeFlux(boolean minimizeFlux) {
         this.minimizeFlux = minimizeFlux;
     }
@@ -83,16 +83,16 @@ public class FBAParameters implements ApplicationParameters {
         return maxCarbonUptake;
     }
 
-    public float getMaxPhosphateValue(){
+    public void setMaxCarbonUptake(float maxCarbonUptake) {
+        this.maxCarbonUptake = maxCarbonUptake;
+    }
+
+    public float getMaxPhosphateValue() {
         return maxPhosphateValue;
     }
 
-    public void setMaxPhosphateValue(float maxPhosphateValue){
+    public void setMaxPhosphateValue(float maxPhosphateValue) {
         this.maxPhosphateValue = maxPhosphateValue;
-    }
-
-    public void setMaxCarbonUptake(float maxCarbonUptake) {
-        this.maxCarbonUptake = maxCarbonUptake;
     }
 
     public float getMaxNitrogenUptake() {
@@ -135,12 +135,12 @@ public class FBAParameters implements ApplicationParameters {
         this.expressionUncertainty = expressionUncertainty;
     }
 
-    public void setReactionToMaximize(String reactionToMaximize) {
-        this.reactionToMaximize = reactionToMaximize;
+    public String getReactionToMaximize() {
+        return reactionToMaximize;
     }
 
-    public String getReactionToMaximize() {
-        return  reactionToMaximize;
+    public void setReactionToMaximize(String reactionToMaximize) {
+        this.reactionToMaximize = reactionToMaximize;
     }
 
     public String getGeneKnockouts() {

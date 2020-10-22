@@ -354,7 +354,7 @@ public class GUIForm extends JFrame {
             floatException("Number of Jobs", 0, 0);
         }
 
-        int X = getNumberJobs();
+        int x = getNumberJobs();
 
         //Setting the Carbon string from the GUI for the web driver
         carbonValue = guiValidationCheck(carbonString, "*Carbon Uptake [0,100]",
