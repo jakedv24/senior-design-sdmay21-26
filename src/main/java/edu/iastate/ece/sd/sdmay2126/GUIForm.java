@@ -161,8 +161,7 @@ public class GUIForm extends JFrame {
                     try {
                         // Setup the parameters
                         FBAParameters params = new FBAParameters(fluxVariabilityAnalysisValue,
-                                minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient, maxCarbonUptake,
-                                );
+                                minimizeFluxValue, simulateAllSingleKosValue);
 
                         params.setActivationCoefficient(activationCoefficient);
                         params.setReactionToMaximize(reactionToMaximizeString);
