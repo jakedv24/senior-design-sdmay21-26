@@ -12,6 +12,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import static edu.iastate.ece.sd.sdmay2126.util.RandomUtil.getRandBoolean;
+import static edu.iastate.ece.sd.sdmay2126.util.RandomUtil.getRandInRange;
+
 public class GUIForm extends JFrame {
     private final JobManager jobManager;
     //Strings for floats
@@ -24,6 +27,7 @@ public class GUIForm extends JFrame {
     public String expressionthresholdString;
     public String expressionUncertaintyString;
     public String reactionToMaximizeString;
+    public String numberJobsString;
     public String geneKnockoutsString;
     public JPanel mainPanel;
     //GUI Form variables to send to driver. Some have defaults set here, some do not.
@@ -38,6 +42,8 @@ public class GUIForm extends JFrame {
     public float oxygenValue; //no default
     public float expressionThresholdValue = (float) 0.5;
     public float expressionUncertaintyValue = (float) 0.1;
+    public int numberJobsValue = 1; //Default is one.
+    public boolean randomValue = false;
     //GUI Components
     private JButton runDefaultSettingsButton;
     private JCheckBox fluxVariabilityAnalysis; //boolean, check is 1 unchecked is 0
@@ -54,6 +60,8 @@ public class GUIForm extends JFrame {
     private JTextField reactionToMaximize;
     private JTextField expressionThreshold;
     private JTextField expressionUncertainty;
+    private JCheckBox randomCheckBox;
+    private JTextField numberJobs;
     private JTextField geneKnockouts;
     private boolean formError = false; //try catches will signal this.
 
@@ -67,11 +75,25 @@ public class GUIForm extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if (activationCoefficientText.getText().equals("Activation Coefficient [0,1]")) {
+                if (activationCoefficientText.getText().contains("Coefficient")
+                        || activationCoefficientText.getText().contains("Activation")) {
                     activationCoefficientText.setText("");
                     activationCoefficientText.setForeground(Color.BLACK);
                 }
                 activationCoefficientString = activationCoefficientText.getText();
+            }
+        });
+
+        numberJobs.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (numberJobs.getText().contains("Number")
+                        || numberJobs.getText().contains("jobs")) {
+                    numberJobs.setText("");
+                    numberJobs.setForeground(Color.BLACK);
+                }
+                numberJobsString = numberJobs.getText();
             }
         });
 
@@ -92,7 +114,8 @@ public class GUIForm extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if (expressionThreshold.getText().equals("Expression Threshold [0,1]")) {
+                if (expressionThreshold.getText().contains("Expression")
+                        || expressionThreshold.getText().contains("Threshold")) {
                     expressionThreshold.setText("");
                     expressionThreshold.setForeground(Color.BLACK);
                 }
@@ -103,7 +126,8 @@ public class GUIForm extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if (expressionUncertainty.getText().equals("Expression Uncertainty [0,?]")) {
+                if (expressionUncertainty.getText().contains("Expression")
+                        || expressionUncertainty.getText().contains("Uncertainty")) {
                     expressionUncertainty.setText("");
                     expressionUncertainty.setForeground(Color.BLACK);
                 }
@@ -114,7 +138,8 @@ public class GUIForm extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if (reactionToMaximize.getText().equals("Expression Uncertainty [0,?]")) {
+                if (reactionToMaximize.getText().contains("Reaction")
+                        || reactionToMaximize.getText().contains("Maximize")) {
                     reactionToMaximize.setText("");
                     reactionToMaximize.setForeground(Color.BLACK);
                 }
@@ -135,7 +160,6 @@ public class GUIForm extends JFrame {
         });
 
 
-
         runDefaultSettingsButton.addActionListener(new ActionListener() {
             /*
             When the user presses the "run" button, We are going to save all the variables
@@ -143,15 +167,18 @@ public class GUIForm extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
+                //randomValue will be 1 if the random box is selected, This means
+                //We will bypass all other GUI checks.
+                randomValue = randomCheckBox.isSelected();
+                if (!randomValue) {
+                    guiValidator();
 
-                guiValidator();
-
-
-                //Viewing the checklists of the 3 booleans and setting the values appropriately.
-                fluxVariabilityAnalysisValue = fluxVariabilityAnalysis.isSelected();
-                simulateAllSingleKosValue = simulateAllSingleKos.isSelected();
-                minimizeFluxValue = minimizeFlux.isSelected();
-                //Close the Jpanel and free the resources it used.
+                    //Viewing the checklists of the 3 booleans and setting the values appropriately.
+                    fluxVariabilityAnalysisValue = fluxVariabilityAnalysis.isSelected();
+                    simulateAllSingleKosValue = simulateAllSingleKos.isSelected();
+                    minimizeFluxValue = minimizeFlux.isSelected();
+                    //Close the Jpanel and free the resources it used.
+                }
                 if (!formError) {
                     JComponent comp = (JComponent) e.getSource();
                     Window win = SwingUtilities.getWindowAncestor(comp);
@@ -160,15 +187,21 @@ public class GUIForm extends JFrame {
                     // Create and queue a job from the user's inputs
                     try {
                         // Setup the parameters
-                        FBAParameters params = new FBAParameters(fluxVariabilityAnalysisValue,
-                                minimizeFluxValue, simulateAllSingleKosValue);
+                        FBAParameters params;
+                        if (randomValue) {
+                            params = new FBAParameters();
+                            randomChecked(params);
+                        } else {
+                            params = new FBAParameters(fluxVariabilityAnalysisValue,
+                                    minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
+                                    carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
+                                    expressionThresholdValue, expressionUncertaintyValue);
 
-                        params.setActivationCoefficient(activationCoefficient);
-                        params.setReactionToMaximize(reactionToMaximizeString);
-                        params.setGeneKnockouts(geneKnockoutsString);
+                            //duplicate code?
+                            setRunnerParameters(params);
 
-
-                        // Queue the job
+                            // Queue the job
+                        }
                         jobManager.scheduleJob(new Job(params));
                     } catch (JobManagerStoppedException jobManagerStoppedException) {
                         // TODO: Handle better
@@ -197,11 +230,14 @@ public class GUIForm extends JFrame {
      */
     private void floatException(String valueField, double min, double max) {
         errorTextField.setVisible(true);
-        //TODO Make error message more noticeable.
         errorTextField.setForeground(Color.red);
         mainPanel.revalidate();
         mainPanel.repaint();
-        errorTextField.setText(valueField + " must be an integer between " + min + " - " + max + " inclusive");
+        if (min == 0 && max == 0) {
+            errorTextField.setText(valueField + " must be an integer");
+        } else {
+            errorTextField.setText(valueField + " must be an integer between " + min + " - " + max + " inclusive");
+        }
         formError = true;
     }
 
@@ -214,7 +250,7 @@ public class GUIForm extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if (uptake.getText().equals("*" + uptakeName + " [0,100]")) {
+                if (uptake.getText().contains("*") || (uptake.getText().contains(uptakeName))) {
                     uptake.setText("");
                     uptake.setForeground(Color.BLACK);
                 }
@@ -249,6 +285,7 @@ public class GUIForm extends JFrame {
         geneKnockouts.setForeground(Color.gray);
         expressionThreshold.setForeground(Color.gray);
         expressionUncertainty.setForeground(Color.gray);
+        numberJobs.setForeground(Color.gray);
     }
 
     /*
@@ -256,7 +293,7 @@ public class GUIForm extends JFrame {
     the specified range.
     Used in guiValidator
      */
-    private void guiValidationCheck(String element, String elementDefault, String errorMessage,
+    public float guiValidationCheck(String element, String elementDefault, String errorMessage,
                                     float elementValue, int min, int max, String defaultString) {
         try {
             //Check if the user left the value as a default value
@@ -272,6 +309,7 @@ public class GUIForm extends JFrame {
             floatException(defaultString, min, max);
         }
         validationRange(min, max, elementValue, defaultString);
+        return elementValue;
     }
 
     private void guiValidator() {
@@ -279,6 +317,7 @@ public class GUIForm extends JFrame {
 
         //Set fields at time of button pressed
         activationCoefficientString = activationCoefficientText.getText();
+        numberJobsString = numberJobs.getText();
         carbonString = carbonUptake.getText();
         phosphateString = phosphateUptake.getText();
         nitrogenString = nitrogenUptake.getText();
@@ -288,7 +327,6 @@ public class GUIForm extends JFrame {
         expressionUncertaintyString = expressionUncertainty.getText();
         reactionToMaximizeString = reactionToMaximize.getText();
         geneKnockoutsString = geneKnockouts.getText();
-
 
 
         try {
@@ -306,27 +344,39 @@ public class GUIForm extends JFrame {
         }
         validationRange(0.0, 1.0, activationCoefficient, "Activation Coefficient");
 
+        try {
+            if (numberJobsString.equals("") || numberJobsString.equals("Number of Jobs")) {
+                numberJobsValue = 1; //Default value
+            } else if (!numberJobsString.equals("Number of Jobs")) {
+                numberJobsValue = Integer.parseInt(numberJobsString);
+            }
+        } catch (NumberFormatException k) {
+            floatException("Number of Jobs", 0, 0);
+        }
+
+        int x = getNumberJobs();
+
         //Setting the Carbon string from the GUI for the web driver
-        guiValidationCheck(carbonString, "*Carbon Uptake [0,100]",
+        carbonValue = guiValidationCheck(carbonString, "*Carbon Uptake [0,100]",
                 "Carbon Uptake Field is required. Range: 0-100", carbonValue, 0, 100,
                 "Carbon Uptake");
 
         //Phosphate code base
-        guiValidationCheck(phosphateString, "*Phosphate Uptake [0,100]",
+        phosphateValue = guiValidationCheck(phosphateString, "*Phosphate Uptake [0,100]",
                 "Phosphate Uptake Field is required. Range: 0-100", phosphateValue, 0,
                 100, "Phosphate Uptake");
 
         //Nitrogen Code base
-        guiValidationCheck(nitrogenString, "*Nitrogen Uptake [0,100]",
+        nitrogenValue = guiValidationCheck(nitrogenString, "*Nitrogen Uptake [0,100]",
                 "Nitrogen Uptake Field is required. Range: 0-100", nitrogenValue, 0, 100,
                 "Nitrogen Uptake");
 
         //Sulfur Code base
-        guiValidationCheck(sulfurString, "*Sulfur Uptake [0,100]",
+        sulfurValue = guiValidationCheck(sulfurString, "*Sulfur Uptake [0,100]",
                 "Sulfur Uptake Field is required. Range: 0-100", sulfurValue, 0, 100,
                 "Sulfur Uptake");
 
-        guiValidationCheck(oxygenString, "*Oxygen Uptake [0,100]",
+        oxygenValue = guiValidationCheck(oxygenString, "*Oxygen Uptake [0,100]",
                 "Oxygen Uptake Field is required. Range: 0-100", oxygenValue, 0, 100,
                 "Oxygen Uptake");
 
@@ -362,6 +412,46 @@ public class GUIForm extends JFrame {
                 "Expression Uncertainty");
     }
 
+    /*
+    Set Runner values after extracting values from the GUI
+     */
+    private void setRunnerParameters(FBAParameters params) {
+        params.setActivationCoefficient(activationCoefficient);
+        params.setReactionToMaximize(reactionToMaximizeString);
+        params.setMinimizeFlux(minimizeFluxValue);
+        params.setFluxVariabilityAnalysis(fluxVariabilityAnalysisValue);
+        params.setSimulateAllSingleKos(simulateAllSingleKosValue);
+        params.setActivationCoefficient(activationCoefficient);
+        params.setMaxCarbonUptake(carbonValue);
+        params.setMaxNitrogenUptake(nitrogenValue);
+        params.setMaxPhosphateValue(phosphateValue);
+        params.setMaxSulfurUptake(sulfurValue);
+        params.setMaxOxygenUptake(oxygenValue);
+        params.setExpressionThreshold(expressionThresholdValue);
+        params.setExpressionUncertainty(expressionUncertaintyValue);
+        params.setGeneKnockouts(geneKnockoutsString);
+    }
+
+    private void randomChecked(FBAParameters params) {
+        params.setActivationCoefficient(getRandInRange(0, 1));
+        params.setReactionToMaximize(reactionToMaximizeString); //Not a randomizable variable
+        params.setMinimizeFlux(getRandBoolean(0, 1));
+        params.setSimulateAllSingleKos(getRandBoolean(0, 1));
+        params.setFluxVariabilityAnalysis(getRandBoolean(0, 1));
+        params.setActivationCoefficient(getRandInRange(0, 1));
+        params.setMaxCarbonUptake(getRandInRange(0, 100));
+        params.setMaxNitrogenUptake(getRandInRange(0, 100));
+        params.setMaxPhosphateValue(getRandInRange(0, 100));
+        params.setMaxSulfurUptake(getRandInRange(0, 100));
+        params.setMaxOxygenUptake(getRandInRange(0, 100));
+        params.setExpressionThreshold(getRandInRange(0, 1));
+        params.setExpressionUncertainty(getRandInRange(0, 100)); //MAY NEED TO CHANGE THE MAX
+    }
+
+    public int getNumberJobs() {
+        return numberJobsValue;
+    }
+    //test
     /*
     TESTING NOT WORKING CURRENTLY
     Method for refactoring duplicate code that each float value needs to run through on click.

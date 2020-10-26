@@ -1,5 +1,9 @@
 package edu.iastate.ece.sd.sdmay2126.application;
 
+
+import java.util.LinkedList;
+
+
 /**
  * Simulation parameters for Flux Balance Analysis.
  */
@@ -13,12 +17,13 @@ public class FBAParameters implements ApplicationParameters {
     private float maxPhosphateUptake;
     private float maxSulfurUptake;
     private float maxOxygenUptake;
+    private float maxPhosphateValue;
     private String reactionToMaximize;
     private float expressionThreshold;
     private float expressionUncertainty;
     private String geneKnockouts;
     // TODO geneKnockouts
-    // TODO reactionKnockouts
+    private LinkedList<String> reactionKnockouts;
     // TODO customFluxBounds
     // TODO mediaSupplement
     // TODO expressionCondition
@@ -28,6 +33,7 @@ public class FBAParameters implements ApplicationParameters {
                          float activationCoefficient, float maxCarbonUptake, float maxNitrogenUptake, float maxPhosphateUptake,
                          float maxSulfurUptake, float maxOxygenUptake, String reactionToMaximize,
                          float expressionThreshold, float expressionUncertainty, String geneKnockouts) {
+
         this.fluxVariabilityAnalysis = fluxVariabilityAnalysis;
         this.minimizeFlux = minimizeFlux;
         this.simulateAllSingleKos = simulateAllSingleKos;
@@ -41,6 +47,7 @@ public class FBAParameters implements ApplicationParameters {
         this.expressionThreshold = expressionThreshold;
         this.expressionUncertainty = expressionUncertainty;
         this.geneKnockouts = geneKnockouts;
+
         // TODO add other parameters
     }
 
@@ -55,6 +62,7 @@ public class FBAParameters implements ApplicationParameters {
     public boolean isMinimizeFlux() {
         return minimizeFlux;
     }
+
 
     public void setMinimizeFlux(boolean minimizeFlux) {
         this.minimizeFlux = minimizeFlux;
@@ -82,6 +90,14 @@ public class FBAParameters implements ApplicationParameters {
 
     public void setMaxCarbonUptake(float maxCarbonUptake) {
         this.maxCarbonUptake = maxCarbonUptake;
+    }
+
+    public float getMaxPhosphateValue() {
+        return maxPhosphateValue;
+    }
+
+    public void setMaxPhosphateValue(float maxPhosphateValue) {
+        this.maxPhosphateValue = maxPhosphateValue;
     }
 
     public float getMaxNitrogenUptake() {
@@ -128,12 +144,21 @@ public class FBAParameters implements ApplicationParameters {
         this.expressionUncertainty = expressionUncertainty;
     }
 
+    public String getReactionToMaximize() {
+        return reactionToMaximize;
+    }
+
     public void setReactionToMaximize(String reactionToMaximize) {
         this.reactionToMaximize = reactionToMaximize;
     }
 
-    public String getReactionToMaximize() {
-        return  reactionToMaximize;
+
+    public void setReactionKnockouts(LinkedList<String> reactionKnockouts) {
+        this.reactionKnockouts = reactionKnockouts;
+    }
+
+    public LinkedList<String> getReactionKnockouts() {
+        return reactionKnockouts;
     }
 
     public String getGeneKnockouts() {
@@ -142,6 +167,7 @@ public class FBAParameters implements ApplicationParameters {
 
     public void setGeneKnockouts(String geneKnockouts) {
         this.geneKnockouts = geneKnockouts;
+
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.LinkedList;
 import java.util.List;
 
 public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
@@ -163,6 +164,47 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         }
         foundRMItem.get(0).click();
 
+
+        //setting reaction knockouts
+        System.out.println("Setting reaction knockouts");
+        //clear out old selections if any
+        WebElement reactionKnockoutArea = scopedFBACard
+                .findElement(By.cssSelector("div[data-parameter='reaction_ko_list']"));
+        WebElement selectedItemsRK = reactionKnockoutArea
+                .findElement(By.cssSelector("div[data-element='selected-items']"));
+        boolean removeElementsFromReactionKnockout = true;
+        while (removeElementsFromReactionKnockout) {
+            try {
+                WebElement alreadySelectedKO = selectedItemsRK
+                        .findElement(By.cssSelector("span[class='fa fa-minus-circle']"));
+                alreadySelectedKO.click();
+
+            } catch (Exception e) {
+                removeElementsFromReactionKnockout = false;
+
+            }
+        }
+        //put in new elements
+        WebElement reactionKOSearchBox = reactionKnockoutArea
+                .findElement(By.cssSelector("input[class='form-contol']"));
+        WebElement availableKOItems = reactionKnockoutArea
+                .findElement(By.cssSelector("div[data-element='available-items']"));
+        LinkedList<String> reactionKOS = params.getReactionKnockouts();
+        if (reactionKOS != null) {
+            for (String reactionKO : reactionKOS
+            ) {
+                reactionKOSearchBox.clear();
+                reactionKOSearchBox.sendKeys(reactionKO);
+                List<WebElement> foundKOItems = availableKOItems
+                        .findElements(By.cssSelector("span[class='kb-btn-icon']"));
+                if (foundKOItems.size() == 0) {
+                    System.out.println("Unable to find: " + reactionKO);
+                } else {
+                    foundKOItems.get(0).click();
+                }
+            }
+        }
+
         System.out.println("Setting GeneKnockouts");
         WebElement geneKnockouts = scopedFBACard
                 .findElement(By.cssSelector("div[data-parameter='feature_ko_list']"));
@@ -174,6 +216,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
                 .findElement(By.cssSelector("input[class='form-control']"));
         geneKnockoutsText.clear();
         geneKnockoutsText.sendKeys(params.getGeneKnockouts());
+
 
 
         System.out.println("Programming FBA complete.");
