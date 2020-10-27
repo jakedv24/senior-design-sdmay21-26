@@ -51,6 +51,10 @@ public class FBAParameters implements ApplicationParameters {
         // TODO add other parameters
     }
 
+    public FBAParameters(boolean fluxVariabilityAnalysis){
+        this.fluxVariabilityAnalysis = fluxVariabilityAnalysis;
+    }
+
     public boolean isFluxVariabilityAnalysis() {
         return fluxVariabilityAnalysis;
     }
