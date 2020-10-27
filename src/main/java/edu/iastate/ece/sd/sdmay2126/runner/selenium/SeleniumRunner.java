@@ -225,15 +225,15 @@ public class SeleniumRunner implements Runner {
         new FBASeleniumInputProgrammer(driver).programInputs(job, fbaCardScope);
 
         // Next execute the application
-        new FBASeleniumApplicationExecutor(driver).executeApplication(job, fbaCardScope);
-
-        // Lastly collect results
-        job.setOutput(new FBASeleniumOutputCollector(driver).collectOutput(job, fbaCardScope));
-
-        System.out.println("Selenium Runner: Job complete!");
-
-        JobOutputWriter jobOutputWriter = new JSONJobOutputWriter();
-        jobOutputWriter.outputToFile(job, "FBAJson");
+//        new FBASeleniumApplicationExecutor(driver).executeApplication(job, fbaCardScope);
+//
+//        // Lastly collect results
+//        job.setOutput(new FBASeleniumOutputCollector(driver).collectOutput(job, fbaCardScope));
+//
+//        System.out.println("Selenium Runner: Job complete!");
+//
+//        JobOutputWriter jobOutputWriter = new JSONJobOutputWriter();
+//        jobOutputWriter.outputToFile(job, "FBAJson");
     }
 
     private WebElement getFBACardScope() {
