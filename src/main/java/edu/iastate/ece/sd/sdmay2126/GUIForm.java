@@ -113,7 +113,6 @@ public class GUIForm extends JFrame {
         onTouchListenerNoDefault(oxygenUptake, "Oxygen Uptake");
         oxygenString = oxygenUptake.getText();
 
-
         expressionThreshold.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -150,7 +149,6 @@ public class GUIForm extends JFrame {
                 reactionToMaximizeString = reactionToMaximize.getText();
             }
         });
-
         geneKnockouts.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -162,20 +160,17 @@ public class GUIForm extends JFrame {
                 geneKnockoutsString = geneKnockouts.getText();
             }
         });
-
         reactionKnockouts.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if (reactionKnockouts.getText().equals("Gene Knockouts")) {
+                if (reactionKnockouts.getText().equals("ReactionKnockouts")) {
                     reactionKnockouts.setText("");
                     reactionKnockouts.setForeground(Color.BLACK);
                 }
 
             }
         });
-
-
         runDefaultSettingsButton.addActionListener(new ActionListener() {
             /*
             When the user presses the "run" button, We are going to save all the variables
@@ -188,7 +183,6 @@ public class GUIForm extends JFrame {
                 randomValue = randomCheckBox.isSelected();
                 if (!randomValue) {
                     guiValidator();
-
                     //Viewing the checklists of the 3 booleans and setting the values appropriately.
                     fluxVariabilityAnalysisValue = fluxVariabilityAnalysis.isSelected();
                     simulateAllSingleKosValue = simulateAllSingleKos.isSelected();
@@ -199,7 +193,6 @@ public class GUIForm extends JFrame {
                     JComponent comp = (JComponent) e.getSource();
                     Window win = SwingUtilities.getWindowAncestor(comp);
                     win.dispose();
-
                     // Create and queue a job from the user's inputs
                     try {
                         // Setup the parameters
@@ -215,7 +208,6 @@ public class GUIForm extends JFrame {
 
                             //duplicate code?
                             setRunnerParameters(params);
-
                             // Queue the job
                         }
                         jobManager.scheduleJob(new Job(params));
@@ -226,7 +218,6 @@ public class GUIForm extends JFrame {
                 }
             }
         });
-
     }
 
     /*
@@ -435,8 +426,7 @@ public class GUIForm extends JFrame {
         String reactionKnockOutString = reactionKnockouts.getText();
         Scanner reactionKnockOutScanner = new Scanner(reactionKnockOutString);
         reactionKnockOutScanner.useDelimiter("\n");
-        while(reactionKnockOutScanner.hasNext())
-        {
+        while (reactionKnockOutScanner.hasNext()) {
             reactionKnockOutList.add(reactionKnockOutScanner.next());
         }
         reactionKnockOutScanner.close();
