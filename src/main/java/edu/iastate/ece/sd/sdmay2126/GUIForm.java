@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.LinkedList;
+import java.util.Scanner;
 
 import static edu.iastate.ece.sd.sdmay2126.util.RandomUtil.getRandBoolean;
 import static edu.iastate.ece.sd.sdmay2126.util.RandomUtil.getRandInRange;
@@ -44,6 +46,7 @@ public class GUIForm extends JFrame {
     public float expressionUncertaintyValue = (float) 0.1;
     public int numberJobsValue = 1; //Default is one.
     public boolean randomValue = false;
+    public LinkedList<String> reactionKnockOutList;
     //GUI Components
     private JButton runDefaultSettingsButton;
     private JCheckBox fluxVariabilityAnalysis; //boolean, check is 1 unchecked is 0
@@ -63,6 +66,7 @@ public class GUIForm extends JFrame {
     private JCheckBox randomCheckBox;
     private JTextField numberJobs;
     private JTextField geneKnockouts;
+    private JTextArea reactionKnockouts;
     private boolean formError = false; //try catches will signal this.
 
 
@@ -156,6 +160,18 @@ public class GUIForm extends JFrame {
                     geneKnockouts.setForeground(Color.BLACK);
                 }
                 geneKnockoutsString = geneKnockouts.getText();
+            }
+        });
+
+        reactionKnockouts.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (reactionKnockouts.getText().equals("Gene Knockouts")) {
+                    reactionKnockouts.setText("");
+                    reactionKnockouts.setForeground(Color.BLACK);
+                }
+
             }
         });
 
@@ -286,6 +302,10 @@ public class GUIForm extends JFrame {
         expressionThreshold.setForeground(Color.gray);
         expressionUncertainty.setForeground(Color.gray);
         numberJobs.setForeground(Color.gray);
+        reactionKnockouts.setForeground(Color.gray);
+
+        //intilize linkedlists
+        reactionKnockOutList = new LinkedList<String>();
     }
 
     /*
@@ -410,6 +430,20 @@ public class GUIForm extends JFrame {
         }
         validationRange(0.0, Integer.MAX_VALUE, expressionUncertaintyValue,
                 "Expression Uncertainty");
+
+        //reaction Knockouts
+        String reactionKnockOutString = reactionKnockouts.getText();
+        Scanner reactionKnockOutScanner = new Scanner(reactionKnockOutString);
+        reactionKnockOutScanner.useDelimiter("\n");
+        while(reactionKnockOutScanner.hasNext())
+        {
+            reactionKnockOutList.add(reactionKnockOutScanner.next());
+        }
+        reactionKnockOutScanner.close();
+
+
+
+
     }
 
     /*
@@ -430,6 +464,7 @@ public class GUIForm extends JFrame {
         params.setExpressionThreshold(expressionThresholdValue);
         params.setExpressionUncertainty(expressionUncertaintyValue);
         params.setGeneKnockouts(geneKnockoutsString);
+        params.setReactionKnockouts(reactionKnockOutList);
     }
 
     private void randomChecked(FBAParameters params) {
