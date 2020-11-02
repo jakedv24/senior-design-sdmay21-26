@@ -112,9 +112,13 @@ public class FBAParameters implements ApplicationParameters {
         this.maxNitrogenUptake = maxNitrogenUptake;
     }
 
-    public float getMaxPhosphateUptake() { return maxPhosphateUptake; }
+    public float getMaxPhosphateUptake() {
+        return maxPhosphateUptake;
+    }
 
-    public void setMaxPhosphateUptake(float maxPhosphateUptake) { this.maxPhosphateUptake = maxPhosphateUptake; }
+    public void setMaxPhosphateUptake(float maxPhosphateUptake) {
+        this.maxPhosphateUptake = maxPhosphateUptake;
+    }
 
     public float getMaxSulfurUptake() {
         return maxSulfurUptake;
