@@ -17,6 +17,14 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         this.driver = driver;
     }
 
+    public void seleniumInputProgrammer(String cssSelec, WebElement scopedFBACard, String keys){
+        WebElement tempVar = scopedFBACard
+                .findElement(By.cssSelector("div[data-parameter='" + cssSelec + "']"))
+                .findElement(By.cssSelector("input[class='form-control']"));
+        tempVar.clear();
+        tempVar.sendKeys(keys);
+    }
+
     @Override
     public void programInputs(Job job, WebElement scopedFBACard) throws SeleniumIdentificationException,
             InterruptedException {
