@@ -77,67 +77,38 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
 
         // Finds clear and sets the value of the activeCoefficient value
         System.out.println("Setting activation coefficient...");
-        WebElement activCoe = scopedFBACard
-                .findElement(By.cssSelector("div[data-parameter='activation_coefficient']"))
-                .findElement(By.cssSelector("input[class='form-control']"));
-        activCoe.clear();
-        activCoe.sendKeys(Float.toString(params.getActivationCoefficient()));
+        seleniumInputProgrammer("activation_coefficient", scopedFBACard,
+                Float.toString(params.getActivationCoefficient()));
 
         //Finds clears and sets the value of the maxCarbonUptake value
         System.out.println("Setting max carbon uptake...");
-        WebElement carbUp = scopedFBACard
-                .findElement(By.cssSelector("div[data-parameter='max_c_uptake']"))
-                .findElement(By.cssSelector("input[class='form-control']"));
-        carbUp.clear();
-        carbUp.sendKeys(Float.toString(params.getMaxCarbonUptake()));
+        seleniumInputProgrammer("max_c_uptake", scopedFBACard, Float.toString(params.getMaxCarbonUptake()));
 
         //Finds clears and sets the value of the maxNitrogenUptake value
         System.out.println("Setting max nitrogen uptake...");
-        WebElement nitroUp = scopedFBACard
-                .findElement(By.cssSelector("div[data-parameter='max_n_uptake']"))
-                .findElement(By.cssSelector("input[class='form-control']"));
-        nitroUp.clear();
-        nitroUp.sendKeys(Float.toString(params.getMaxNitrogenUptake()));
+        seleniumInputProgrammer("max_n_uptake", scopedFBACard, Float.toString(params.getMaxNitrogenUptake()));
 
         //Finds clears and sets the value of the maxPhosphateUptake value
         System.out.println("Setting max phosphate uptake...");
-        WebElement phosUp = scopedFBACard
-                .findElement(By.cssSelector("div[data-parameter='max_p_uptake']"))
-                .findElement(By.cssSelector("input[class='form-control']"));
-        phosUp.clear();
-        phosUp.sendKeys(Float.toString(params.getMaxPhosphateUptake()));
+        seleniumInputProgrammer("max_p_uptake", scopedFBACard, Float.toString(params.getMaxPhosphateUptake()));
 
         //Finds clears and sets the value of the maxSulfurUptake value
         System.out.println("Setting max sulfur uptake...");
-        WebElement sulfUp = scopedFBACard
-                .findElement(By.cssSelector("div[data-parameter='max_s_uptake']"))
-                .findElement(By.cssSelector("input[class='form-control']"));
-        sulfUp.clear();
-        sulfUp.sendKeys(Float.toString(params.getMaxSulfurUptake()));
+        seleniumInputProgrammer("max_s_uptake", scopedFBACard, Float.toString(params.getMaxSulfurUptake()));
 
         //Finds clears and sets the value of the maxOxygenUptake value
         System.out.println("Setting max oxygen uptake...");
-        WebElement oxyUp = scopedFBACard
-                .findElement(By.cssSelector("div[data-parameter='max_o_uptake']"))
-                .findElement(By.cssSelector("input[class='form-control']"));
-        oxyUp.clear();
-        oxyUp.sendKeys(Float.toString(params.getMaxOxygenUptake()));
+        seleniumInputProgrammer("max_o_uptake", scopedFBACard, Float.toString(params.getMaxOxygenUptake()));
 
         //Finds clears and sets the value of the expressionThreshold value
         System.out.println("Setting expression threshold...");
-        WebElement expThresh = scopedFBACard
-                .findElement(By.cssSelector("div[data-parameter='exp_threshold_percentile']"))
-                .findElement(By.cssSelector("input[class='form-control']"));
-        expThresh.clear();
-        expThresh.sendKeys(Float.toString(params.getExpressionThreshold()));
+        seleniumInputProgrammer("exp_threshold_percentile", scopedFBACard,
+                Float.toString(params.getExpressionThreshold()));
 
         //Finds clears and sets the value of the expressionUncertainty value
         System.out.println("Setting expression uncertainty...");
-        WebElement expUncer = scopedFBACard
-                .findElement(By.cssSelector("div[data-parameter='exp_threshold_margin']"))
-                .findElement(By.cssSelector("input[class='form-control']"));
-        expUncer.clear();
-        expUncer.sendKeys(Float.toString(params.getExpressionUncertainty()));
+        seleniumInputProgrammer("exp_threshold_margin", scopedFBACard,
+                Float.toString(params.getExpressionUncertainty()));
 
         //Set reaction to maximize
         System.out.println("Setting reaction to Maximize...");
@@ -145,12 +116,10 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         WebElement reactionToMaximizeArea = scopedFBACard
                 .findElement(By.cssSelector("div[data-parameter='target_reaction']"));
 
-
         WebElement selectedItemsRM = reactionToMaximizeArea
                 .findElement(By.cssSelector("div[data-element='selected-items']"));
         List<WebElement> alreadySelectedRM = selectedItemsRM
                 .findElements(By.cssSelector("span[class='fa fa-minus-circle']"));
-
 
         if (!alreadySelectedRM.isEmpty()) {
             alreadySelectedRM.get(0).click();
