@@ -17,7 +17,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         this.driver = driver;
     }
 
-    public void programInputFormWithCssSelectorAndKeys(String cssSelec, WebElement scopedFBACard, String keys){
+    public void programInputFormWithCssSelectorAndKeys(String cssSelec, WebElement scopedFBACard, String keys) {
         WebElement tempVar = scopedFBACard
                 .findElement(By.cssSelector("div[data-parameter='" + cssSelec + "']"))
                 .findElement(By.cssSelector("input[class='form-control']"));
@@ -75,40 +75,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
             simKo.click();
         }
 
-        // Finds clear and sets the value of the activeCoefficient value
-        System.out.println("Setting activation coefficient...");
-        programInputFormWithCssSelectorAndKeys("activation_coefficient", scopedFBACard,
-                Float.toString(params.getActivationCoefficient()));
-
-        //Finds clears and sets the value of the maxCarbonUptake value
-        System.out.println("Setting max carbon uptake...");
-        programInputFormWithCssSelectorAndKeys("max_c_uptake", scopedFBACard, Float.toString(params.getMaxCarbonUptake()));
-
-        //Finds clears and sets the value of the maxNitrogenUptake value
-        System.out.println("Setting max nitrogen uptake...");
-        programInputFormWithCssSelectorAndKeys("max_n_uptake", scopedFBACard, Float.toString(params.getMaxNitrogenUptake()));
-
-        //Finds clears and sets the value of the maxPhosphateUptake value
-        System.out.println("Setting max phosphate uptake...");
-        programInputFormWithCssSelectorAndKeys("max_p_uptake", scopedFBACard, Float.toString(params.getMaxPhosphateUptake()));
-
-        //Finds clears and sets the value of the maxSulfurUptake value
-        System.out.println("Setting max sulfur uptake...");
-        programInputFormWithCssSelectorAndKeys("max_s_uptake", scopedFBACard, Float.toString(params.getMaxSulfurUptake()));
-
-        //Finds clears and sets the value of the maxOxygenUptake value
-        System.out.println("Setting max oxygen uptake...");
-        programInputFormWithCssSelectorAndKeys("max_o_uptake", scopedFBACard, Float.toString(params.getMaxOxygenUptake()));
-
-        //Finds clears and sets the value of the expressionThreshold value
-        System.out.println("Setting expression threshold...");
-        programInputFormWithCssSelectorAndKeys("exp_threshold_percentile", scopedFBACard,
-                Float.toString(params.getExpressionThreshold()));
-
-        //Finds clears and sets the value of the expressionUncertainty value
-        System.out.println("Setting expression uncertainty...");
-        programInputFormWithCssSelectorAndKeys("exp_threshold_margin", scopedFBACard,
-                Float.toString(params.getExpressionUncertainty()));
+        programBasicFloatInputs(scopedFBACard, params);
 
         //Set reaction to maximize
         System.out.println("Setting reaction to Maximize...");
@@ -187,7 +154,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
                 .findElement(By.cssSelector("div[data-parameter='feature_ko_list']"));
         WebElement geneKnockoutsButton = geneKnockouts
                 .findElement(By.cssSelector("button[class='btn btn-default']"));
-            geneKnockoutsButton.click();
+        geneKnockoutsButton.click();
 
         WebElement geneKnockoutsText = geneKnockouts
                 .findElement(By.cssSelector("input[class='form-control']"));
@@ -195,8 +162,49 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         geneKnockoutsText.sendKeys(params.getGeneKnockouts());
 
 
-
         System.out.println("Programming FBA complete.");
+    }
+
+    private void programBasicFloatInputs(WebElement scopedFBACard, FBAParameters params) {
+        // Finds clear and sets the value of the activeCoefficient value
+        System.out.println("Setting activation coefficient...");
+        programInputFormWithCssSelectorAndKeys("activation_coefficient", scopedFBACard,
+                Float.toString(params.getActivationCoefficient()));
+
+        //Finds clears and sets the value of the maxCarbonUptake value
+        System.out.println("Setting max carbon uptake...");
+        programInputFormWithCssSelectorAndKeys("max_c_uptake", scopedFBACard,
+                Float.toString(params.getMaxCarbonUptake()));
+
+        //Finds clears and sets the value of the maxNitrogenUptake value
+        System.out.println("Setting max nitrogen uptake...");
+        programInputFormWithCssSelectorAndKeys("max_n_uptake", scopedFBACard,
+                Float.toString(params.getMaxNitrogenUptake()));
+
+        //Finds clears and sets the value of the maxPhosphateUptake value
+        System.out.println("Setting max phosphate uptake...");
+        programInputFormWithCssSelectorAndKeys("max_p_uptake", scopedFBACard,
+                Float.toString(params.getMaxPhosphateUptake()));
+
+        //Finds clears and sets the value of the maxSulfurUptake value
+        System.out.println("Setting max sulfur uptake...");
+        programInputFormWithCssSelectorAndKeys("max_s_uptake", scopedFBACard,
+                Float.toString(params.getMaxSulfurUptake()));
+
+        //Finds clears and sets the value of the maxOxygenUptake value
+        System.out.println("Setting max oxygen uptake...");
+        programInputFormWithCssSelectorAndKeys("max_o_uptake", scopedFBACard,
+                Float.toString(params.getMaxOxygenUptake()));
+
+        //Finds clears and sets the value of the expressionThreshold value
+        System.out.println("Setting expression threshold...");
+        programInputFormWithCssSelectorAndKeys("exp_threshold_percentile", scopedFBACard,
+                Float.toString(params.getExpressionThreshold()));
+
+        //Finds clears and sets the value of the expressionUncertainty value
+        System.out.println("Setting expression uncertainty...");
+        programInputFormWithCssSelectorAndKeys("exp_threshold_margin", scopedFBACard,
+                Float.toString(params.getExpressionUncertainty()));
     }
 
     private void resetFBAIfRequired() {
@@ -217,3 +225,4 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
                 .click();
     }
 }
+
