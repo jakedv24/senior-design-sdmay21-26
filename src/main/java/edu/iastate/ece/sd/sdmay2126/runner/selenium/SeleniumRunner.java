@@ -26,8 +26,6 @@ import java.time.Duration;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
-import static edu.iastate.ece.sd.sdmay2126.application.ApplicationType.FBA;
-
 /**
  * KBase job runner using Selenium WebDrivers.
  */

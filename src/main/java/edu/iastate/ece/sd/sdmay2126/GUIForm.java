@@ -198,13 +198,14 @@ public class GUIForm extends JFrame {
                         // Setup the parameters
                         FBAParameters params;
                         if (randomValue) {
-                            params = new FBAParameters();
+                            params = new FBAParameters(randomValue);
                             randomChecked(params);
                         } else {
                             params = new FBAParameters(fluxVariabilityAnalysisValue,
                                     minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
                                     carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
-                                    expressionThresholdValue, expressionUncertaintyValue);
+                                    reactionToMaximizeString, expressionThresholdValue, expressionUncertaintyValue,
+                                    geneKnockoutsString);
 
                             //duplicate code?
                             setRunnerParameters(params);
