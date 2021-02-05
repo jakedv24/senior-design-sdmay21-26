@@ -2,6 +2,7 @@
 /drivers
 env.config
 /.settings
+/output
 
 # Eclipse
 .classpath
