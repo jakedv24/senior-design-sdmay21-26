@@ -39,13 +39,13 @@ public class App {
         String globusPass;
         String driverPath;
         SeleniumDrivers driverType;
-        int narrativeIdentifier;
+        String narrativeIdentifier;
         try {
             globusUser = appProps.getProperty("kbase.auth.globus.user");
             globusPass = appProps.getProperty("kbase.auth.globus.pass");
             driverType = SeleniumDriverUtilities.getDriverFromString(envProps.getProperty("selenium.driver.type"));
             driverPath = envProps.getProperty("selenium.driver.path");
-            narrativeIdentifier = Integer.parseInt(appProps.getProperty("kbase.narrative_identifier"));
+            narrativeIdentifier = appProps.getProperty("kbase.narrative_identifier");
         } catch (InvalidSeleniumDriverException e) {
             System.err.println("Invalid Selenium driver specified in configuration.");
             e.printStackTrace();

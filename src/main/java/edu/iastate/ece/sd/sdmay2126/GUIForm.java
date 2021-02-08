@@ -296,8 +296,7 @@ public class GUIForm extends JFrame {
         numberJobs.setForeground(Color.gray);
         reactionKnockouts.setForeground(Color.gray);
 
-        //intilize linkedlists
-        reactionKnockOutList = new LinkedList<String>();
+
     }
 
     /*
@@ -424,6 +423,8 @@ public class GUIForm extends JFrame {
                 "Expression Uncertainty");
 
         //reaction Knockouts
+        //intilize linkedlists
+        reactionKnockOutList = new LinkedList<String>();
         String reactionKnockOutString = reactionKnockouts.getText();
         Scanner reactionKnockOutScanner = new Scanner(reactionKnockOutString);
         reactionKnockOutScanner.useDelimiter("\n");
