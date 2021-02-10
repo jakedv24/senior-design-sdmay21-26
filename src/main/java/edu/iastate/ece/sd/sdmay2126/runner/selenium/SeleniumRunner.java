@@ -22,7 +22,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
@@ -231,7 +233,8 @@ public class SeleniumRunner implements Runner {
         System.out.println("Selenium Runner: Job complete!");
 
         JobOutputWriter jobOutputWriter = new JSONJobOutputWriter();
-        jobOutputWriter.outputToFile(job, "FBAJson");
+        String timestampString = new SimpleDateFormat("yyy.MM.dd.HH.mm.ss").format(new Date());
+        jobOutputWriter.outputToFile(job, "FBAJson_" + timestampString);
     }
 
     private WebElement getFBACardScope() {

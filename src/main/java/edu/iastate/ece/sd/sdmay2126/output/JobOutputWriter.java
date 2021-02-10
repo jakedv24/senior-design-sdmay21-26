@@ -14,11 +14,18 @@ public abstract class JobOutputWriter {
     }
 
     public boolean outputToFile(@Nonnull Job job, @Nonnull String outputFileName, boolean shouldOverwrite) {
-        File jobOutputFile = new File("./" + outputFileName + ".txt");
+        String outputDirectoryName = "./output/";
+        File jobOutputFile = new File(outputDirectoryName + outputFileName + ".txt");
 
         if (shouldOverwrite) {
             //noinspection ResultOfMethodCallIgnored
             jobOutputFile.delete();
+        }
+
+        File outputDirectory = new File(outputDirectoryName);
+
+        if (!outputDirectory.exists()) {
+            outputDirectory.mkdir();
         }
 
         try {
