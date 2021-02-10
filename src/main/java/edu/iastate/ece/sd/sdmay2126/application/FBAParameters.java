@@ -17,7 +17,6 @@ public class FBAParameters implements ApplicationParameters {
     private float maxPhosphateUptake;
     private float maxSulfurUptake;
     private float maxOxygenUptake;
-    private float maxPhosphateValue;
     private String reactionToMaximize;
     private float expressionThreshold;
     private float expressionUncertainty;
@@ -95,13 +94,6 @@ public class FBAParameters implements ApplicationParameters {
         this.maxCarbonUptake = maxCarbonUptake;
     }
 
-    public float getMaxPhosphateValue() {
-        return maxPhosphateValue;
-    }
-
-    public void setMaxPhosphateValue(float maxPhosphateValue) {
-        this.maxPhosphateValue = maxPhosphateValue;
-    }
 
     public float getMaxNitrogenUptake() {
         return maxNitrogenUptake;

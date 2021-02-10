@@ -216,7 +216,6 @@ public class GUIForm extends JFrame {
                                     carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
                                     reactionToMaximizeString, expressionThresholdValue, expressionUncertaintyValue,
                                     geneKnockoutsString);
-                            randomSampling(params);
                         }
                         else if (randomValue) {
                             params = new FBAParameters(randomValue);
@@ -494,7 +493,7 @@ public class GUIForm extends JFrame {
         params.setActivationCoefficient(activationCoefficient);
         params.setMaxCarbonUptake(carbonValue);
         params.setMaxNitrogenUptake(nitrogenValue);
-        params.setMaxPhosphateValue(phosphateValue);
+        params.setMaxPhosphateUptake(phosphateValue);
         params.setMaxSulfurUptake(sulfurValue);
         params.setMaxOxygenUptake(oxygenValue);
         params.setExpressionThreshold(expressionThresholdValue);
@@ -512,7 +511,7 @@ public class GUIForm extends JFrame {
             params.setActivationCoefficient(getRandInRange(0, 1));
             params.setMaxCarbonUptake(getRandInRange(0, 100));
             params.setMaxNitrogenUptake(getRandInRange(0, 100));
-            params.setMaxPhosphateValue(getRandInRange(0, 100));
+            params.setMaxPhosphateUptake(getRandInRange(0, 100));
             params.setMaxSulfurUptake(getRandInRange(0, 100));
             params.setMaxOxygenUptake(getRandInRange(0, 100));
             params.setExpressionThreshold(getRandInRange(0, 1));
@@ -530,7 +529,7 @@ public class GUIForm extends JFrame {
             params.setMaxNitrogenUptake(getRandInRange(0, 100));
         }
         if(params.getMaxPhosphateUptake() <= 0.1){
-            params.setMaxPhosphateValue(getRandInRange(0, 100));
+            params.setMaxPhosphateUptake(getRandInRange(0, 100));
         }
         if(params.getMaxSulfurUptake() <= 0.1){
             params.setMaxSulfurUptake(getRandInRange(0, 100));
