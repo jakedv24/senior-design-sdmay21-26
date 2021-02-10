@@ -211,7 +211,11 @@ public class GUIForm extends JFrame {
                         // Setup the parameters
                         FBAParameters params;
                         if(samplingCheckBox.isSelected()){
-                            params = new FBAParameters(randomValue);
+                            params = new FBAParameters(fluxVariabilityAnalysisValue,
+                                    minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
+                                    carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
+                                    reactionToMaximizeString, expressionThresholdValue, expressionUncertaintyValue,
+                                    geneKnockoutsString);
                             randomSampling(params);
                         }
                         else if (randomValue) {
@@ -421,8 +425,9 @@ public class GUIForm extends JFrame {
             //Check if the user left the value as a default value
             if (expressionthresholdString.equals("")
                     || expressionthresholdString.equals("Expression Threshold [0,1]")) {
-                if(sampleValue){
-                    activationCoefficient = getRandInRange(0,1);
+                if(sampleValue && (expressionthresholdString.equals("")
+                        || expressionthresholdString.equals("Expression Threshold [0,1]"))){
+                    expressionThresholdValue = getRandInRange(0,1);
                 }
                 else {
                     expressionThresholdValue = (float) 0.5;
@@ -443,8 +448,9 @@ public class GUIForm extends JFrame {
             //Check if the user left the value as a default value
             if (expressionUncertaintyString.equals("")
                     || expressionUncertaintyString.equals("Expression Uncertainty [0,?]")) {
-                if(sampleValue){
-                    activationCoefficient = getRandInRange(0,1);
+                if(sampleValue && (expressionUncertaintyString.equals("")
+                        || expressionUncertaintyString.equals("Expression Uncertainty [0,?]"))){
+                    expressionUncertaintyValue = getRandInRange(0,1);
                 }
                 else {
                     expressionUncertaintyValue = (float) 0.5;
