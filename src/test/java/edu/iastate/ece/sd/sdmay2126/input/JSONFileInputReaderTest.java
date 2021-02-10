@@ -7,8 +7,10 @@ import java.io.FileNotFoundException;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
+
 public class JSONFileInputReaderTest {
-    private static final String VALID_FILE_NAME = "src/test/java/edu/iastate/ece/sd/sdmay2126/input/test_input_json_valid_file.json";
+    private static final String VALID_FILE_NAME =
+            "src/test/java/edu/iastate/ece/sd/sdmay2126/input/test_input_json_valid_file.json";
 
     private JSONFileInputReader classToTest = new JSONFileInputReader();
 

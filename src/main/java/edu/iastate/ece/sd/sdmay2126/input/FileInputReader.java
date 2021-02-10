@@ -6,5 +6,5 @@ import java.io.FileNotFoundException;
  * Interface for reading input from a file.
  */
 public interface FileInputReader<T> {
-    public T parseFromFile(String pathToFile) throws FileNotFoundException;
+    T parseFromFile(String pathToFile) throws FileNotFoundException;
 }

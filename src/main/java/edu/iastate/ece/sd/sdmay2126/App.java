@@ -77,7 +77,9 @@ public class App {
         parseProgramArgsAndRunCorrectMode(args, manager);
     }
 
-    private static void parseProgramArgsAndRunCorrectMode(String[] args, JobManager manager) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+    private static void parseProgramArgsAndRunCorrectMode(String[] args, JobManager manager)
+            throws ClassNotFoundException, InstantiationException,
+            IllegalAccessException, UnsupportedLookAndFeelException {
         boolean fbaType = true;
         boolean fromConfigFile = false;
         String inputFileName = "";
