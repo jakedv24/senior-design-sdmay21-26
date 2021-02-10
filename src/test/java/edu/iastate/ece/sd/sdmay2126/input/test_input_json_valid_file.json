@@ -1,0 +1,15 @@
+{
+  "fluxVariabilityAnalysis": true,
+  "minimizeFlux": true,
+  "simulateAllSingleKos": true,
+  "activationCoefficient": 0.5,
+  "maxCarbonUptake": 1.0,
+  "maxNitrogenUptake": 1.0,
+  "maxPhosphateUptake": 1.0,
+  "maxSulfurUptake": 1.0,
+  "maxOxygenUptake": 1.0,
+  "reactionToMaximize": "validReaction",
+  "expressionThreshold": 1.0,
+  "expressionUncertainty": 1.0,
+  "geneKnockouts": "geneKnockout"
+}
