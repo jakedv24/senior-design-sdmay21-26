@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
 
-class JSONFileInputReader implements FileInputReader<FBAParameters> {
+public class JSONFileInputReader implements FileInputReader<FBAParameters> {
     @Override
     public FBAParameters parseFromFile(String pathToFile) throws FileNotFoundException {
         File f = new File(pathToFile);
