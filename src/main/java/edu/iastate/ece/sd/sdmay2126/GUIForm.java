@@ -518,32 +518,6 @@ public class GUIForm extends JFrame {
             params.setExpressionUncertainty(getRandInRange(0, 100)); //MAY NEED TO CHANGE THE MAX
         }
 
-    private void randomSampling(FBAParameters params){
-        if(params.getActivationCoefficient() == 0.5){
-            params.setActivationCoefficient(getRandInRange(0, 1));
-        }
-        if(params.getMaxCarbonUptake() <= 0.1){
-            params.setMaxCarbonUptake(getRandInRange(0, 100));
-        }
-        if(params.getMaxNitrogenUptake() <= 0.1){
-            params.setMaxNitrogenUptake(getRandInRange(0, 100));
-        }
-        if(params.getMaxPhosphateUptake() <= 0.1){
-            params.setMaxPhosphateUptake(getRandInRange(0, 100));
-        }
-        if(params.getMaxSulfurUptake() <= 0.1){
-            params.setMaxSulfurUptake(getRandInRange(0, 100));
-        }
-        if(params.getMaxOxygenUptake() <= 0.1){
-            params.setMaxOxygenUptake(getRandInRange(0, 100));
-        }
-        if(params.getExpressionThreshold() == 0.5){
-            params.setExpressionThreshold(getRandInRange(0, 1));
-        }
-        if(params.getExpressionUncertainty() == 0.1){
-            params.setExpressionUncertainty(getRandInRange(0, 100));
-        }
-    }
     public int getNumberJobs() {
         return numberJobsValue;
     }
