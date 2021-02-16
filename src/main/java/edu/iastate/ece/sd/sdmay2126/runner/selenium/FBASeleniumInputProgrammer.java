@@ -77,6 +77,20 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
 
         programBasicFloatInputs(scopedFBACard, params);
 
+        System.out.println("Setting GeneKnockouts");
+        WebElement geneKnockouts = scopedFBACard
+                .findElement(By.cssSelector("div[data-parameter='feature_ko_list']"));
+        WebElement geneKnockoutsButton = geneKnockouts
+                .findElement(By.cssSelector("button[class='btn btn-default']"));
+        geneKnockoutsButton.click();
+
+        WebElement geneKnockoutsText = geneKnockouts
+                .findElement(By.cssSelector("input[class='form-control']"));
+        geneKnockoutsText.clear();
+        geneKnockoutsText.sendKeys(params.getGeneKnockouts());
+
+        System.out.println("Programming FBA complete.");
+
         //Set reaction to maximize
         System.out.println("Setting reaction to Maximize...");
         //clear out any old selections
@@ -149,20 +163,6 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
             }
         }
 
-        System.out.println("Setting GeneKnockouts");
-        WebElement geneKnockouts = scopedFBACard
-                .findElement(By.cssSelector("div[data-parameter='feature_ko_list']"));
-        WebElement geneKnockoutsButton = geneKnockouts
-                .findElement(By.cssSelector("button[class='btn btn-default']"));
-        geneKnockoutsButton.click();
-
-        WebElement geneKnockoutsText = geneKnockouts
-                .findElement(By.cssSelector("input[class='form-control']"));
-        geneKnockoutsText.clear();
-        geneKnockoutsText.sendKeys(params.getGeneKnockouts());
-
-
-        System.out.println("Programming FBA complete.");
     }
 
     private void programBasicFloatInputs(WebElement scopedFBACard, FBAParameters params) {
