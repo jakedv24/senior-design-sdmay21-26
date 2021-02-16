@@ -82,10 +82,8 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
                 .findElement(By.cssSelector("div[data-parameter='feature_ko_list']"));
         LinkedList<String> geneKnockOuts = params.getGeneKnockouts();
         int i = 0;
-        if (geneKnockOuts != null)
-        {
-            for (String geneKO : geneKnockOuts)
-            {
+        if (geneKnockOuts != null) {
+            for (String geneKO : geneKnockOuts) {
                 WebElement geneKnockoutsButton = geneKnockouts
                         .findElement(By.cssSelector("button[class='btn btn-default']"));
                 geneKnockoutsButton.click();
