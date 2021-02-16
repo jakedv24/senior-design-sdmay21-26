@@ -80,14 +80,27 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         System.out.println("Setting GeneKnockouts");
         WebElement geneKnockouts = scopedFBACard
                 .findElement(By.cssSelector("div[data-parameter='feature_ko_list']"));
-        WebElement geneKnockoutsButton = geneKnockouts
-                .findElement(By.cssSelector("button[class='btn btn-default']"));
-        geneKnockoutsButton.click();
+        LinkedList<String> geneKnockOuts = params.getGeneKnockouts();
+        int i = 0;
+        if (geneKnockOuts != null)
+        {
+            for (String geneKO : geneKnockOuts)
+            {
+                WebElement geneKnockoutsButton = geneKnockouts
+                        .findElement(By.cssSelector("button[class='btn btn-default']"));
+                geneKnockoutsButton.click();
 
-        WebElement geneKnockoutsText = geneKnockouts
-                .findElement(By.cssSelector("input[class='form-control']"));
-        geneKnockoutsText.clear();
-        geneKnockoutsText.sendKeys(params.getGeneKnockouts());
+                String indexString = "div[data-index='" + i + "']";
+                WebElement geneKnockoutRow = geneKnockouts
+                        .findElement(By.cssSelector(indexString));
+
+                WebElement geneKnockoutsText = geneKnockoutRow
+                        .findElement(By.cssSelector("input[class='form-control']"));
+                geneKnockoutsText.clear();
+                geneKnockoutsText.sendKeys(geneKO);
+                i++;
+            }
+        }
 
         System.out.println("Programming FBA complete.");
 
