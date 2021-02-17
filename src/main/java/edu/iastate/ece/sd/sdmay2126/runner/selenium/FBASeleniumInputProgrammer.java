@@ -87,15 +87,14 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
             String indexString = "div[data-index='" + i + "']";
             Boolean isPresent = geneKnockouts
                     .findElements(By.cssSelector(indexString)).size() > 0;
-            if(isPresent){
+            if(isPresent) {
                 WebElement geneKnockoutRow = geneKnockouts
                         .findElement(By.cssSelector(indexString));
                 WebElement geneKnockoutsSpanClose = geneKnockoutRow
                         .findElement(By.cssSelector("span[class='fa fa-close']"));
                 geneKnockoutsSpanClose.click();
                 i++;
-            }
-            else {
+            } else {
                 break;
             }
         }
