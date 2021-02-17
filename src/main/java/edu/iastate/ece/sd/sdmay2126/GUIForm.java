@@ -47,6 +47,7 @@ public class GUIForm extends JFrame {
     public int numberJobsValue = 1; //Default is one.
     public boolean randomValue = false;
     public LinkedList<String> reactionKnockOutList;
+    public LinkedList<String> geneKnockoutsList;
     //GUI Components
     private JButton runDefaultSettingsButton;
     private JCheckBox fluxVariabilityAnalysis; //boolean, check is 1 unchecked is 0
@@ -433,8 +434,13 @@ public class GUIForm extends JFrame {
         }
         reactionKnockOutScanner.close();
 
-
-
+        geneKnockoutsList = new LinkedList<String>();
+        Scanner geneKnockOutScanner = new Scanner(geneKnockoutsString);
+        geneKnockOutScanner.useDelimiter("[\t|;]");
+        while (geneKnockOutScanner.hasNext()) {
+            geneKnockoutsList.add(geneKnockOutScanner.next());
+        }
+        geneKnockOutScanner.close();
 
     }
 
@@ -455,7 +461,7 @@ public class GUIForm extends JFrame {
         params.setMaxOxygenUptake(oxygenValue);
         params.setExpressionThreshold(expressionThresholdValue);
         params.setExpressionUncertainty(expressionUncertaintyValue);
-        params.setGeneKnockouts(geneKnockoutsString);
+        params.setGeneKnockouts(geneKnockoutsList);
         params.setReactionKnockouts(reactionKnockOutList);
     }
 
