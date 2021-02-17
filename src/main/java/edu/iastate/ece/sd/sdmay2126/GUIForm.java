@@ -210,26 +210,7 @@ public class GUIForm extends JFrame {
                     // Create and queue a job from the user's inputs
                     try {
                         // Setup the parameters
-                        FBAParameters params;
-                        if (samplingCheckBox.isSelected()) {
-                            params = new FBAParameters(fluxVariabilityAnalysisValue,
-                                    minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
-                                    carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
-                                    reactionToMaximizeString, expressionThresholdValue, expressionUncertaintyValue,
-                                    geneKnockoutsString);
-                        } else if (randomValue) {
-                            params = new FBAParameters(randomValue);
-                            randomChecked(params);
-                        } else {
-                            params = new FBAParameters(fluxVariabilityAnalysisValue,
-                                    minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
-                                    carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
-                                    reactionToMaximizeString, expressionThresholdValue, expressionUncertaintyValue,
-                                    geneKnockoutsString);
-                            //duplicate code?
-                            setRunnerParameters(params);
-                            // Queue the job
-                        }
+                        FBAParameters params = activateForm();
                         jobManager.scheduleJob(new Job(params));
                     } catch (JobManagerStoppedException jobManagerStoppedException) {
                         // TODO: Handle better
@@ -518,6 +499,52 @@ public class GUIForm extends JFrame {
         params.setExpressionUncertainty(getRandInRange(0, 100)); //MAY NEED TO CHANGE THE MAX
     }
 
+    /**
+     * Sets up the on text listener for each of the fields to turn its text from
+     * the hint text to the actual text the user wants to display.
+     * NOT FUNCTIONAL YET
+     * @param textField
+     * @param check1
+     * @param check2
+     */
+    public void setMouseListener(JTextField textField, String check1, String check2){
+        textField.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (textField.getText().contains(check1)
+                        || textField.getText().contains(check2)) {
+                    textField.setText("");
+                    textField.setForeground(Color.BLACK);
+                }
+                String finalValue = textField.getText();
+            }
+        });
+    }
+
+    public FBAParameters activateForm(){
+        FBAParameters params;
+        if (samplingCheckBox.isSelected()) {
+            params = new FBAParameters(fluxVariabilityAnalysisValue,
+                    minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
+                    carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
+                    reactionToMaximizeString, expressionThresholdValue, expressionUncertaintyValue,
+                    geneKnockoutsString);
+        } else if (randomValue) {
+            params = new FBAParameters(randomValue);
+            randomChecked(params);
+        } else {
+            params = new FBAParameters(fluxVariabilityAnalysisValue,
+                    minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
+                    carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
+                    reactionToMaximizeString, expressionThresholdValue, expressionUncertaintyValue,
+                    geneKnockoutsString);
+            //duplicate code?
+            setRunnerParameters(params);
+            // Queue the job
+        }
+        return params;
+    }
     public int getNumberJobs() {
         return numberJobsValue;
     }
