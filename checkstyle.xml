@@ -118,8 +118,10 @@
 
         <!-- Checks for Size Violations.                    -->
         <!-- See https://checkstyle.org/config_sizes.html -->
-        <module name="MethodLength"/>
-            <property name="max" value="300"/>
+        <module name="MethodLength">
+            <property name="tokens" value="METHOD_DEF"/>
+            <property name="max" value="60"/>
+        </module>
         <!--        <module name="ParameterNumber"/>-->
 
         <!-- Checks for whitespace                               -->
