@@ -31,6 +31,7 @@ public class GUIForm extends JFrame {
     public String reactionToMaximizeString;
     public String numberJobsString;
     public String geneKnockoutsString;
+//    public String customFluxBounds;
     public JPanel mainPanel;
     //GUI Form variables to send to driver. Some have defaults set here, some do not.
     public boolean fluxVariabilityAnalysisValue = true; //Value read from the checkbox. Default = 1
@@ -48,6 +49,7 @@ public class GUIForm extends JFrame {
     public boolean randomValue = false;
     public LinkedList<String> reactionKnockOutList;
     public LinkedList<String> geneKnockoutsList;
+//    public LinkedList<String> customFluxBounds;
     //GUI Components
     private JButton runDefaultSettingsButton;
     private JCheckBox fluxVariabilityAnalysis; //boolean, check is 1 unchecked is 0
@@ -68,6 +70,8 @@ public class GUIForm extends JFrame {
     private JTextField numberJobs;
     private JTextField geneKnockouts;
     private JTextArea reactionKnockouts;
+//    private JTextField customFluxBounds;
+
     private boolean formError = false; //try catches will signal this.
 
 
@@ -172,6 +176,17 @@ public class GUIForm extends JFrame {
 
             }
         });
+//        customFluxBounds.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                super.mouseClicked(e);
+//                if (customFluxBounds.getText().equals("Custom Flux Bounds")) {
+//                    customFluxBounds.setText("");
+//                    customFluxBounds.setForeground(Color.BLACK);
+//                }
+//                customFluxBoundsString = customFluxBounds.getText();
+//            }
+//        });
         runDefaultSettingsButton.addActionListener(new ActionListener() {
             /*
             When the user presses the "run" button, We are going to save all the variables
