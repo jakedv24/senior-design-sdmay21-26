@@ -236,10 +236,6 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
                 Float.toString(params.getExpressionUncertainty()));
     }
 
-    private void setGeneKnockouts() {
-
-    }
-
     private void resetFBAIfRequired() {
         System.out.println("Checking if FBA needs to be reset...");
         try {
