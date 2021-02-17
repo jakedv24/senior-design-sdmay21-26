@@ -120,7 +120,7 @@
         <!-- See https://checkstyle.org/config_sizes.html -->
         <module name="MethodLength">
             <property name="tokens" value="METHOD_DEF"/>
-            <property name="max" value="60"/>
+            <property name="max" value="300"/>
         </module>
         <!--        <module name="ParameterNumber"/>-->
 
