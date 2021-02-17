@@ -26,8 +26,8 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
     }
 
     @Override
-    public void programInputs(Job job, WebElement scopedFBACard) throws SeleniumIdentificationException,
-            InterruptedException {
+    public void programInputs(Job job, WebElement scopedFBACard)
+            throws SeleniumIdentificationException, InterruptedException {
         System.out.println("Programming FBA inputs...");
 
         FBAParameters params = (FBAParameters) job.getParameters();
@@ -87,7 +87,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
             String indexString = "div[data-index='" + i + "']";
             Boolean isPresent = geneKnockouts
                     .findElements(By.cssSelector(indexString)).size() > 0;
-            if(isPresent) {
+            if (isPresent) {
                 WebElement geneKnockoutRow = geneKnockouts
                         .findElement(By.cssSelector(indexString));
                 WebElement geneKnockoutsSpanClose = geneKnockoutRow
