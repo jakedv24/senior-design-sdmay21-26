@@ -503,11 +503,12 @@ public class GUIForm extends JFrame {
      * Sets up the on text listener for each of the fields to turn its text from
      * the hint text to the actual text the user wants to display.
      * NOT FUNCTIONAL YET
+     *
      * @param textField
      * @param check1
      * @param check2
      */
-    public void setMouseListener(JTextField textField, String check1, String check2){
+    public void setMouseListener(JTextField textField, String check1, String check2) {
         textField.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -522,7 +523,7 @@ public class GUIForm extends JFrame {
         });
     }
 
-    public FBAParameters activateForm(){
+    public FBAParameters activateForm() {
         FBAParameters params;
         if (samplingCheckBox.isSelected()) {
             params = new FBAParameters(fluxVariabilityAnalysisValue,
@@ -545,6 +546,7 @@ public class GUIForm extends JFrame {
         }
         return params;
     }
+
     public int getNumberJobs() {
         return numberJobsValue;
     }
