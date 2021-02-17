@@ -26,8 +26,8 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
     }
 
     @Override
-    public void programInputs(Job job, WebElement scopedFBACard)
-            throws SeleniumIdentificationException, InterruptedException {
+    public void programInputs(Job job, WebElement scopedFBACard) throws SeleniumIdentificationException,
+            InterruptedException {
         System.out.println("Programming FBA inputs...");
 
         FBAParameters params = (FBAParameters) job.getParameters();
@@ -234,6 +234,10 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         System.out.println("Setting expression uncertainty...");
         programInputFormWithCssSelectorAndKeys("exp_threshold_margin", scopedFBACard,
                 Float.toString(params.getExpressionUncertainty()));
+    }
+
+    private void setGeneKnockouts() {
+
     }
 
     private void resetFBAIfRequired() {
