@@ -47,6 +47,7 @@ public class GUIForm extends JFrame {
     public float expressionUncertaintyValue = (float) 0.1;
     public int numberJobsValue = 1; //Default is one.
     public boolean randomValue = false;
+    public boolean sampleValue = false;
     public LinkedList<String> reactionKnockOutList;
     public LinkedList<String> geneKnockoutsList;
 //    public LinkedList<String> customFluxBounds;
@@ -67,6 +68,7 @@ public class GUIForm extends JFrame {
     private JTextField expressionThreshold;
     private JTextField expressionUncertainty;
     private JCheckBox randomCheckBox;
+    private JCheckBox samplingCheckBox;
     private JTextField numberJobs;
     private JTextField geneKnockouts;
     private JTextArea reactionKnockouts;
@@ -106,6 +108,16 @@ public class GUIForm extends JFrame {
             }
         });
 
+        samplingCheckBox.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                sampleValue = samplingCheckBox.isSelected();
+                if (sampleValue) {
+                    errorTextField.setText("Fill in the fields to test the rest will be randomized.");
+                }
+            }
+        });
 
         onTouchListenerNoDefault(carbonUptake, "Carbon Uptake");
         carbonString = carbonUptake.getText();
@@ -197,6 +209,7 @@ public class GUIForm extends JFrame {
                 //randomValue will be 1 if the random box is selected, This means
                 //We will bypass all other GUI checks.
                 randomValue = randomCheckBox.isSelected();
+                sampleValue = samplingCheckBox.isSelected();
                 if (!randomValue) {
                     guiValidator();
                     //Viewing the checklists of the 3 booleans and setting the values appropriately.
@@ -212,21 +225,7 @@ public class GUIForm extends JFrame {
                     // Create and queue a job from the user's inputs
                     try {
                         // Setup the parameters
-                        FBAParameters params;
-                        if (randomValue) {
-                            params = new FBAParameters(randomValue);
-                            randomChecked(params);
-                        } else {
-                            params = new FBAParameters(fluxVariabilityAnalysisValue,
-                                    minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
-                                    carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
-                                    reactionToMaximizeString, expressionThresholdValue, expressionUncertaintyValue,
-                                    geneKnockoutsString);
-
-                            //duplicate code?
-                            setRunnerParameters(params);
-                            // Queue the job
-                        }
+                        FBAParameters params = activateForm();
                         jobManager.scheduleJob(new Job(params));
                     } catch (JobManagerStoppedException jobManagerStoppedException) {
                         // TODO: Handle better
@@ -326,8 +325,12 @@ public class GUIForm extends JFrame {
             //Check if the user left the value as a default value
             if (element.equals(elementDefault) || element.equals("")) {
                 //this value can't be left blank, no specified default
-                formError = true;
-                errorTextField.setText(errorMessage);
+                if (sampleValue) {
+                    elementValue = getRandInRange(min, max);
+                } else {
+                    formError = true;
+                    errorTextField.setText(errorMessage);
+                }
             } else {
                 elementValue = Float.parseFloat(element); //if not default set as user value
             }
@@ -360,7 +363,11 @@ public class GUIForm extends JFrame {
             //Check if the user left the value as a default value
             if (activationCoefficientString.equals("")
                     || activationCoefficientString.equals("Activation Coefficient [0,1]")) {
-                activationCoefficient = (float) 0.5;
+                if (sampleValue) {
+                    activationCoefficient = getRandInRange(0, 1);
+                } else {
+                    activationCoefficient = (float) 0.5;
+                }
             } else if (!activationCoefficientString.equals("Activation Coefficient [0,1]")) {
                 activationCoefficient = Float.parseFloat(activationCoefficientString);
                 //if not default set as user value
@@ -411,7 +418,12 @@ public class GUIForm extends JFrame {
             //Check if the user left the value as a default value
             if (expressionthresholdString.equals("")
                     || expressionthresholdString.equals("Expression Threshold [0,1]")) {
-                expressionThresholdValue = (float) 0.5;
+                if (sampleValue && (expressionthresholdString.equals("")
+                        || expressionthresholdString.equals("Expression Threshold [0,1]"))) {
+                    expressionThresholdValue = getRandInRange(0, 1);
+                } else {
+                    expressionThresholdValue = (float) 0.5;
+                }
             } else if (!expressionthresholdString.equals("Expression Threshold [0,1]")) {
                 expressionThresholdValue = Float.parseFloat(expressionthresholdString);
                 //if not default set as user value
@@ -426,7 +438,12 @@ public class GUIForm extends JFrame {
             //Check if the user left the value as a default value
             if (expressionUncertaintyString.equals("")
                     || expressionUncertaintyString.equals("Expression Uncertainty [0,?]")) {
-                expressionUncertaintyValue = (float) 0.5;
+                if (sampleValue && (expressionUncertaintyString.equals("")
+                        || expressionUncertaintyString.equals("Expression Uncertainty [0,?]"))) {
+                    expressionUncertaintyValue = getRandInRange(0, 1);
+                } else {
+                    expressionUncertaintyValue = (float) 0.5;
+                }
             } else if (!expressionUncertaintyString.equals("Expression Uncertainty [0,?]")) {
                 expressionUncertaintyValue = Float.parseFloat(expressionUncertaintyString);
                 //if not default set as user value
@@ -448,6 +465,7 @@ public class GUIForm extends JFrame {
             reactionKnockOutList.add(reactionKnockOutScanner.next());
         }
         reactionKnockOutScanner.close();
+
 
         geneKnockoutsList = new LinkedList<String>();
         Scanner geneKnockOutScanner = new Scanner(geneKnockoutsString);
@@ -471,7 +489,7 @@ public class GUIForm extends JFrame {
         params.setActivationCoefficient(activationCoefficient);
         params.setMaxCarbonUptake(carbonValue);
         params.setMaxNitrogenUptake(nitrogenValue);
-        params.setMaxPhosphateValue(phosphateValue);
+        params.setMaxPhosphateUptake(phosphateValue);
         params.setMaxSulfurUptake(sulfurValue);
         params.setMaxOxygenUptake(oxygenValue);
         params.setExpressionThreshold(expressionThresholdValue);
@@ -489,16 +507,65 @@ public class GUIForm extends JFrame {
         params.setActivationCoefficient(getRandInRange(0, 1));
         params.setMaxCarbonUptake(getRandInRange(0, 100));
         params.setMaxNitrogenUptake(getRandInRange(0, 100));
-        params.setMaxPhosphateValue(getRandInRange(0, 100));
+        params.setMaxPhosphateUptake(getRandInRange(0, 100));
         params.setMaxSulfurUptake(getRandInRange(0, 100));
         params.setMaxOxygenUptake(getRandInRange(0, 100));
         params.setExpressionThreshold(getRandInRange(0, 1));
         params.setExpressionUncertainty(getRandInRange(0, 100)); //MAY NEED TO CHANGE THE MAX
     }
 
+    /**
+     * Sets up the on text listener for each of the fields to turn its text from
+     * the hint text to the actual text the user wants to display.
+     * NOT FUNCTIONAL YET
+     *
+     * @param textField
+     * @param check1
+     * @param check2
+     */
+    public void setMouseListener(JTextField textField, String check1, String check2) {
+        textField.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (textField.getText().contains(check1)
+                        || textField.getText().contains(check2)) {
+                    textField.setText("");
+                    textField.setForeground(Color.BLACK);
+                }
+                String finalValue = textField.getText();
+            }
+        });
+    }
+
+    public FBAParameters activateForm() {
+        FBAParameters params;
+        if (samplingCheckBox.isSelected()) {
+            params = new FBAParameters(fluxVariabilityAnalysisValue,
+                    minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
+                    carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
+                    reactionToMaximizeString, expressionThresholdValue, expressionUncertaintyValue,
+                    geneKnockoutsString);
+        } else if (randomValue) {
+            params = new FBAParameters(randomValue);
+            randomChecked(params);
+        } else {
+            params = new FBAParameters(fluxVariabilityAnalysisValue,
+                    minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
+                    carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
+                    reactionToMaximizeString, expressionThresholdValue, expressionUncertaintyValue,
+                    geneKnockoutsString);
+            //duplicate code?
+            setRunnerParameters(params);
+            // Queue the job
+        }
+        return params;
+    }
+
     public int getNumberJobs() {
         return numberJobsValue;
     }
+
     //test
     /*
     TESTING NOT WORKING CURRENTLY
