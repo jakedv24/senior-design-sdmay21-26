@@ -20,12 +20,13 @@ public class FBAParametersJSONObject {
     private float expressionThreshold;
     private float expressionUncertainty;
     private String geneKnockouts;
+    private String customFluxBounds;
 
     public FBAParametersJSONObject(boolean fluxVariabilityAnalysis, boolean minimizeFlux, boolean simulateAllSingleKos,
                                    float activationCoefficient, float maxCarbonUptake, float maxNitrogenUptake,
                                    float maxPhosphateUptake, float maxSulfurUptake, float maxOxygenUptake,
                                    String reactionToMaximize, float expressionThreshold,
-                                   float expressionUncertainty, String geneKnockouts) {
+                                   float expressionUncertainty, String geneKnockouts, String customFluxBounds) {
         this.fluxVariabilityAnalysis = fluxVariabilityAnalysis;
         this.minimizeFlux = minimizeFlux;
         this.simulateAllSingleKos = simulateAllSingleKos;
@@ -39,12 +40,13 @@ public class FBAParametersJSONObject {
         this.expressionThreshold = expressionThreshold;
         this.expressionUncertainty = expressionUncertainty;
         this.geneKnockouts = geneKnockouts;
+        this.customFluxBounds = customFluxBounds;
     }
 
     public FBAParameters generateFBAParameters() {
         return new FBAParameters(fluxVariabilityAnalysis, minimizeFlux, simulateAllSingleKos, activationCoefficient,
                 maxCarbonUptake, maxNitrogenUptake, maxPhosphateUptake, maxSulfurUptake, maxOxygenUptake,
                 reactionToMaximize, expressionThreshold, expressionUncertainty,
-                geneKnockouts);
+                geneKnockouts, customFluxBounds);
     }
 }
