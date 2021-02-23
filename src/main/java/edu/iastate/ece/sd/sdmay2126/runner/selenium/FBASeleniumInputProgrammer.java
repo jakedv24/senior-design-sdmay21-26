@@ -47,6 +47,21 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
                 .until(d -> scopedFBACard.findElement(By.cssSelector(showAdvancedCSSSelector)))
                 .click();
 
+        programCheckBoxes(scopedFBACard, params);
+
+        programBasicFloatInputs(scopedFBACard, params);
+
+        programGeneKnockOuts(scopedFBACard, params);
+
+        programReactionToMaximize(scopedFBACard, params);
+
+        programReactionKnockOuts(scopedFBACard, params);
+
+        System.out.println("Programming FBA complete.");
+
+    }
+
+    private void programCheckBoxes(WebElement scopedFBACard, FBAParameters params) {
         // The check boxes are children of divs
         System.out.println("Setting FVA...");
         WebElement fva = scopedFBACard
@@ -75,124 +90,8 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
             simKo.click();
         }
 
-        programBasicFloatInputs(scopedFBACard, params);
-
-        System.out.println("Setting GeneKnockouts");
-        WebElement geneKnockouts = scopedFBACard
-                .findElement(By.cssSelector("div[data-parameter='feature_ko_list']"));
-        LinkedList<String> geneKnockOuts = params.getGeneKnockouts();
-
-        int i = 0;
-        while (true) { //clear out all text regions
-            String indexString = "div[data-index='" + i + "']";
-            Boolean isPresent = geneKnockouts
-                    .findElements(By.cssSelector(indexString)).size() > 0;
-            if (isPresent) {
-                WebElement geneKnockoutRow = geneKnockouts
-                        .findElement(By.cssSelector(indexString));
-                WebElement geneKnockoutsSpanClose = geneKnockoutRow
-                        .findElement(By.cssSelector("span[class='fa fa-close']"));
-                geneKnockoutsSpanClose.click();
-                i++;
-            } else {
-                break;
-            }
-        }
-
-        i = 0;
-        if (geneKnockOuts != null) {
-            for (String geneKO : geneKnockOuts) {
-                WebElement geneKnockoutsButton = geneKnockouts
-                        .findElement(By.cssSelector("button[class='btn btn-default']"));
-                geneKnockoutsButton.click();
-
-                String indexString = "div[data-index='" + i + "']";
-                WebElement geneKnockoutRow = geneKnockouts
-                        .findElement(By.cssSelector(indexString));
-
-                WebElement geneKnockoutsText = geneKnockoutRow
-                        .findElement(By.cssSelector("input[class='form-control']"));
-                geneKnockoutsText.clear();
-                geneKnockoutsText.sendKeys(geneKO);
-                i++;
-            }
-        }
-
-        System.out.println("Programming FBA complete.");
-
-        //Set reaction to maximize
-        System.out.println("Setting reaction to Maximize...");
-        //clear out any old selections
-        WebElement reactionToMaximizeArea = scopedFBACard
-                .findElement(By.cssSelector("div[data-parameter='target_reaction']"));
-
-        WebElement selectedItemsRM = reactionToMaximizeArea
-                .findElement(By.cssSelector("div[data-element='selected-items']"));
-        List<WebElement> alreadySelectedRM = selectedItemsRM
-                .findElements(By.cssSelector("span[class='fa fa-minus-circle']"));
-
-        if (!alreadySelectedRM.isEmpty()) {
-            alreadySelectedRM.get(0).click();
-        }
-        //search for item
-        WebElement reactionToMaxSearchBox = reactionToMaximizeArea
-                .findElement(By.cssSelector("input[class='form-contol']")); //control is misspelled on the kbase html
-        reactionToMaxSearchBox.clear();
-        reactionToMaxSearchBox.sendKeys(params.getReactionToMaximize());
-        WebElement availableRMItems = reactionToMaximizeArea
-                .findElement(By.cssSelector("div[data-element='available-items"));
-        List<WebElement> foundRMItem = availableRMItems
-                .findElements(By.cssSelector("span[class='kb-btn-icon']"));
-        if (foundRMItem.size() == 0) {
-            System.out.println("Unable to find " + params.getReactionToMaximize() + ". defaulting to bio1");
-            reactionToMaxSearchBox.clear();
-            reactionToMaxSearchBox.sendKeys("bio1");
-            foundRMItem = availableRMItems.findElements(By.cssSelector("span[class='kb-btn-icon']"));
-        }
-        foundRMItem.get(0).click();
-
-
-        //setting reaction knockouts
-        System.out.println("Setting reaction knockouts");
-        //clear out old selections if any
-        WebElement reactionKnockoutArea = scopedFBACard
-                .findElement(By.cssSelector("div[data-parameter='reaction_ko_list']"));
-        WebElement selectedItemsRK = reactionKnockoutArea
-                .findElement(By.cssSelector("div[data-element='selected-items']"));
-        boolean removeElementsFromReactionKnockout = true;
-        while (removeElementsFromReactionKnockout) {
-            try {
-                WebElement alreadySelectedKO = selectedItemsRK
-                        .findElement(By.cssSelector("span[class='fa fa-minus-circle']"));
-                alreadySelectedKO.click();
-
-            } catch (Exception e) {
-                removeElementsFromReactionKnockout = false;
-
-            }
-        }
-        //put in new elements
-        WebElement reactionKOSearchBox = reactionKnockoutArea
-                .findElement(By.cssSelector("input[class='form-contol']"));
-        WebElement availableKOItems = reactionKnockoutArea
-                .findElement(By.cssSelector("div[data-element='available-items']"));
-        LinkedList<String> reactionKOS = params.getReactionKnockouts();
-        if (reactionKOS != null) {
-            for (String reactionKO : reactionKOS
-            ) {
-                reactionKOSearchBox.clear();
-                reactionKOSearchBox.sendKeys(reactionKO);
-                List<WebElement> foundKOItems = availableKOItems
-                        .findElements(By.cssSelector("span[class='kb-btn-icon']"));
-                if (foundKOItems.size() == 0) {
-                    System.out.println("Unable to find: " + reactionKO);
-                } else {
-                    foundKOItems.get(0).click();
-                }
-            }
-        }
-
     }
+
 
     private void programBasicFloatInputs(WebElement scopedFBACard, FBAParameters params) {
         // Finds clear and sets the value of the activeCoefficient value
@@ -234,6 +133,127 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         System.out.println("Setting expression uncertainty...");
         programInputFormWithCssSelectorAndKeys("exp_threshold_margin", scopedFBACard,
                 Float.toString(params.getExpressionUncertainty()));
+    }
+
+    private void programGeneKnockOuts(WebElement scopedFBACard, FBAParameters params) {
+        System.out.println("Setting GeneKnockouts");
+        WebElement geneKnockouts = scopedFBACard
+                .findElement(By.cssSelector("div[data-parameter='feature_ko_list']"));
+        LinkedList<String> geneKnockOuts = params.getGeneKnockouts();
+
+        int i = 0;
+        while (true) { //clear out all text regions
+            String indexString = "div[data-index='" + i + "']";
+            Boolean isPresent = geneKnockouts
+                    .findElements(By.cssSelector(indexString)).size() > 0;
+            if (isPresent) {
+                WebElement geneKnockoutRow = geneKnockouts
+                        .findElement(By.cssSelector(indexString));
+                WebElement geneKnockoutsSpanClose = geneKnockoutRow
+                        .findElement(By.cssSelector("span[class='fa fa-close']"));
+                geneKnockoutsSpanClose.click();
+                i++;
+            } else {
+                break;
+            }
+        }
+
+        i = 0;
+        if (geneKnockOuts != null) {
+            for (String geneKO : geneKnockOuts) {
+                WebElement geneKnockoutsButton = geneKnockouts
+                        .findElement(By.cssSelector("button[class='btn btn-default']"));
+                geneKnockoutsButton.click();
+
+                String indexString = "div[data-index='" + i + "']";
+                WebElement geneKnockoutRow = geneKnockouts
+                        .findElement(By.cssSelector(indexString));
+
+                WebElement geneKnockoutsText = geneKnockoutRow
+                        .findElement(By.cssSelector("input[class='form-control']"));
+                geneKnockoutsText.clear();
+                geneKnockoutsText.sendKeys(geneKO);
+                i++;
+            }
+        }
+
+    }
+
+   private void programReactionToMaximize(WebElement scopedFBACard, FBAParameters params) {
+       //Set reaction to maximize
+       System.out.println("Setting reaction to Maximize...");
+       //clear out any old selections
+       WebElement reactionToMaximizeArea = scopedFBACard
+               .findElement(By.cssSelector("div[data-parameter='target_reaction']"));
+
+       WebElement selectedItemsRM = reactionToMaximizeArea
+               .findElement(By.cssSelector("div[data-element='selected-items']"));
+       List<WebElement> alreadySelectedRM = selectedItemsRM
+               .findElements(By.cssSelector("span[class='fa fa-minus-circle']"));
+
+       if (!alreadySelectedRM.isEmpty()) {
+           alreadySelectedRM.get(0).click();
+       }
+       //search for item
+       WebElement reactionToMaxSearchBox = reactionToMaximizeArea
+               .findElement(By.cssSelector("input[class='form-contol']")); //control is misspelled on the kbase html
+       reactionToMaxSearchBox.clear();
+       reactionToMaxSearchBox.sendKeys(params.getReactionToMaximize());
+       WebElement availableRMItems = reactionToMaximizeArea
+               .findElement(By.cssSelector("div[data-element='available-items"));
+       List<WebElement> foundRMItem = availableRMItems
+               .findElements(By.cssSelector("span[class='kb-btn-icon']"));
+       if (foundRMItem.size() == 0) {
+           System.out.println("Unable to find " + params.getReactionToMaximize() + ". defaulting to bio1");
+           reactionToMaxSearchBox.clear();
+           reactionToMaxSearchBox.sendKeys("bio1");
+           foundRMItem = availableRMItems.findElements(By.cssSelector("span[class='kb-btn-icon']"));
+       }
+       foundRMItem.get(0).click();
+
+    }
+
+    private void programReactionKnockOuts(WebElement scopedFBACard, FBAParameters params) {
+        //setting reaction knockouts
+        System.out.println("Setting reaction knockouts");
+        //clear out old selections if any
+        WebElement reactionKnockoutArea = scopedFBACard
+                .findElement(By.cssSelector("div[data-parameter='reaction_ko_list']"));
+        WebElement selectedItemsRK = reactionKnockoutArea
+                .findElement(By.cssSelector("div[data-element='selected-items']"));
+        boolean removeElementsFromReactionKnockout = true;
+        while (removeElementsFromReactionKnockout) {
+            try {
+                WebElement alreadySelectedKO = selectedItemsRK
+                        .findElement(By.cssSelector("span[class='fa fa-minus-circle']"));
+                alreadySelectedKO.click();
+
+            } catch (Exception e) {
+                removeElementsFromReactionKnockout = false;
+
+            }
+        }
+        //put in new elements
+        WebElement reactionKOSearchBox = reactionKnockoutArea
+                .findElement(By.cssSelector("input[class='form-contol']"));
+        WebElement availableKOItems = reactionKnockoutArea
+                .findElement(By.cssSelector("div[data-element='available-items']"));
+        LinkedList<String> reactionKOS = params.getReactionKnockouts();
+        if (reactionKOS != null) {
+            for (String reactionKO : reactionKOS
+            ) {
+                reactionKOSearchBox.clear();
+                reactionKOSearchBox.sendKeys(reactionKO);
+                List<WebElement> foundKOItems = availableKOItems
+                        .findElements(By.cssSelector("span[class='kb-btn-icon']"));
+                if (foundKOItems.size() == 0) {
+                    System.out.println("Unable to find: " + reactionKO);
+                } else {
+                    foundKOItems.get(0).click();
+                }
+            }
+        }
+
     }
 
     private void resetFBAIfRequired() {
