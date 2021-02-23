@@ -72,7 +72,9 @@ public class GUIForm extends JFrame {
     private JTextArea reactionKnockouts;
     private boolean formError = false; //try catches will signal this.
 
-
+    /*
+    Main GUI Controller Function
+     */
     public GUIForm(JobManager jobManager) {
         this.jobManager = jobManager;
         //while (numberJobsValue >= 1) {
@@ -100,7 +102,17 @@ public class GUIForm extends JFrame {
                     if (!formError) {
                         JComponent comp = (JComponent) e.getSource();
                         Window win = SwingUtilities.getWindowAncestor(comp);
-                        win.dispose();
+                        if(numberJobsValue >= 1){
+                            JOptionPane.showMessageDialog(win, "Job Confirmed");
+                            numberJobs.setText("Remaining Jobs: " + numberJobsValue);
+                            numberJobs.setEditable(false);
+                            //RESET GUI VALUES
+                            //DAULTON PICK UP HERE
+                        }
+                        else {
+                            win.dispose();
+                        }
+                        numberJobsValue--;
                         // Create and queue a job from the user's inputs
                         try {
                             // Setup the parameters
