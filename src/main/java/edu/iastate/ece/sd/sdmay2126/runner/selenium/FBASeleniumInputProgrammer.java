@@ -2,6 +2,7 @@ package edu.iastate.ece.sd.sdmay2126.runner.selenium;
 
 import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
+import org.apache.commons.lang.ObjectUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -198,18 +199,30 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
        WebElement reactionToMaxSearchBox = reactionToMaximizeArea
                .findElement(By.cssSelector("input[class='form-contol']")); //control is misspelled on the kbase html
        reactionToMaxSearchBox.clear();
-       reactionToMaxSearchBox.sendKeys(params.getReactionToMaximize());
-       WebElement availableRMItems = reactionToMaximizeArea
-               .findElement(By.cssSelector("div[data-element='available-items"));
-       List<WebElement> foundRMItem = availableRMItems
-               .findElements(By.cssSelector("span[class='kb-btn-icon']"));
-       if (foundRMItem.size() == 0) {
-           System.out.println("Unable to find " + params.getReactionToMaximize() + ". defaulting to bio1");
-           reactionToMaxSearchBox.clear();
-           reactionToMaxSearchBox.sendKeys("bio1");
-           foundRMItem = availableRMItems.findElements(By.cssSelector("span[class='kb-btn-icon']"));
+       if(params.getReactionToMaximize() != null) {
+           reactionToMaxSearchBox.sendKeys(params.getReactionToMaximize());
+           WebElement availableRMItems = reactionToMaximizeArea
+                   .findElement(By.cssSelector("div[data-element='available-items"));
+           List<WebElement> foundRMItem = availableRMItems
+                   .findElements(By.cssSelector("span[class='kb-btn-icon']"));
+           if (foundRMItem.size() == 0) {
+               System.out.println("Unable to find " + params.getReactionToMaximize() + ". defaulting to bio1");
+               reactionToMaxSearchBox.clear();
+               reactionToMaxSearchBox.sendKeys("bio1");
+               foundRMItem = availableRMItems.findElements(By.cssSelector("span[class='kb-btn-icon']"));
+           }
+           foundRMItem.get(0).click();
        }
-       foundRMItem.get(0).click();
+       else {
+           reactionToMaxSearchBox.sendKeys("bio1");
+           WebElement availableRMItems = reactionToMaximizeArea
+                   .findElement(By.cssSelector("div[data-element='available-items"));
+           List<WebElement> foundRMItem = availableRMItems
+                   .findElements(By.cssSelector("span[class='kb-btn-icon']"));
+           foundRMItem = availableRMItems.findElements(By.cssSelector("span[class='kb-btn-icon']"));
+           foundRMItem.get(0).click();
+
+       }
 
     }
 
