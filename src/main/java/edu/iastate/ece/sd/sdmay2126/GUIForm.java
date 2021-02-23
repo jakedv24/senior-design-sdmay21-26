@@ -75,150 +75,46 @@ public class GUIForm extends JFrame {
 
     public GUIForm(JobManager jobManager) {
         this.jobManager = jobManager;
-
-        guiInitialization();
-
-        activationCoefficientText.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (activationCoefficientText.getText().contains("Coefficient")
-                        || activationCoefficientText.getText().contains("Activation")) {
-                    activationCoefficientText.setText("");
-                    activationCoefficientText.setForeground(Color.BLACK);
-                }
-                activationCoefficientString = activationCoefficientText.getText();
-            }
-        });
-
-        numberJobs.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (numberJobs.getText().contains("Number")
-                        || numberJobs.getText().contains("jobs")) {
-                    numberJobs.setText("");
-                    numberJobs.setForeground(Color.BLACK);
-                }
-                numberJobsString = numberJobs.getText();
-            }
-        });
-
-        samplingCheckBox.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                sampleValue = samplingCheckBox.isSelected();
-                if (sampleValue) {
-                    errorTextField.setText("Fill in the fields to test the rest will be randomized.");
-                }
-            }
-        });
-
-        onTouchListenerNoDefault(carbonUptake, "Carbon Uptake");
-        carbonString = carbonUptake.getText();
-        onTouchListenerNoDefault(phosphateUptake, "Phosphate Uptake");
-        phosphateString = phosphateUptake.getText();
-        onTouchListenerNoDefault(nitrogenUptake, "Nitrogen Uptake");
-        nitrogenString = nitrogenUptake.getText();
-        onTouchListenerNoDefault(sulfurUptake, "Sulfur Uptake");
-        sulfurString = sulfurUptake.getText();
-        onTouchListenerNoDefault(oxygenUptake, "Oxygen Uptake");
-        oxygenString = oxygenUptake.getText();
-
-        expressionThreshold.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (expressionThreshold.getText().contains("Expression")
-                        || expressionThreshold.getText().contains("Threshold")) {
-                    expressionThreshold.setText("");
-                    expressionThreshold.setForeground(Color.BLACK);
-                }
-                expressionthresholdString = expressionThreshold.getText();
-            }
-        });
-        expressionUncertainty.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (expressionUncertainty.getText().contains("Expression")
-                        || expressionUncertainty.getText().contains("Uncertainty")) {
-                    expressionUncertainty.setText("");
-                    expressionUncertainty.setForeground(Color.BLACK);
-                }
-                expressionUncertaintyString = expressionUncertainty.getText();
-            }
-        });
-        reactionToMaximize.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (reactionToMaximize.getText().contains("Reaction")
-                        || reactionToMaximize.getText().contains("Maximize")) {
-                    reactionToMaximize.setText("");
-                    reactionToMaximize.setForeground(Color.BLACK);
-                }
-                reactionToMaximizeString = reactionToMaximize.getText();
-            }
-        });
-        geneKnockouts.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (geneKnockouts.getText().equals("Gene Knockouts")) {
-                    geneKnockouts.setText("");
-                    geneKnockouts.setForeground(Color.BLACK);
-                }
-                geneKnockoutsString = geneKnockouts.getText();
-            }
-        });
-        reactionKnockouts.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (reactionKnockouts.getText().equals("ReactionKnockouts")) {
-                    reactionKnockouts.setText("");
-                    reactionKnockouts.setForeground(Color.BLACK);
-                }
-
-            }
-        });
-        runDefaultSettingsButton.addActionListener(new ActionListener() {
-            /*
-            When the user presses the "run" button, We are going to save all the variables
-            that they have input.
-             */
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //randomValue will be 1 if the random box is selected, This means
-                //We will bypass all other GUI checks.
-                randomValue = randomCheckBox.isSelected();
-                sampleValue = samplingCheckBox.isSelected();
-                if (!randomValue) {
-                    guiValidator();
-                    //Viewing the checklists of the 3 booleans and setting the values appropriately.
-                    fluxVariabilityAnalysisValue = fluxVariabilityAnalysis.isSelected();
-                    simulateAllSingleKosValue = simulateAllSingleKos.isSelected();
-                    minimizeFluxValue = minimizeFlux.isSelected();
-                    //Close the Jpanel and free the resources it used.
-                }
-                if (!formError) {
-                    JComponent comp = (JComponent) e.getSource();
-                    Window win = SwingUtilities.getWindowAncestor(comp);
-                    win.dispose();
-                    // Create and queue a job from the user's inputs
-                    try {
-                        // Setup the parameters
-                        FBAParameters params = activateForm();
-                        jobManager.scheduleJob(new Job(params));
-                    } catch (JobManagerStoppedException jobManagerStoppedException) {
-                        // TODO: Handle better
-                        jobManagerStoppedException.printStackTrace();
+        //while (numberJobsValue >= 1) {
+            guiInitialization();
+            mouseClickActivators();
+            runDefaultSettingsButton.addActionListener(new ActionListener() {
+                /*
+                When the user presses the "run" button, We are going to save all the variables
+                that they have input.
+                 */
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //randomValue will be 1 if the random box is selected, This means
+                    //We will bypass all other GUI checks.
+                    randomValue = randomCheckBox.isSelected();
+                    sampleValue = samplingCheckBox.isSelected();
+                    if (!randomValue) {
+                        guiValidator();
+                        //Viewing the checklists of the 3 booleans and setting the values appropriately.
+                        fluxVariabilityAnalysisValue = fluxVariabilityAnalysis.isSelected();
+                        simulateAllSingleKosValue = simulateAllSingleKos.isSelected();
+                        minimizeFluxValue = minimizeFlux.isSelected();
+                        //Close the Jpanel and free the resources it used.
+                    }
+                    if (!formError) {
+                        JComponent comp = (JComponent) e.getSource();
+                        Window win = SwingUtilities.getWindowAncestor(comp);
+                        win.dispose();
+                        // Create and queue a job from the user's inputs
+                        try {
+                            // Setup the parameters
+                            FBAParameters params = activateForm();
+                            jobManager.scheduleJob(new Job(params));
+                        } catch (JobManagerStoppedException jobManagerStoppedException) {
+                            // TODO: Handle better
+                            jobManagerStoppedException.printStackTrace();
+                        }
                     }
                 }
-            }
-        });
+            });
+        //}
+        //numberJobsValue--;
     }
 
     /*
@@ -497,6 +393,120 @@ public class GUIForm extends JFrame {
         params.setMaxOxygenUptake(getRandInRange(0, 100));
         params.setExpressionThreshold(getRandInRange(0, 1));
         params.setExpressionUncertainty(getRandInRange(0, 100)); //MAY NEED TO CHANGE THE MAX
+    }
+
+    /*
+    Method to simplify the main GUI method.
+    Putting all the Mouse click setup in here to make the "Main"
+    method simplified.
+     */
+    private void mouseClickActivators() {
+        activationCoefficientText.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (activationCoefficientText.getText().contains("Coefficient")
+                        || activationCoefficientText.getText().contains("Activation")) {
+                    activationCoefficientText.setText("");
+                    activationCoefficientText.setForeground(Color.BLACK);
+                }
+                activationCoefficientString = activationCoefficientText.getText();
+            }
+        });
+
+        numberJobs.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (numberJobs.getText().contains("Number")
+                        || numberJobs.getText().contains("jobs")) {
+                    numberJobs.setText("");
+                    numberJobs.setForeground(Color.BLACK);
+                }
+                numberJobsString = numberJobs.getText();
+            }
+        });
+
+        samplingCheckBox.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                sampleValue = samplingCheckBox.isSelected();
+                if (sampleValue) {
+                    errorTextField.setText("Fill in the fields to test the rest will be randomized.");
+                }
+            }
+        });
+
+        onTouchListenerNoDefault(carbonUptake, "Carbon Uptake");
+        carbonString = carbonUptake.getText();
+        onTouchListenerNoDefault(phosphateUptake, "Phosphate Uptake");
+        phosphateString = phosphateUptake.getText();
+        onTouchListenerNoDefault(nitrogenUptake, "Nitrogen Uptake");
+        nitrogenString = nitrogenUptake.getText();
+        onTouchListenerNoDefault(sulfurUptake, "Sulfur Uptake");
+        sulfurString = sulfurUptake.getText();
+        onTouchListenerNoDefault(oxygenUptake, "Oxygen Uptake");
+        oxygenString = oxygenUptake.getText();
+
+        expressionThreshold.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (expressionThreshold.getText().contains("Expression")
+                        || expressionThreshold.getText().contains("Threshold")) {
+                    expressionThreshold.setText("");
+                    expressionThreshold.setForeground(Color.BLACK);
+                }
+                expressionthresholdString = expressionThreshold.getText();
+            }
+        });
+        expressionUncertainty.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (expressionUncertainty.getText().contains("Expression")
+                        || expressionUncertainty.getText().contains("Uncertainty")) {
+                    expressionUncertainty.setText("");
+                    expressionUncertainty.setForeground(Color.BLACK);
+                }
+                expressionUncertaintyString = expressionUncertainty.getText();
+            }
+        });
+        reactionToMaximize.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (reactionToMaximize.getText().contains("Reaction")
+                        || reactionToMaximize.getText().contains("Maximize")) {
+                    reactionToMaximize.setText("");
+                    reactionToMaximize.setForeground(Color.BLACK);
+                }
+                reactionToMaximizeString = reactionToMaximize.getText();
+            }
+        });
+        geneKnockouts.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (geneKnockouts.getText().equals("Gene Knockouts")) {
+                    geneKnockouts.setText("");
+                    geneKnockouts.setForeground(Color.BLACK);
+                }
+                geneKnockoutsString = geneKnockouts.getText();
+            }
+        });
+        reactionKnockouts.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (reactionKnockouts.getText().equals("ReactionKnockouts")) {
+                    reactionKnockouts.setText("");
+                    reactionKnockouts.setForeground(Color.BLACK);
+                }
+
+            }
+        });
     }
 
     /**
