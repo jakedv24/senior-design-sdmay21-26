@@ -21,9 +21,8 @@ public class FBAParameters implements ApplicationParameters {
     private float expressionThreshold;
     private float expressionUncertainty;
     private LinkedList<String> geneKnockouts;
-    // TODO geneKnockouts
     private LinkedList<String> reactionKnockouts;
-    // TODO customFluxBounds
+    private LinkedList<String> customFluxBounds;
     // TODO mediaSupplement
     // TODO expressionCondition
 
@@ -166,6 +165,10 @@ public class FBAParameters implements ApplicationParameters {
     public void setGeneKnockouts(LinkedList<String> geneKnockouts) {
         this.geneKnockouts = geneKnockouts;
     }
+
+    public void setCustomFluxBounds(LinkedList<String> customFluxBounds) {this.geneKnockouts = customFluxBounds; }
+
+    public LinkedList<String> getCustomFluxBounds() {return customFluxBounds; }
 
     @Override
     public ApplicationType getApplication() {

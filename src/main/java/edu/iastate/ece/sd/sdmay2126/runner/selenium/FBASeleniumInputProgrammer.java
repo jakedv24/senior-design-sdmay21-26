@@ -6,6 +6,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.lang.reflect.Parameter;
 import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
@@ -56,6 +57,8 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         programReactionToMaximize(scopedFBACard, params);
 
         programReactionKnockOuts(scopedFBACard, params);
+
+        programCustomFLuxBounds(scopedFBACard, params);
 
         System.out.println("Programming FBA complete.");
 
@@ -264,6 +267,50 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
                 }
             }
         }
+
+    }
+
+    private void programCustomFLuxBounds(WebElement scopedFBACard, FBAParameters params) {
+        System.out.println("Setting Custom Flux Bounds");
+        WebElement customFluxBoundsArea = scopedFBACard
+                .findElement(By.cssSelector("div[data-parameter='custom_bound_list']"));
+        LinkedList<String> customBounds = params.getCustomFluxBounds();
+        int i = 0;
+        while (true) {
+            String current = "div[data-index='" + i + "']";
+            Boolean alreadyExist = customFluxBoundsArea
+                    .findElements(By.cssSelector(current)).size() > 0;
+            if (alreadyExist) {
+                WebElement customBoundsElement = customFluxBoundsArea
+                        .findElement(By.cssSelector(current));
+                WebElement delete = customBoundsElement
+                        .findElement(By.cssSelector("span[class='fa fa-close']"));
+                delete.click();
+                i++;
+            } else {
+                break;
+            }
+        }
+        i = 0;
+        if(customBounds != null)
+        {
+            for (String cBound : customBounds) {
+                WebElement button = customFluxBoundsArea
+                        .findElement(By.cssSelector("button[class='btn btn-default']"));
+                button.click();
+
+                String current = "div[data-index='" + i + "']";
+                WebElement currentElement = customFluxBoundsArea
+                        .findElement(By.cssSelector(current));
+                WebElement customText = currentElement
+                        .findElement(By.cssSelector("input[class='form-control']"));
+               // customText.clear();
+                customText.sendKeys(cBound);
+                i++;
+            }
+
+        }
+
 
     }
 
