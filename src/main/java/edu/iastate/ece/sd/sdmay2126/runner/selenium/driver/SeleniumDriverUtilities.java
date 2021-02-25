@@ -13,6 +13,8 @@ public class SeleniumDriverUtilities {
                 return SeleniumDrivers.CHROME;
             case "firefox":
                 return SeleniumDrivers.FIREFOX;
+            case "safari":
+                return SeleniumDrivers.SAFARI;
             default:
                 throw new InvalidSeleniumDriverException(driverName);
         }

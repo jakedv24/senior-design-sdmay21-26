@@ -5,5 +5,6 @@ package edu.iastate.ece.sd.sdmay2126.runner.selenium.driver;
  */
 public enum SeleniumDrivers {
     FIREFOX,
-    CHROME
+    CHROME,
+    SAFARI
 }

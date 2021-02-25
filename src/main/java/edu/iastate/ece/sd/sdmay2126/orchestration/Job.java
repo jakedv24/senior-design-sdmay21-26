@@ -10,23 +10,18 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Job {
 
-    private ApplicationParameters parameters;
-    private JobCompleted completionCallback;
-    private JobCanceled cancellationCallback;
-    private JobFailed failureCallback;
+    private final ApplicationParameters parameters;
+    private final JobUpdate updateCallback;
     private ApplicationOutput output;
     private JobResult result = JobResult.UNKNOWN;
 
     public Job(ApplicationParameters parameters) {
-        this(parameters, null, null, null);
+        this(parameters, null);
     }
 
-    public Job(@NotNull ApplicationParameters parameters, JobCompleted completionCallback,
-               JobCanceled cancellationCallback, JobFailed failureCallback) {
+    public Job(@NotNull ApplicationParameters parameters, JobUpdate updateCallback) {
         this.parameters = parameters;
-        this.completionCallback = completionCallback;
-        this.cancellationCallback = cancellationCallback;
-        this.failureCallback = failureCallback;
+        this.updateCallback = updateCallback;
     }
 
     public ApplicationType getApplication() {
@@ -45,23 +40,19 @@ public class Job {
         return result;
     }
 
-    public JobCompleted getCompletionCallback() {
-        return completionCallback;
-    }
-
-    public JobCanceled getCancellationCallback() {
-        return cancellationCallback;
-    }
-
-    public JobFailed getFailureCallback() {
-        return failureCallback;
-    }
-
     public void setOutput(ApplicationOutput output) {
         this.output = output;
+        callUpdateCallback();
     }
 
     public void setResult(JobResult result) {
         this.result = result;
+        callUpdateCallback();
+    }
+
+    private void callUpdateCallback() {
+        if (updateCallback != null) {
+            updateCallback.onUpdate(this);
+        }
     }
 }

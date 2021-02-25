@@ -2,6 +2,7 @@ package edu.iastate.ece.sd.sdmay2126;
 
 import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
 import edu.iastate.ece.sd.sdmay2126.configuration.ConfigurationLoader;
+import edu.iastate.ece.sd.sdmay2126.gui.status.JobStatusFrame;
 import edu.iastate.ece.sd.sdmay2126.input.FileInputReader;
 import edu.iastate.ece.sd.sdmay2126.input.JSONFileInputReader;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;

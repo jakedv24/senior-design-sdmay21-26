@@ -5,6 +5,9 @@ package edu.iastate.ece.sd.sdmay2126.orchestration;
  */
 public enum JobResult {
     UNKNOWN,
+    QUEUED,
+    RUNNING,
     SUCCESS,
-    FAILURE
+    FAILURE,
+    CANCELLED
 }

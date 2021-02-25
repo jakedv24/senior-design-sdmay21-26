@@ -2,10 +2,7 @@ package edu.iastate.ece.sd.sdmay2126.runner.selenium;
 
 import edu.iastate.ece.sd.sdmay2126.application.ApplicationType;
 import edu.iastate.ece.sd.sdmay2126.application.InvalidApplicationException;
-import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
-import edu.iastate.ece.sd.sdmay2126.orchestration.JobManager;
-import edu.iastate.ece.sd.sdmay2126.orchestration.JobManagerStoppedException;
-import edu.iastate.ece.sd.sdmay2126.orchestration.JobResult;
+import edu.iastate.ece.sd.sdmay2126.orchestration.*;
 import edu.iastate.ece.sd.sdmay2126.output.JSONJobOutputWriter;
 import edu.iastate.ece.sd.sdmay2126.output.JobOutputWriter;
 import edu.iastate.ece.sd.sdmay2126.runner.Runner;
@@ -17,8 +14,10 @@ import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus.Globus
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverChrome;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverConfiguration;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverFirefox;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverSafari;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -89,6 +88,9 @@ public class SeleniumRunner implements Runner {
                 // Mark the runner busy
                 waiting = false;
 
+                // Mark the job as running
+                nextJob.setResult(JobResult.RUNNING);
+
                 try {
                     // Execute the job, provided that the session is ready
                     executeRunner(nextJob);
@@ -96,7 +98,7 @@ public class SeleniumRunner implements Runner {
                     // If we made it here, things should've been a success
                     nextJob.setResult(JobResult.SUCCESS);
                 } catch (RunnerNotInitializedException | InvalidApplicationException
-                        | SeleniumIdentificationException e) {
+                        | SeleniumIdentificationException | WebDriverException e) {
                     // TODO: Either scope logging to the runner, or delegate this to the job's
                     //  callback with a faillback to the manager
                     System.err.println("A job has failed, but the runner will reset and continue execution.");
@@ -169,6 +171,8 @@ public class SeleniumRunner implements Runner {
                 return new SeleniumDriverChrome().initializeDriver(driverConfiguration);
             case FIREFOX:
                 return new SeleniumDriverFirefox().initializeDriver(driverConfiguration);
+            case SAFARI:
+                return new SeleniumDriverSafari().initializeDriver(driverConfiguration);
             default:
                 throw new IllegalArgumentException("Invalid web-driver type.");
         }

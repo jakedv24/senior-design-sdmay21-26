@@ -1,6 +1,7 @@
 package edu.iastate.ece.sd.sdmay2126;
 
 import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
+import edu.iastate.ece.sd.sdmay2126.gui.status.JobStatusFrame;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManager;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManagerStoppedException;
@@ -19,6 +20,8 @@ import static edu.iastate.ece.sd.sdmay2126.util.RandomUtil.getRandInRange;
 
 public class GUIForm extends JFrame {
     private final JobManager jobManager;
+    private final JobStatusFrame statusWindow;
+
     //Strings for floats
     public String activationCoefficientString; //the string to be converted
     public String carbonString;
@@ -204,14 +207,11 @@ public class GUIForm extends JFrame {
                     //Close the Jpanel and free the resources it used.
                 }
                 if (!formError) {
-                    JComponent comp = (JComponent) e.getSource();
-                    Window win = SwingUtilities.getWindowAncestor(comp);
-                    win.dispose();
                     // Create and queue a job from the user's inputs
                     try {
                         // Setup the parameters
                         FBAParameters params = activateForm();
-                        jobManager.scheduleJob(new Job(params));
+                        jobManager.scheduleJob(new Job(params, statusWindow::updateJobStatus));
                     } catch (JobManagerStoppedException jobManagerStoppedException) {
                         // TODO: Handle better
                         jobManagerStoppedException.printStackTrace();
@@ -219,6 +219,10 @@ public class GUIForm extends JFrame {
                 }
             }
         });
+
+        // Start the job status window
+        statusWindow = new JobStatusFrame();
+        SwingUtilities.invokeLater(() -> statusWindow.setVisible(true));
     }
 
     /*
@@ -296,7 +300,7 @@ public class GUIForm extends JFrame {
         numberJobs.setForeground(Color.gray);
         reactionKnockouts.setForeground(Color.gray);
 
-
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
     /*

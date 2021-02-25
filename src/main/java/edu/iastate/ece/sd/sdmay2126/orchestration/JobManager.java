@@ -76,6 +76,7 @@ public class JobManager implements Runnable {
         }
 
         jobQueue.add(job);
+        job.setResult(JobResult.QUEUED);
     }
 
     /**
@@ -120,12 +121,8 @@ public class JobManager implements Runnable {
      * @param cause Optionally, a cause for the failure.
      */
     public void notifyOfFailure(Job job, Throwable cause) {
-        if (job.getFailureCallback() != null) {
-            job.getFailureCallback().onFailure(job, cause);
-        } else {
-            // Fallback to the console if the UI isn't handling it
-            cause.printStackTrace();
-        }
+        cause.printStackTrace();
+        job.setResult(JobResult.FAILURE);
     }
 
     @Override
@@ -166,11 +163,7 @@ public class JobManager implements Runnable {
         // We're gracefully stopping; provide an opportunity to save-off pending jobs
         if (!jobQueue.isEmpty()) {
             for (Job unexecutedJob : jobQueue) {
-                // If the job had a cancellation callback specified, call it
-                JobCanceled callback = unexecutedJob.getCancellationCallback();
-                if (callback != null) {
-                    callback.onCancellation(unexecutedJob);
-                }
+                unexecutedJob.setResult(JobResult.CANCELLED);
             }
         }
     }
