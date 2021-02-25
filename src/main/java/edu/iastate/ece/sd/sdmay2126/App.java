@@ -81,6 +81,7 @@ public class App {
             ConfigurationLoader configuration;
 
             if (fromConfigFile && remoteWebDriver) {
+                System.out.println("From remote web driver: " + remoteWebDriverURL);
                 configuration = new ConfigurationLoader(configFileName, "chrome_remote", remoteWebDriverURL);
             } else {
                 configuration = new ConfigurationLoader();

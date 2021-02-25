@@ -16,10 +16,13 @@ public class ConfigurationLoader {
     private final Properties applicationProperties;
     private final Properties environmentProperties;
     private String appConfigPath;
+    private String envConfigPath;
 
     public ConfigurationLoader() {
         // Set reasonable defaults for the env.config, since it won't be checked-in
         this("app.config", "CHROME", "./drivers/chromedriver");
+
+        this.envConfigPath = "env.config";
     }
 
     public ConfigurationLoader(String appConfigPath, String driverType, String pathToDriver) {
@@ -31,6 +34,7 @@ public class ConfigurationLoader {
         environmentProperties.setProperty("selenium.driver.path", pathToDriver);
 
         this.appConfigPath = appConfigPath;
+        this.envConfigPath = null;
     }
 
     public Properties getApplicationProperties() {
@@ -50,7 +54,9 @@ public class ConfigurationLoader {
 
         // Attempt to load the optional env.config
         try {
-            loadConfiguration("env.config", environmentProperties);
+            if (envConfigPath != null) {
+                loadConfiguration(envConfigPath, environmentProperties);
+            }
         } catch (FileNotFoundException e) {
             System.out.println("Application could not find env.config; continuing with defaults");
         }
