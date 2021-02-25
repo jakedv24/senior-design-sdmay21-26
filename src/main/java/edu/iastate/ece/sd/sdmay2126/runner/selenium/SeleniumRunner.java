@@ -14,6 +14,7 @@ import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotReadyException;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.SeleniumAuthenticationFlow;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus.GlobusAuthenticationConfiguration;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus.GlobusAuthenticationFlow;
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverChromeRemote;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverChrome;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverConfiguration;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverFirefox;
@@ -169,6 +170,8 @@ public class SeleniumRunner implements Runner {
                 return new SeleniumDriverChrome().initializeDriver(driverConfiguration);
             case FIREFOX:
                 return new SeleniumDriverFirefox().initializeDriver(driverConfiguration);
+            case CHROME_REMOTE:
+                return new SeleniumDriverChromeRemote().initializeDriver(driverConfiguration);
             default:
                 throw new IllegalArgumentException("Invalid web-driver type.");
         }

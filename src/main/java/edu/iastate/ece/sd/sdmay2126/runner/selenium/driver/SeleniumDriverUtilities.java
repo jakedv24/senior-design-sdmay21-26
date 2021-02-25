@@ -13,6 +13,8 @@ public class SeleniumDriverUtilities {
                 return SeleniumDrivers.CHROME;
             case "firefox":
                 return SeleniumDrivers.FIREFOX;
+            case "chrome_remote":
+                return SeleniumDrivers.CHROME_REMOTE;
             default:
                 throw new InvalidSeleniumDriverException(driverName);
         }
