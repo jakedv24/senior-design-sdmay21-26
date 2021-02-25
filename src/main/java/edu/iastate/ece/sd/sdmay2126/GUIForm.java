@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -70,6 +71,8 @@ public class GUIForm extends JFrame {
     private JTextField numberJobs;
     private JTextField geneKnockouts;
     private JTextArea reactionKnockouts;
+    private JCheckBox readFromFileCheckBox;
+    public File userFile;
     private boolean formError = false; //try catches will signal this.
 
     /*
@@ -78,53 +81,50 @@ public class GUIForm extends JFrame {
     public GUIForm(JobManager jobManager) {
         this.jobManager = jobManager;
         //while (numberJobsValue >= 1) {
-            guiInitialization();
-            mouseClickActivators();
-            runDefaultSettingsButton.addActionListener(new ActionListener() {
-                /*
-                When the user presses the "run" button, We are going to save all the variables
-                that they have input.
-                 */
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    //randomValue will be 1 if the random box is selected, This means
-                    //We will bypass all other GUI checks.
-                    randomValue = randomCheckBox.isSelected();
-                    sampleValue = samplingCheckBox.isSelected();
-                    if (!randomValue) {
-                        guiValidator();
-                        //Viewing the checklists of the 3 booleans and setting the values appropriately.
-                        fluxVariabilityAnalysisValue = fluxVariabilityAnalysis.isSelected();
-                        simulateAllSingleKosValue = simulateAllSingleKos.isSelected();
-                        minimizeFluxValue = minimizeFlux.isSelected();
-                        //Close the Jpanel and free the resources it used.
+        guiInitialization();
+        mouseClickActivators();
+        runDefaultSettingsButton.addActionListener(new ActionListener() {
+            /*
+            When the user presses the "run" button, We are going to save all the variables
+            that they have input.
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //randomValue will be 1 if the random box is selected, This means
+                //We will bypass all other GUI checks.
+                randomValue = randomCheckBox.isSelected();
+                sampleValue = samplingCheckBox.isSelected();
+                if (readFromFileCheckBox.isSelected()) {
+                    JFileChooser chooser = new JFileChooser();
+                    if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                        userFile = chooser.getSelectedFile();
                     }
-                    if (!formError) {
-                        JComponent comp = (JComponent) e.getSource();
-                        Window win = SwingUtilities.getWindowAncestor(comp);
-                        if(numberJobsValue >= 1){
-                            JOptionPane.showMessageDialog(win, "Job Confirmed");
-                            numberJobs.setText("Remaining Jobs: " + numberJobsValue);
-                            numberJobs.setEditable(false);
-                            //RESET GUI VALUES
-                            //DAULTON PICK UP HERE
-                        }
-                        else {
-                            win.dispose();
-                        }
-                        numberJobsValue--;
-                        // Create and queue a job from the user's inputs
-                        try {
-                            // Setup the parameters
-                            FBAParameters params = activateForm();
-                            jobManager.scheduleJob(new Job(params));
-                        } catch (JobManagerStoppedException jobManagerStoppedException) {
-                            // TODO: Handle better
-                            jobManagerStoppedException.printStackTrace();
-                        }
+                    //OPEN NEW FILE SCREEN
+                }
+                if (!randomValue) {
+                    guiValidator();
+                    //Viewing the checklists of the 3 booleans and setting the values appropriately.
+                    fluxVariabilityAnalysisValue = fluxVariabilityAnalysis.isSelected();
+                    simulateAllSingleKosValue = simulateAllSingleKos.isSelected();
+                    minimizeFluxValue = minimizeFlux.isSelected();
+                    //Close the Jpanel and free the resources it used.
+                }
+                if (!formError) {
+                    JComponent comp = (JComponent) e.getSource();
+                    Window win = SwingUtilities.getWindowAncestor(comp);
+                    win.dispose();
+                    // Create and queue a job from the user's inputs
+                    try {
+                        // Setup the parameters
+                        FBAParameters params = activateForm();
+                        jobManager.scheduleJob(new Job(params));
+                    } catch (JobManagerStoppedException jobManagerStoppedException) {
+                        // TODO: Handle better
+                        jobManagerStoppedException.printStackTrace();
                     }
                 }
-            });
+            }
+        });
         //}
         //numberJobsValue--;
     }
