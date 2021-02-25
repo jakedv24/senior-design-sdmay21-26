@@ -11,7 +11,8 @@ public class SeleniumDriverChromeRemote implements SeleniumDriverManager {
     @Override
     public WebDriver initializeDriver(SeleniumDriverConfiguration driverConfiguration) {
         try {
-            return new RemoteWebDriver(new URL(driverConfiguration.getDriverLocation()), new ChromeOptions().setHeadless(false));
+            return new RemoteWebDriver(
+                    new URL(driverConfiguration.getDriverLocation()), new ChromeOptions().setHeadless(false));
         } catch (MalformedURLException e) {
             e.printStackTrace();
             throw new Error("Could not get remote URL.");

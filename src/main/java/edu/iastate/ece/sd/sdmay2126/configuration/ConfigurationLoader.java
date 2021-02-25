@@ -1,8 +1,5 @@
 package edu.iastate.ece.sd.sdmay2126.configuration;
 
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDrivers;
-
-import javax.annotation.Nullable;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;

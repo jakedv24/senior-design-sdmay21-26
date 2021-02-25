@@ -99,7 +99,14 @@ public class App {
         initializeConfigurationsAndStart(fbaType, fromConfigFile, inputFileName, appProps, envProps);
     }
 
-    private static void initializeConfigurationsAndStart(boolean fbaType, boolean fromConfigFile, String inputFileName, Properties appProps, Properties envProps) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+    private static void initializeConfigurationsAndStart(boolean fbaType,
+                                                         boolean fromConfigFile,
+                                                         String inputFileName,
+                                                         Properties appProps,
+                                                         Properties envProps)
+            throws ClassNotFoundException, InstantiationException,
+            IllegalAccessException, UnsupportedLookAndFeelException {
+
         // Pull specific configuration values from the files
         String globusUser;
         String globusPass;
@@ -150,7 +157,8 @@ public class App {
         return new DefaultParser().parse(options, args);
     }
 
-    private static void runGUIMode(JobManager manager) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+    private static void runGUIMode(JobManager manager) throws ClassNotFoundException,
+            InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
         //Give the GUI a more authentic feel according to use OS
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         gui = new GUIForm(manager);
