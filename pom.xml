@@ -95,7 +95,6 @@
                         <archive>
                             <manifest>
                                 <addClasspath>true</addClasspath>
-<!--                                <classpathPrefix>lib/</classpathPrefix>-->
                                 <mainClass>edu.iastate.ece.sd.sdmay2126.App</mainClass>
                             </manifest>
                         </archive>
