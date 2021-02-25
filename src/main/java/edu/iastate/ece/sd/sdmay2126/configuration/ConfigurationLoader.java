@@ -1,5 +1,8 @@
 package edu.iastate.ece.sd.sdmay2126.configuration;
 
+import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDrivers;
+
+import javax.annotation.Nullable;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,14 +15,22 @@ import java.util.Properties;
 public class ConfigurationLoader {
     private final Properties applicationProperties;
     private final Properties environmentProperties;
+    private String appConfigPath;
 
     public ConfigurationLoader() {
+        // Set reasonable defaults for the env.config, since it won't be checked-in
+        this("app.config", "CHROME", "./drivers/chromedriver");
+    }
+
+    public ConfigurationLoader(String appConfigPath, String driverType, String pathToDriver) {
         applicationProperties = new Properties();
         environmentProperties = new Properties();
 
         // Set reasonable defaults for the env.config, since it won't be checked-in
-        environmentProperties.setProperty("selenium.driver.type", "CHROME");
-        environmentProperties.setProperty("selenium.driver.path", "./drivers/chromedriver");
+        environmentProperties.setProperty("selenium.driver.type", driverType);
+        environmentProperties.setProperty("selenium.driver.path", pathToDriver);
+
+        this.appConfigPath = appConfigPath;
     }
 
     public Properties getApplicationProperties() {
@@ -35,7 +46,7 @@ public class ConfigurationLoader {
      */
     public void loadConfiguration() throws IOException {
         // Load the required app.config
-        loadConfiguration("app.config", applicationProperties);
+        loadConfiguration(appConfigPath, applicationProperties);
 
         // Attempt to load the optional env.config
         try {
