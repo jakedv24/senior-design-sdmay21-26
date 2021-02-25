@@ -99,7 +99,6 @@ public class GUIForm extends JFrame {
                     if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                         userFile = chooser.getSelectedFile();
                     }
-                    //OPEN NEW FILE SCREEN
                 }
                 if (!randomValue) {
                     guiValidator();
