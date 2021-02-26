@@ -201,7 +201,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
 
         j = 0;
         if (customFluxBoundsLinked != null) {
-            for (String CFB : customFluxBoundsLinked) {
+            for (String customFluxInput : customFluxBoundsLinked) {
                 WebElement customFluxBoundsButton = customFluxBounds
                         .findElement(By.cssSelector("button[class='btn btn-default']"));
                 customFluxBoundsButton.click();
@@ -213,7 +213,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
                 WebElement customFluxBoundsText = customFluxBoundsRow
                         .findElement(By.cssSelector("input[class='form-control']"));
                 customFluxBoundsText.clear();
-                customFluxBoundsText.sendKeys(CFB);
+                customFluxBoundsText.sendKeys(customFluxInput);
                 j++;
             }
         }

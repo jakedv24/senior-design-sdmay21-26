@@ -167,9 +167,13 @@ public class FBAParameters implements ApplicationParameters {
         this.geneKnockouts = geneKnockouts;
     }
 
-    public LinkedList<String> getCustomFluxBounds() { return customFluxBounds; }
+    public LinkedList<String> getCustomFluxBounds() {
+        return customFluxBounds;
+    }
 
-    public void setCustomFluxBounds(LinkedList<String> customFluxBounds) { this.customFluxBounds = customFluxBounds; }
+    public void setCustomFluxBounds(LinkedList<String> customFluxBounds) {
+        this.customFluxBounds = customFluxBounds;
+    }
 
     @Override
     public ApplicationType getApplication() {
