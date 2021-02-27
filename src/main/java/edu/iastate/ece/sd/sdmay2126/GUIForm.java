@@ -1,6 +1,8 @@
 package edu.iastate.ece.sd.sdmay2126;
 
 import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
+import edu.iastate.ece.sd.sdmay2126.input.FileInputReader;
+import edu.iastate.ece.sd.sdmay2126.input.JSONFileInputReader;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManager;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManagerStoppedException;
@@ -12,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -92,13 +95,27 @@ public class GUIForm extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 //randomValue will be 1 if the random box is selected, This means
                 //We will bypass all other GUI checks.
+                FBAParameters params;
+                boolean readFromFile = false;
                 randomValue = randomCheckBox.isSelected();
                 sampleValue = samplingCheckBox.isSelected();
                 if (readFromFileCheckBox.isSelected()) {
                     JFileChooser chooser = new JFileChooser();
                     if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                         userFile = chooser.getSelectedFile();
+                        String absoluteFilePath = userFile.getAbsolutePath();
+                        FileInputReader<FBAParameters> fbaFileInputReader = new JSONFileInputReader();
+                        try {
+                            params = fbaFileInputReader.parseFromFile(absoluteFilePath);
+                            readFromFile = true;
+                            jobManager.scheduleJob(new Job(params));
+                        } catch (FileNotFoundException | JobManagerStoppedException fileNotFoundException) {
+                            fileNotFoundException.printStackTrace();
+                        }
+                        //parseFromFile Json File input reader
+                        //Example in app.java Line 100
                     }
+
                 }
                 if (!randomValue) {
                     guiValidator();
@@ -115,8 +132,10 @@ public class GUIForm extends JFrame {
                     // Create and queue a job from the user's inputs
                     try {
                         // Setup the parameters
-                        FBAParameters params = activateForm();
-                        jobManager.scheduleJob(new Job(params));
+                        if(!readFromFile) {
+                            params = activateForm();
+                            jobManager.scheduleJob(new Job(params));
+                        }
                     } catch (JobManagerStoppedException jobManagerStoppedException) {
                         // TODO: Handle better
                         jobManagerStoppedException.printStackTrace();
