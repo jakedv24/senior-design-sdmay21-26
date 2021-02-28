@@ -28,6 +28,7 @@ public class GUIForm extends JFrame {
     public String oxygenString;
     public String expressionthresholdString;
     public String expressionUncertaintyString;
+    public String mediaSupplementString;
     public String reactionToMaximizeString;
     public String numberJobsString;
     public String geneKnockoutsString;
@@ -70,6 +71,7 @@ public class GUIForm extends JFrame {
     private JTextField numberJobs;
     private JTextField geneKnockouts;
     private JTextArea reactionKnockouts;
+    private JTextField mediaSupplement;
     private boolean formError = false; //try catches will signal this.
 
 
@@ -184,6 +186,18 @@ public class GUIForm extends JFrame {
 
             }
         });
+
+        mediaSupplement.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (mediaSupplement.getText().equals("Media Supplement")) {
+                    mediaSupplement.setText("");
+                    mediaSupplement.setForeground(Color.BLACK);
+                }
+                mediaSupplementString = mediaSupplement.getText();
+            }
+        });
         runDefaultSettingsButton.addActionListener(new ActionListener() {
             /*
             When the user presses the "run" button, We are going to save all the variables
@@ -295,6 +309,7 @@ public class GUIForm extends JFrame {
         expressionUncertainty.setForeground(Color.gray);
         numberJobs.setForeground(Color.gray);
         reactionKnockouts.setForeground(Color.gray);
+        mediaSupplement.setForeground(Color.gray);
 
 
     }
@@ -342,6 +357,7 @@ public class GUIForm extends JFrame {
         expressionUncertaintyString = expressionUncertainty.getText();
         reactionToMaximizeString = reactionToMaximize.getText();
         geneKnockoutsString = geneKnockouts.getText();
+        mediaSupplementString = mediaSupplement.getText();
 
 
         try {
@@ -451,7 +467,6 @@ public class GUIForm extends JFrame {
         }
         reactionKnockOutScanner.close();
 
-
         geneKnockoutsList = new LinkedList<String>();
         Scanner geneKnockOutScanner = new Scanner(geneKnockoutsString);
         geneKnockOutScanner.useDelimiter("[\t|;]");
@@ -481,6 +496,7 @@ public class GUIForm extends JFrame {
         params.setExpressionUncertainty(expressionUncertaintyValue);
         params.setGeneKnockouts(geneKnockoutsList);
         params.setReactionKnockouts(reactionKnockOutList);
+        params.setMediaSupplements(mediaSupplementString);
     }
 
     private void randomChecked(FBAParameters params) {

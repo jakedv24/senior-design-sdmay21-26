@@ -57,6 +57,8 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
 
         programReactionKnockOuts(scopedFBACard, params);
 
+        programMediaSupplements(scopedFBACard, params);
+
         System.out.println("Programming FBA complete.");
 
     }
@@ -263,6 +265,53 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
                     foundKOItems.get(0).click();
                 }
             }
+        }
+
+    }
+
+    private void programMediaSupplements(WebElement scopedFBA, FBAParameters params) {
+
+        //Setting Media Supplements
+        System.out.println("Setting Media Supplements");
+
+        WebElement mediaSupplementArea = scopedFBA
+                .findElement(By.cssSelector("div[data-parameter='media_supplement_list']"));
+
+        WebElement mediaSupplementsButton = mediaSupplementArea
+                .findElement(By.cssSelector("button[class='btn btn-default']"));
+        mediaSupplementsButton.click();
+
+        //Clear out
+        WebElement selectedItemsRK = mediaSupplementArea
+                .findElement(By.cssSelector("div[data-element='selected-items']"));
+
+        boolean removeElementsFromMediaSupplement = true;
+        while (removeElementsFromMediaSupplement) {
+            try {
+                WebElement alreadySelectedMediaSupplement = selectedItemsRK
+                        .findElement(By.cssSelector("span[class='fa fa-minus-circle']"));
+                alreadySelectedMediaSupplement.click();
+
+            } catch (Exception e) {
+                removeElementsFromMediaSupplement = false;
+            }
+        }
+
+        WebElement mediaSupplementSearchBox = mediaSupplementArea
+                .findElement(By.cssSelector("input[class='form-contol']")); // Kbase misspelled this
+        WebElement availableSupplementItems = mediaSupplementArea
+                .findElement(By.cssSelector("div[data-element='available-items-area']"));
+        String mediaSupplement = params.getMediaSupplements();
+
+        mediaSupplementSearchBox.clear();
+        mediaSupplementSearchBox.sendKeys(mediaSupplement);
+
+        List<WebElement> foundMediaSupplementItems = availableSupplementItems
+                .findElements(By.cssSelector("span[class='kb-btn-icon']"));
+        if (foundMediaSupplementItems.size() == 0) {
+            System.out.println("Unable to find: " + mediaSupplement);
+        } else {
+            foundMediaSupplementItems.get(0).click();
         }
 
     }
