@@ -31,6 +31,7 @@ public class GUIForm extends JFrame {
     public String reactionToMaximizeString;
     public String numberJobsString;
     public String geneKnockoutsString;
+    public String mediaSupplementString;
     public JPanel mainPanel;
     //GUI Form variables to send to driver. Some have defaults set here, some do not.
     public boolean fluxVariabilityAnalysisValue = true; //Value read from the checkbox. Default = 1
@@ -49,6 +50,7 @@ public class GUIForm extends JFrame {
     public boolean sampleValue = false;
     public LinkedList<String> reactionKnockOutList;
     public LinkedList<String> geneKnockoutsList;
+    public LinkedList<String> mediaSupplementList;
     //GUI Components
     private JButton runDefaultSettingsButton;
     private JCheckBox fluxVariabilityAnalysis; //boolean, check is 1 unchecked is 0
@@ -185,6 +187,17 @@ public class GUIForm extends JFrame {
 
             }
         });
+
+        mediaSupplement.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (mediaSupplement.getText().equals("MediaSupplement")) {
+                    mediaSupplement.setText("");
+                    mediaSupplement.setForeground(Color.BLACK);
+                }
+            }
+        });
         runDefaultSettingsButton.addActionListener(new ActionListener() {
             /*
             When the user presses the "run" button, We are going to save all the variables
@@ -296,6 +309,7 @@ public class GUIForm extends JFrame {
         expressionUncertainty.setForeground(Color.gray);
         numberJobs.setForeground(Color.gray);
         reactionKnockouts.setForeground(Color.gray);
+        mediaSupplement.setForeground(Color.gray);
 
 
     }
@@ -452,7 +466,6 @@ public class GUIForm extends JFrame {
         }
         reactionKnockOutScanner.close();
 
-
         geneKnockoutsList = new LinkedList<String>();
         Scanner geneKnockOutScanner = new Scanner(geneKnockoutsString);
         geneKnockOutScanner.useDelimiter("[\t|;]");
@@ -460,6 +473,13 @@ public class GUIForm extends JFrame {
             geneKnockoutsList.add(geneKnockOutScanner.next());
         }
         geneKnockOutScanner.close();
+
+        mediaSupplementList = new LinkedList<String>();
+        Scanner mediaSupplementScanner = new Scanner(mediaSupplementString);
+        mediaSupplementScanner.useDelimiter("[\t|;]");
+        while (mediaSupplementScanner.hasNext()) {
+            mediaSupplementList.add(mediaSupplementScanner.next());
+        }
 
     }
 
@@ -482,6 +502,7 @@ public class GUIForm extends JFrame {
         params.setExpressionUncertainty(expressionUncertaintyValue);
         params.setGeneKnockouts(geneKnockoutsList);
         params.setReactionKnockouts(reactionKnockOutList);
+        params.setMediaSupplements(mediaSupplementList);
     }
 
     private void randomChecked(FBAParameters params) {
