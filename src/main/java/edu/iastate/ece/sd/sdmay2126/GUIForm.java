@@ -70,6 +70,7 @@ public class GUIForm extends JFrame {
     private JTextField numberJobs;
     private JTextField geneKnockouts;
     private JTextArea reactionKnockouts;
+    private JTextArea mediaSupplement;
     private boolean formError = false; //try catches will signal this.
 
 
