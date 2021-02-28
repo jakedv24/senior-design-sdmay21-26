@@ -28,10 +28,10 @@ public class GUIForm extends JFrame {
     public String oxygenString;
     public String expressionthresholdString;
     public String expressionUncertaintyString;
+    public String mediaSupplementString;
     public String reactionToMaximizeString;
     public String numberJobsString;
     public String geneKnockoutsString;
-    public String mediaSupplementString;
     public JPanel mainPanel;
     //GUI Form variables to send to driver. Some have defaults set here, some do not.
     public boolean fluxVariabilityAnalysisValue = true; //Value read from the checkbox. Default = 1
@@ -50,7 +50,6 @@ public class GUIForm extends JFrame {
     public boolean sampleValue = false;
     public LinkedList<String> reactionKnockOutList;
     public LinkedList<String> geneKnockoutsList;
-    public LinkedList<String> mediaSupplementList;
     //GUI Components
     private JButton runDefaultSettingsButton;
     private JCheckBox fluxVariabilityAnalysis; //boolean, check is 1 unchecked is 0
@@ -72,7 +71,7 @@ public class GUIForm extends JFrame {
     private JTextField numberJobs;
     private JTextField geneKnockouts;
     private JTextArea reactionKnockouts;
-    private JTextArea mediaSupplement;
+    private JTextField mediaSupplement;
     private boolean formError = false; //try catches will signal this.
 
 
@@ -192,10 +191,11 @@ public class GUIForm extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if (mediaSupplement.getText().equals("MediaSupplement")) {
+                if (mediaSupplement.getText().equals("Media Supplement")) {
                     mediaSupplement.setText("");
                     mediaSupplement.setForeground(Color.BLACK);
                 }
+                mediaSupplementString = mediaSupplement.getText();
             }
         });
         runDefaultSettingsButton.addActionListener(new ActionListener() {
@@ -357,6 +357,7 @@ public class GUIForm extends JFrame {
         expressionUncertaintyString = expressionUncertainty.getText();
         reactionToMaximizeString = reactionToMaximize.getText();
         geneKnockoutsString = geneKnockouts.getText();
+        mediaSupplementString = mediaSupplement.getText();
 
 
         try {
@@ -474,13 +475,6 @@ public class GUIForm extends JFrame {
         }
         geneKnockOutScanner.close();
 
-        mediaSupplementList = new LinkedList<String>();
-        Scanner mediaSupplementScanner = new Scanner(mediaSupplementString);
-        mediaSupplementScanner.useDelimiter("[\t|;]");
-        while (mediaSupplementScanner.hasNext()) {
-            mediaSupplementList.add(mediaSupplementScanner.next());
-        }
-
     }
 
     /*
@@ -502,7 +496,7 @@ public class GUIForm extends JFrame {
         params.setExpressionUncertainty(expressionUncertaintyValue);
         params.setGeneKnockouts(geneKnockoutsList);
         params.setReactionKnockouts(reactionKnockOutList);
-        params.setMediaSupplements(mediaSupplementList);
+        params.setMediaSupplements(mediaSupplementString);
     }
 
     private void randomChecked(FBAParameters params) {
