@@ -20,10 +20,10 @@ public class FBAParameters implements ApplicationParameters {
     private String reactionToMaximize;
     private float expressionThreshold;
     private float expressionUncertainty;
+
     private LinkedList<String> geneKnockouts;
-    // TODO geneKnockouts
     private LinkedList<String> reactionKnockouts;
-    private LinkedList<String> mediaSupplements;
+    private String mediaSupplements;
     // TODO customFluxBounds
     // TODO mediaSupplement
     // TODO expressionCondition
@@ -160,9 +160,9 @@ public class FBAParameters implements ApplicationParameters {
         return reactionKnockouts;
     }
 
-    public void setMediaSupplements(LinkedList<String> mediaSupplements) { this.mediaSupplements = mediaSupplements; }
+    public void setMediaSupplements(String mediaSupplements) { this.mediaSupplements = mediaSupplements; }
 
-    public LinkedList<String> getMediaSupplements() {
+    public String getMediaSupplements() {
         return mediaSupplements;
     }
 
