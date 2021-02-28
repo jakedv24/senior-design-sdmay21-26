@@ -160,7 +160,9 @@ public class FBAParameters implements ApplicationParameters {
         return reactionKnockouts;
     }
 
-    public void setMediaSupplements(String mediaSupplements) { this.mediaSupplements = mediaSupplements; }
+    public void setMediaSupplements(String mediaSupplements) {
+        this.mediaSupplements = mediaSupplements;
+    }
 
     public String getMediaSupplements() {
         return mediaSupplements;

@@ -297,14 +297,14 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
             }
         }
 
-        WebElement MediaSupplementSearchBox = mediaSupplementArea
+        WebElement mediaSupplementSearchBox = mediaSupplementArea
                 .findElement(By.cssSelector("input[class='form-contol']")); // Kbase misspelled this
         WebElement availableSupplementItems = mediaSupplementArea
                 .findElement(By.cssSelector("div[data-element='available-items-area']"));
         String mediaSupplement = params.getMediaSupplements();
 
-        MediaSupplementSearchBox.clear();
-        MediaSupplementSearchBox.sendKeys(mediaSupplement);
+        mediaSupplementSearchBox.clear();
+        mediaSupplementSearchBox.sendKeys(mediaSupplement);
 
         List<WebElement> foundMediaSupplementItems = availableSupplementItems
                 .findElements(By.cssSelector("span[class='kb-btn-icon']"));
