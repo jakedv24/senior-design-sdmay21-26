@@ -28,6 +28,7 @@ public class GUIForm extends JFrame {
     public String oxygenString;
     public String expressionthresholdString;
     public String expressionUncertaintyString;
+    public String mediaSupplementString;
     public String reactionToMaximizeString;
     public String numberJobsString;
     public String geneKnockoutsString;
@@ -72,6 +73,7 @@ public class GUIForm extends JFrame {
     private JTextField numberJobs;
     private JTextField geneKnockouts;
     private JTextArea reactionKnockouts;
+    private JTextField mediaSupplement;
     private JTextField customFluxBounds;
 
     private boolean formError = false; //try catches will signal this.
@@ -189,7 +191,6 @@ public class GUIForm extends JFrame {
             }
         });
         customFluxBounds.addMouseListener(new MouseAdapter() {
-            @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 if (customFluxBounds.getText().equals("Custom Flux Bounds")) {
@@ -197,6 +198,17 @@ public class GUIForm extends JFrame {
                     customFluxBounds.setForeground(Color.BLACK);
                 }
                 customFluxBoundsString = customFluxBounds.getText();
+            }
+        });
+        mediaSupplement.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (mediaSupplement.getText().equals("Media Supplement")) {
+                    mediaSupplement.setText("");
+                    mediaSupplement.setForeground(Color.BLACK);
+                }
+                mediaSupplementString = mediaSupplement.getText();
             }
         });
         runDefaultSettingsButton.addActionListener(new ActionListener() {
@@ -311,6 +323,7 @@ public class GUIForm extends JFrame {
         numberJobs.setForeground(Color.gray);
         customFluxBounds.setForeground(Color.gray);
         reactionKnockouts.setForeground(Color.gray);
+        mediaSupplement.setForeground(Color.gray);
 
 
     }
@@ -359,6 +372,7 @@ public class GUIForm extends JFrame {
         reactionToMaximizeString = reactionToMaximize.getText();
         geneKnockoutsString = geneKnockouts.getText();
         customFluxBoundsString = customFluxBounds.getText();
+        mediaSupplementString = mediaSupplement.getText();
 
 
         try {
@@ -468,7 +482,6 @@ public class GUIForm extends JFrame {
         }
         reactionKnockOutScanner.close();
 
-
         geneKnockoutsList = new LinkedList<String>();
         Scanner geneKnockOutScanner = new Scanner(geneKnockoutsString);
         geneKnockOutScanner.useDelimiter("[\t|;]");
@@ -506,6 +519,7 @@ public class GUIForm extends JFrame {
         params.setGeneKnockouts(geneKnockoutsList);
         params.setCustomFluxBounds(customFluxBoundsList);
         params.setReactionKnockouts(reactionKnockOutList);
+        params.setMediaSupplements(mediaSupplementString);
     }
 
     private void randomChecked(FBAParameters params) {
@@ -604,4 +618,7 @@ public class GUIForm extends JFrame {
     }
 
 
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
 }
