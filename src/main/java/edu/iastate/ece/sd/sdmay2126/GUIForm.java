@@ -191,6 +191,7 @@ public class GUIForm extends JFrame {
             }
         });
         customFluxBounds.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 if (customFluxBounds.getText().equals("Custom Flux Bounds")) {
