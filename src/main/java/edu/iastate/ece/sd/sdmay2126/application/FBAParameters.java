@@ -24,6 +24,7 @@ public class FBAParameters implements ApplicationParameters {
     private LinkedList<String> geneKnockouts;
     private LinkedList<String> reactionKnockouts;
     private LinkedList<String> customFluxBounds;
+
     private String mediaSupplements;
     // TODO customFluxBounds
     // TODO mediaSupplement

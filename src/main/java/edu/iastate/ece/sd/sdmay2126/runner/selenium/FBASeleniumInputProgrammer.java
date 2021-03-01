@@ -51,6 +51,8 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
 
         programBasicFloatInputs(scopedFBACard, params);
 
+        programCustomFluxBounds(scopedFBACard, params);
+
         programGeneKnockOuts(scopedFBACard, params);
 
         programReactionToMaximize(scopedFBACard, params);
@@ -137,6 +139,49 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
                 Float.toString(params.getExpressionUncertainty()));
     }
 
+    private void programCustomFluxBounds(WebElement scopedFBACard, FBAParameters params) {
+        System.out.println("Setting CustomFluxBounds");
+        WebElement customFluxBounds = scopedFBACard
+                .findElement(By.cssSelector("div[data-parameter='custom_bound_list']"));
+        LinkedList<String> customFluxBoundsLinked = params.getCustomFluxBounds();
+
+        int j = 0;
+        while (true) { //clear out all text regions
+            String indexString = "div[data-index='" + j + "']";
+            Boolean isCFBPresent = customFluxBounds
+                    .findElements(By.cssSelector(indexString)).size() > 0;
+            if (isCFBPresent) {
+                WebElement customFluxBoundsRow = customFluxBounds
+                        .findElement(By.cssSelector(indexString));
+                WebElement customFluxBoundsSpanClose = customFluxBoundsRow
+                        .findElement(By.cssSelector("span[class='fa fa-close']"));
+                customFluxBoundsSpanClose.click();
+                j++;
+            } else {
+                break;
+            }
+        }
+
+        j = 0;
+        if (customFluxBoundsLinked != null) {
+            for (String customFluxInput : customFluxBoundsLinked) {
+                WebElement customFluxBoundsButton = customFluxBounds
+                        .findElement(By.cssSelector("button[class='btn btn-default']"));
+                customFluxBoundsButton.click();
+
+                String indexString = "div[data-index='" + j + "']";
+                WebElement customFluxBoundsRow = customFluxBounds
+                        .findElement(By.cssSelector(indexString));
+
+                WebElement customFluxBoundsText = customFluxBoundsRow
+                        .findElement(By.cssSelector("input[class='form-control']"));
+                customFluxBoundsText.clear();
+                customFluxBoundsText.sendKeys(customFluxInput);
+                j++;
+            }
+        }
+    }
+
     private void programGeneKnockOuts(WebElement scopedFBACard, FBAParameters params) {
         System.out.println("Setting GeneKnockouts");
         WebElement geneKnockouts = scopedFBACard
@@ -176,47 +221,6 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
                 geneKnockoutsText.clear();
                 geneKnockoutsText.sendKeys(geneKO);
                 i++;
-            }
-        }
-
-        System.out.println("Setting CustomFluxBounds");
-        WebElement customFluxBounds = scopedFBACard
-                .findElement(By.cssSelector("div[data-parameter='custom_bound_list']"));
-        LinkedList<String> customFluxBoundsLinked = params.getCustomFluxBounds();
-
-        int j = 0;
-        while (true) { //clear out all text regions
-            String indexString = "div[data-index='" + j + "']";
-            Boolean isCFBPresent = customFluxBounds
-                    .findElements(By.cssSelector(indexString)).size() > 0;
-            if (isCFBPresent) {
-                WebElement customFluxBoundsRow = customFluxBounds
-                        .findElement(By.cssSelector(indexString));
-                WebElement customFluxBoundsSpanClose = customFluxBoundsRow
-                        .findElement(By.cssSelector("span[class='fa fa-close']"));
-                customFluxBoundsSpanClose.click();
-                j++;
-            } else {
-                break;
-            }
-        }
-
-        j = 0;
-        if (customFluxBoundsLinked != null) {
-            for (String customFluxInput : customFluxBoundsLinked) {
-                WebElement customFluxBoundsButton = customFluxBounds
-                        .findElement(By.cssSelector("button[class='btn btn-default']"));
-                customFluxBoundsButton.click();
-
-                String indexString = "div[data-index='" + j + "']";
-                WebElement customFluxBoundsRow = customFluxBounds
-                        .findElement(By.cssSelector(indexString));
-
-                WebElement customFluxBoundsText = customFluxBoundsRow
-                        .findElement(By.cssSelector("input[class='form-control']"));
-                customFluxBoundsText.clear();
-                customFluxBoundsText.sendKeys(customFluxInput);
-                j++;
             }
         }
 
