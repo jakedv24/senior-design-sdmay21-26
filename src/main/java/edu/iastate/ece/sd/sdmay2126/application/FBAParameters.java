@@ -24,6 +24,7 @@ public class FBAParameters implements ApplicationParameters {
     private LinkedList<String> geneKnockouts;
     private LinkedList<String> reactionKnockouts;
     private String mediaSupplements;
+    private String expressionCondition;
     // TODO customFluxBounds
     // TODO mediaSupplement
     // TODO expressionCondition
@@ -175,6 +176,10 @@ public class FBAParameters implements ApplicationParameters {
     public void setGeneKnockouts(LinkedList<String> geneKnockouts) {
         this.geneKnockouts = geneKnockouts;
     }
+
+    public void setExpressionCondition(String expressionCondition) { this.expressionCondition = expressionCondition; }
+
+    public String getExpressionCondition() { return  expressionCondition; }
 
     @Override
     public ApplicationType getApplication() {
