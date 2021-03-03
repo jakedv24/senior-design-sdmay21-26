@@ -2,6 +2,8 @@ package edu.iastate.ece.sd.sdmay2126.input.InputObjects;
 
 import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
 
+import java.util.LinkedList;
+
 /**
  * Class to parse directly from the JSON file. Can then generate the FBAParams used later in the application
  * to configure FBA jobs.
@@ -20,13 +22,13 @@ public class FBAParametersJSONObject {
     private float expressionThreshold;
     private float expressionUncertainty;
     private String geneKnockouts;
-    private String customFluxBounds;
+    private LinkedList<String> customFluxBounds;
 
     public FBAParametersJSONObject(boolean fluxVariabilityAnalysis, boolean minimizeFlux, boolean simulateAllSingleKos,
                                    float activationCoefficient, float maxCarbonUptake, float maxNitrogenUptake,
                                    float maxPhosphateUptake, float maxSulfurUptake, float maxOxygenUptake,
                                    String reactionToMaximize, float expressionThreshold,
-                                   float expressionUncertainty, String geneKnockouts, String customFluxBounds) {
+                                   float expressionUncertainty, String geneKnockouts, LinkedList<String> customFluxBounds) {
         this.fluxVariabilityAnalysis = fluxVariabilityAnalysis;
         this.minimizeFlux = minimizeFlux;
         this.simulateAllSingleKos = simulateAllSingleKos;
