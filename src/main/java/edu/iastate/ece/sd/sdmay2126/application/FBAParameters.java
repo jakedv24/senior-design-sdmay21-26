@@ -177,9 +177,13 @@ public class FBAParameters implements ApplicationParameters {
         this.geneKnockouts = geneKnockouts;
     }
 
-    public void setExpressionCondition(String expressionCondition) { this.expressionCondition = expressionCondition; }
+    public void setExpressionCondition(String expressionCondition) {
+        this.expressionCondition = expressionCondition;
+    }
 
-    public String getExpressionCondition() { return  expressionCondition; }
+    public String getExpressionCondition() {
+        return  expressionCondition;
+    }
 
     @Override
     public ApplicationType getApplication() {

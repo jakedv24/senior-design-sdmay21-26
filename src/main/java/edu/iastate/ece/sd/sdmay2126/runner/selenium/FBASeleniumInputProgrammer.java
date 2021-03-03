@@ -319,7 +319,6 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
     }
 
     private void programExpressionCondition(WebElement scopedFBACard, FBAParameters params) {
-     //   params.setExpressionCondition("22c.5h_r1[sodium_chloride:0 mM,culture_temperature:22 Celsius,casamino_acids:0.3 mg/mL]");
         System.out.println("Setting Expression Condition");
         WebElement expressionConditionArea = scopedFBACard
                 .findElement(By.cssSelector("div[data-parameter='expression_condition']"));
@@ -330,7 +329,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         if (!alreadySelectedExpression.isEmpty()) {
            alreadySelectedExpression.get(0).click();
         }
-        if(params.getExpressionCondition() != null) {
+        if (params.getExpressionCondition() != null) {
         WebElement expressionSearchBox = expressionConditionArea
                 .findElement(By.cssSelector("input[class='form-contol']"));
         expressionSearchBox.click();
@@ -339,11 +338,9 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
                 .findElement(By.cssSelector("div[data-element='available-items"));
         List<WebElement> foundExpression = availableExpression
                 .findElements(By.cssSelector("span[class='kb-btn-icon']"));
-        if(foundExpression.size()!=0) {
+        if (foundExpression.size() != 0) {
         foundExpression.get(0).click();
-        }
-        else
-        {
+        } else {
             System.out.println("Could not find " + params.getExpressionCondition() + ". No default.");
         }
 
