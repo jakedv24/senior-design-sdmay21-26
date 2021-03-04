@@ -28,7 +28,8 @@ public class FBAParametersJSONObject {
                                    float activationCoefficient, float maxCarbonUptake, float maxNitrogenUptake,
                                    float maxPhosphateUptake, float maxSulfurUptake, float maxOxygenUptake,
                                    String reactionToMaximize, float expressionThreshold,
-                                   float expressionUncertainty, String geneKnockouts, LinkedList<String> customFluxBounds) {
+                                   float expressionUncertainty, String geneKnockouts,
+                                   LinkedList<String> customFluxBounds) {
         this.fluxVariabilityAnalysis = fluxVariabilityAnalysis;
         this.minimizeFlux = minimizeFlux;
         this.simulateAllSingleKos = simulateAllSingleKos;
