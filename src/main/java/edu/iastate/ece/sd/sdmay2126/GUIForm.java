@@ -32,7 +32,7 @@ public class GUIForm extends JFrame {
     public String reactionToMaximizeString;
     public String numberJobsString;
     public String geneKnockoutsString;
-    public String customFluxBoundsString;
+//    public String customFluxBoundsString;
     public JPanel mainPanel;
     //GUI Form variables to send to driver. Some have defaults set here, some do not.
     public boolean fluxVariabilityAnalysisValue = true; //Value read from the checkbox. Default = 1
@@ -198,7 +198,7 @@ public class GUIForm extends JFrame {
                     customFluxBounds.setText("");
                     customFluxBounds.setForeground(Color.BLACK);
                 }
-                customFluxBoundsString = customFluxBounds.getText();
+//                customFluxBoundsString = customFluxBounds.getText();
             }
         });
         mediaSupplement.addMouseListener(new MouseAdapter() {
@@ -372,7 +372,7 @@ public class GUIForm extends JFrame {
         expressionUncertaintyString = expressionUncertainty.getText();
         reactionToMaximizeString = reactionToMaximize.getText();
         geneKnockoutsString = geneKnockouts.getText();
-        customFluxBoundsString = customFluxBounds.getText();
+//        customFluxBoundsString = customFluxBounds.getText();
         mediaSupplementString = mediaSupplement.getText();
 
 
@@ -492,6 +492,7 @@ public class GUIForm extends JFrame {
         geneKnockOutScanner.close();
 
         customFluxBoundsList = new LinkedList<String>();
+        String customFluxBoundsString = customFluxBounds.getText();
         Scanner customFluxBoundsScanner = new Scanner(customFluxBoundsString);
         customFluxBoundsScanner.useDelimiter("[\t|;]");
         while (customFluxBoundsScanner.hasNext()) {
