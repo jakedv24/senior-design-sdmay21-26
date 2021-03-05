@@ -31,7 +31,6 @@ public class GUIForm extends JFrame {
     public String mediaSupplementString;
     public String reactionToMaximizeString;
     public String numberJobsString;
-    public String geneKnockoutsString;
     public String expressionConditionString;
 
     public JPanel mainPanel;
@@ -178,7 +177,7 @@ public class GUIForm extends JFrame {
                     geneKnockouts.setText("");
                     geneKnockouts.setForeground(Color.BLACK);
                 }
-                geneKnockoutsString = geneKnockouts.getText();
+
             }
         });
         reactionKnockouts.addMouseListener(new MouseAdapter() {
@@ -389,7 +388,6 @@ public class GUIForm extends JFrame {
         expressionthresholdString = expressionThreshold.getText();
         expressionUncertaintyString = expressionUncertainty.getText();
         reactionToMaximizeString = reactionToMaximize.getText();
-        geneKnockoutsString = geneKnockouts.getText();
         mediaSupplementString = mediaSupplement.getText();
         expressionConditionString = expressionCondition.getText();
 
@@ -502,6 +500,7 @@ public class GUIForm extends JFrame {
         reactionKnockOutScanner.close();
 
         geneKnockoutsList = new LinkedList<String>();
+        String geneKnockoutsString = geneKnockouts.getText();
         Scanner geneKnockOutScanner = new Scanner(geneKnockoutsString);
         geneKnockOutScanner.useDelimiter("[\t|;]");
         while (geneKnockOutScanner.hasNext()) {
@@ -590,7 +589,7 @@ public class GUIForm extends JFrame {
                     minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
                     carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
                     reactionToMaximizeString, expressionThresholdValue, expressionUncertaintyValue,
-                    geneKnockoutsString, customFluxBoundsList);
+                    geneKnockoutsList, customFluxBoundsList);
         } else if (randomValue) {
             params = new FBAParameters(randomValue);
             randomChecked(params);
@@ -599,7 +598,7 @@ public class GUIForm extends JFrame {
                     minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
                     carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
                     reactionToMaximizeString, expressionThresholdValue, expressionUncertaintyValue,
-                    geneKnockoutsString, customFluxBoundsList);
+                    geneKnockoutsList, customFluxBoundsList);
             //duplicate code?
             setRunnerParameters(params);
             // Queue the job

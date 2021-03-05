@@ -35,7 +35,7 @@ public class FBAParameters implements ApplicationParameters {
                          float activationCoefficient, float maxCarbonUptake, float maxNitrogenUptake,
                          float maxPhosphateUptake, float maxSulfurUptake, float maxOxygenUptake,
                          String reactionToMaximize, float expressionThreshold, float expressionUncertainty,
-                         String geneKnockouts, LinkedList<String> customFluxBounds) {
+                         LinkedList<String> geneKnockouts, LinkedList<String> customFluxBounds) {
         this.fluxVariabilityAnalysis = fluxVariabilityAnalysis;
         this.minimizeFlux = minimizeFlux;
         this.simulateAllSingleKos = simulateAllSingleKos;
@@ -48,6 +48,7 @@ public class FBAParameters implements ApplicationParameters {
         this.reactionToMaximize = reactionToMaximize;
         this.expressionThreshold = expressionThreshold;
         this.expressionUncertainty = expressionUncertainty;
+        this.geneKnockouts = geneKnockouts;
         this.customFluxBounds = customFluxBounds;
         // TODO add other parameters
     }
