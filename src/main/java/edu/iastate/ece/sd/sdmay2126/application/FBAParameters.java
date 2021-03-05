@@ -23,6 +23,8 @@ public class FBAParameters implements ApplicationParameters {
 
     private LinkedList<String> geneKnockouts;
     private LinkedList<String> reactionKnockouts;
+    private LinkedList<String> customFluxBounds;
+
     private String mediaSupplements;
     private String expressionCondition;
     // TODO customFluxBounds
@@ -33,7 +35,7 @@ public class FBAParameters implements ApplicationParameters {
                          float activationCoefficient, float maxCarbonUptake, float maxNitrogenUptake,
                          float maxPhosphateUptake, float maxSulfurUptake, float maxOxygenUptake,
                          String reactionToMaximize, float expressionThreshold, float expressionUncertainty,
-                         String geneKnockouts) {
+                         String geneKnockouts, LinkedList<String> customFluxBounds) {
         this.fluxVariabilityAnalysis = fluxVariabilityAnalysis;
         this.minimizeFlux = minimizeFlux;
         this.simulateAllSingleKos = simulateAllSingleKos;
@@ -46,7 +48,7 @@ public class FBAParameters implements ApplicationParameters {
         this.reactionToMaximize = reactionToMaximize;
         this.expressionThreshold = expressionThreshold;
         this.expressionUncertainty = expressionUncertainty;
-
+        this.customFluxBounds = customFluxBounds;
         // TODO add other parameters
     }
 
@@ -175,6 +177,14 @@ public class FBAParameters implements ApplicationParameters {
 
     public void setGeneKnockouts(LinkedList<String> geneKnockouts) {
         this.geneKnockouts = geneKnockouts;
+    }
+
+    public LinkedList<String> getCustomFluxBounds() {
+        return customFluxBounds;
+    }
+
+    public void setCustomFluxBounds(LinkedList<String> customFluxBounds) {
+        this.customFluxBounds = customFluxBounds;
     }
 
     public void setExpressionCondition(String expressionCondition) {

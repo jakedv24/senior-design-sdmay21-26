@@ -33,6 +33,7 @@ public class GUIForm extends JFrame {
     public String numberJobsString;
     public String geneKnockoutsString;
     public String expressionConditionString;
+
     public JPanel mainPanel;
     //GUI Form variables to send to driver. Some have defaults set here, some do not.
     public boolean fluxVariabilityAnalysisValue = true; //Value read from the checkbox. Default = 1
@@ -51,6 +52,7 @@ public class GUIForm extends JFrame {
     public boolean sampleValue = false;
     public LinkedList<String> reactionKnockOutList;
     public LinkedList<String> geneKnockoutsList;
+    public LinkedList<String> customFluxBoundsList;
     //GUI Components
     private JButton runDefaultSettingsButton;
     private JCheckBox fluxVariabilityAnalysis; //boolean, check is 1 unchecked is 0
@@ -73,7 +75,9 @@ public class GUIForm extends JFrame {
     private JTextField geneKnockouts;
     private JTextArea reactionKnockouts;
     private JTextField mediaSupplement;
+    private JTextField customFluxBounds;
     private JTextField expressionCondition;
+
     private boolean formError = false; //try catches will signal this.
 
 
@@ -188,7 +192,17 @@ public class GUIForm extends JFrame {
 
             }
         });
+        customFluxBounds.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (customFluxBounds.getText().equals("Custom Flux Bounds")) {
+                    customFluxBounds.setText("");
+                    customFluxBounds.setForeground(Color.BLACK);
+                }
 
+            }
+        });
         mediaSupplement.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -325,6 +339,7 @@ public class GUIForm extends JFrame {
         expressionThreshold.setForeground(Color.gray);
         expressionUncertainty.setForeground(Color.gray);
         numberJobs.setForeground(Color.gray);
+        customFluxBounds.setForeground(Color.gray);
         reactionKnockouts.setForeground(Color.gray);
         mediaSupplement.setForeground(Color.gray);
         expressionCondition.setForeground(Color.gray);
@@ -494,6 +509,14 @@ public class GUIForm extends JFrame {
         }
         geneKnockOutScanner.close();
 
+        customFluxBoundsList = new LinkedList<String>();
+        String customFluxBoundsString = customFluxBounds.getText();
+        Scanner customFluxBoundsScanner = new Scanner(customFluxBoundsString);
+        customFluxBoundsScanner.useDelimiter("[\t|;]");
+        while (customFluxBoundsScanner.hasNext()) {
+            customFluxBoundsList.add(customFluxBoundsScanner.next());
+        }
+        customFluxBoundsScanner.close();
     }
 
     /*
@@ -514,6 +537,7 @@ public class GUIForm extends JFrame {
         params.setExpressionThreshold(expressionThresholdValue);
         params.setExpressionUncertainty(expressionUncertaintyValue);
         params.setGeneKnockouts(geneKnockoutsList);
+        params.setCustomFluxBounds(customFluxBoundsList);
         params.setReactionKnockouts(reactionKnockOutList);
         params.setMediaSupplements(mediaSupplementString);
         params.setExpressionCondition(expressionConditionString);
@@ -566,7 +590,7 @@ public class GUIForm extends JFrame {
                     minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
                     carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
                     reactionToMaximizeString, expressionThresholdValue, expressionUncertaintyValue,
-                    geneKnockoutsString);
+                    geneKnockoutsString, customFluxBoundsList);
         } else if (randomValue) {
             params = new FBAParameters(randomValue);
             randomChecked(params);
@@ -575,7 +599,7 @@ public class GUIForm extends JFrame {
                     minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
                     carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
                     reactionToMaximizeString, expressionThresholdValue, expressionUncertaintyValue,
-                    geneKnockoutsString);
+                    geneKnockoutsString, customFluxBoundsList);
             //duplicate code?
             setRunnerParameters(params);
             // Queue the job
@@ -615,4 +639,7 @@ public class GUIForm extends JFrame {
     }
 
 
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
 }
