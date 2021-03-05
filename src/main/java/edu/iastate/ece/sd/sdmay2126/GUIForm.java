@@ -32,7 +32,6 @@ public class GUIForm extends JFrame {
     public String reactionToMaximizeString;
     public String numberJobsString;
     public String geneKnockoutsString;
-//    public String customFluxBoundsString;
     public String expressionConditionString;
 
     public JPanel mainPanel;
@@ -201,7 +200,7 @@ public class GUIForm extends JFrame {
                     customFluxBounds.setText("");
                     customFluxBounds.setForeground(Color.BLACK);
                 }
-//                customFluxBoundsString = customFluxBounds.getText();
+
             }
         });
         mediaSupplement.addMouseListener(new MouseAdapter() {
@@ -391,7 +390,6 @@ public class GUIForm extends JFrame {
         expressionUncertaintyString = expressionUncertainty.getText();
         reactionToMaximizeString = reactionToMaximize.getText();
         geneKnockoutsString = geneKnockouts.getText();
-//        customFluxBoundsString = customFluxBounds.getText();
         mediaSupplementString = mediaSupplement.getText();
         expressionConditionString = expressionCondition.getText();
 
