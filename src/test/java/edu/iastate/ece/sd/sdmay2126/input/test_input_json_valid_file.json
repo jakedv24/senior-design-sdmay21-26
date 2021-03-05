@@ -12,5 +12,5 @@
   "expressionThreshold": 1.0,
   "expressionUncertainty": 1.0,
   "geneKnockouts": "geneKnockout",
-  "customFluxBounds": "customFluxBounds"
+  "customFluxBounds": ["customFluxBounds"]
 }
