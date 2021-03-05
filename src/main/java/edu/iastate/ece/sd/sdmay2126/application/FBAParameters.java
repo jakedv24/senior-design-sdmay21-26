@@ -26,6 +26,7 @@ public class FBAParameters implements ApplicationParameters {
     private LinkedList<String> customFluxBounds;
 
     private String mediaSupplements;
+    private String expressionCondition;
     // TODO customFluxBounds
     // TODO mediaSupplement
     // TODO expressionCondition
@@ -184,6 +185,13 @@ public class FBAParameters implements ApplicationParameters {
 
     public void setCustomFluxBounds(LinkedList<String> customFluxBounds) {
         this.customFluxBounds = customFluxBounds;
+
+    public void setExpressionCondition(String expressionCondition) {
+        this.expressionCondition = expressionCondition;
+    }
+
+    public String getExpressionCondition() {
+        return  expressionCondition;
     }
 
     @Override

@@ -33,6 +33,8 @@ public class GUIForm extends JFrame {
     public String numberJobsString;
     public String geneKnockoutsString;
 //    public String customFluxBoundsString;
+    public String expressionConditionString;
+
     public JPanel mainPanel;
     //GUI Form variables to send to driver. Some have defaults set here, some do not.
     public boolean fluxVariabilityAnalysisValue = true; //Value read from the checkbox. Default = 1
@@ -75,6 +77,7 @@ public class GUIForm extends JFrame {
     private JTextArea reactionKnockouts;
     private JTextField mediaSupplement;
     private JTextField customFluxBounds;
+    private JTextField expressionCondition;
 
     private boolean formError = false; //try catches will signal this.
 
@@ -212,6 +215,21 @@ public class GUIForm extends JFrame {
                 mediaSupplementString = mediaSupplement.getText();
             }
         });
+
+        expressionCondition.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (expressionCondition.getText().equals("Expression Condition")) {
+                    expressionCondition.setText("");
+                    expressionCondition.setForeground(Color.BLACK);
+                }
+                expressionConditionString = expressionCondition.getText();
+            }
+        });
+
+
+
         runDefaultSettingsButton.addActionListener(new ActionListener() {
             /*
             When the user presses the "run" button, We are going to save all the variables
@@ -325,6 +343,7 @@ public class GUIForm extends JFrame {
         customFluxBounds.setForeground(Color.gray);
         reactionKnockouts.setForeground(Color.gray);
         mediaSupplement.setForeground(Color.gray);
+        expressionCondition.setForeground(Color.gray);
 
 
     }
@@ -374,6 +393,7 @@ public class GUIForm extends JFrame {
         geneKnockoutsString = geneKnockouts.getText();
 //        customFluxBoundsString = customFluxBounds.getText();
         mediaSupplementString = mediaSupplement.getText();
+        expressionConditionString = expressionCondition.getText();
 
 
         try {
@@ -522,6 +542,7 @@ public class GUIForm extends JFrame {
         params.setCustomFluxBounds(customFluxBoundsList);
         params.setReactionKnockouts(reactionKnockOutList);
         params.setMediaSupplements(mediaSupplementString);
+        params.setExpressionCondition(expressionConditionString);
     }
 
     private void randomChecked(FBAParameters params) {
