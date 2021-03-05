@@ -21,14 +21,14 @@ public class FBAParametersJSONObject {
     private String reactionToMaximize;
     private float expressionThreshold;
     private float expressionUncertainty;
-    private String geneKnockouts;
+    private LinkedList<String> geneKnockouts;
     private LinkedList<String> customFluxBounds;
 
     public FBAParametersJSONObject(boolean fluxVariabilityAnalysis, boolean minimizeFlux, boolean simulateAllSingleKos,
                                    float activationCoefficient, float maxCarbonUptake, float maxNitrogenUptake,
                                    float maxPhosphateUptake, float maxSulfurUptake, float maxOxygenUptake,
                                    String reactionToMaximize, float expressionThreshold,
-                                   float expressionUncertainty, String geneKnockouts,
+                                   float expressionUncertainty, LinkedList<String> geneKnockouts,
                                    LinkedList<String> customFluxBounds) {
         this.fluxVariabilityAnalysis = fluxVariabilityAnalysis;
         this.minimizeFlux = minimizeFlux;
