@@ -185,6 +185,7 @@ public class FBAParameters implements ApplicationParameters {
 
     public void setCustomFluxBounds(LinkedList<String> customFluxBounds) {
         this.customFluxBounds = customFluxBounds;
+    }
 
     public void setExpressionCondition(String expressionCondition) {
         this.expressionCondition = expressionCondition;
