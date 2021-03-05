@@ -227,14 +227,6 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
             }
         }
 
-
-        System.out.println("Programming FBA complete.");
-
-        //Set reaction to maximize
-        System.out.println("Setting reaction to Maximize...");
-        //clear out any old selections
-        WebElement reactionToMaximizeArea = scopedFBACard
-                .findElement(By.cssSelector("div[data-parameter='target_reaction']"));
     }
 
    private void programReactionToMaximize(WebElement scopedFBACard, FBAParameters params) {
