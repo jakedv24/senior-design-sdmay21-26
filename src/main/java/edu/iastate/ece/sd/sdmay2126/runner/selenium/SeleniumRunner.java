@@ -26,6 +26,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
@@ -223,6 +224,9 @@ public class SeleniumRunner implements Runner {
 
         System.out.println("Looking for FBA code cell to scope searches...");
         WebElement fbaCardScope = getFBACardScope();
+        if (fbaCardScope == null) {
+            throw new SeleniumIdentificationException("Unable to identify FBA card in narrative.");
+        }
 
         // First program the application
         new FBASeleniumInputProgrammer(driver).programInputs(job, fbaCardScope);
@@ -242,8 +246,20 @@ public class SeleniumRunner implements Runner {
 
     private WebElement getFBACardScope() {
         System.out.println("Looking for code cell...");
-        return new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(d -> d.findElements(By.cssSelector("div[class^='cell code_cell']")))
-                .get(2);
+
+        List<WebElement> cards = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(d -> d.findElements(By.cssSelector("div[class^='cell code_cell']")));
+
+        for (WebElement card : cards) {
+            WebElement title = new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(d -> d.findElement(By.cssSelector("div[class='title']")));
+
+            if (title.getText().contains("Run Flux Balance Analysis")) {
+                // TODO: Rather than taking the first, we can collect FBA cards and run concurrent jobs
+                return card;
+            }
+        }
+
+        return null;
     }
 }
