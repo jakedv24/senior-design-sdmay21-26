@@ -35,8 +35,21 @@ public class KBaseHelper {
 
     /**
      * Sets the value of a single-value text input.
+     *
+     * @param codeCell The KBase code cell encompassing the textbox.
+     * @param parameterName The value of "data-parameter" in the surrounding div.
+     * @param value The new textbox value.
      */
-    public static void setTextBox() {}
+    public static void setTextBox(WebElement codeCell, String parameterName, String value) {
+        // Text inputs are wrapped by a div which includes an identifier for the particular parameter
+        WebElement textbox = codeCell
+                .findElement(By.cssSelector("div[data-parameter='" + parameterName + "']"))
+                .findElement(By.cssSelector("input[class='form-control']"));
+
+        // Clear and re-write text
+        textbox.clear();
+        textbox.sendKeys(value);
+    }
 
     /**
      * Sets the value(s) of a multi-value text input.
