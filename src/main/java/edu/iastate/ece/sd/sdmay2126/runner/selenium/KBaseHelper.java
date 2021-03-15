@@ -3,7 +3,6 @@ package edu.iastate.ece.sd.sdmay2126.runner.selenium;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
@@ -22,7 +21,7 @@ public class KBaseHelper {
     /**
      * Used to identify a particular parameter from the code cell.
      */
-    private static final String PARAMETER_SELECTOR = "div[data-parameter='%s']";
+    private static final String PARAM_SELECTOR = "div[data-parameter='%s']";
 
     /**
      * Sets the value of a checkbox input.
@@ -34,7 +33,7 @@ public class KBaseHelper {
     public static void setCheckBox(WebElement codeCell, String parameterName, boolean value) {
         System.out.printf("Setting checkbox \"%s\" to %s...%n", parameterName, value);
 
-        WebElement parameterRow = codeCell.findElement(By.cssSelector(String.format(PARAMETER_SELECTOR, parameterName)));
+        WebElement parameterRow = codeCell.findElement(By.cssSelector(String.format(PARAM_SELECTOR, parameterName)));
         WebElement checkboxInput = parameterRow.findElement(By.cssSelector("input[type='checkbox']"));
 
         // If the checkbox doesn't match the set value, toggle it
@@ -53,7 +52,7 @@ public class KBaseHelper {
     public static void setTextBox(WebElement codeCell, String parameterName, String value) {
         System.out.printf("Setting textbox \"%s\" to value \"%s\"...%n", parameterName, value);
 
-        WebElement parameterRow = codeCell.findElement(By.cssSelector(String.format(PARAMETER_SELECTOR, parameterName)));
+        WebElement parameterRow = codeCell.findElement(By.cssSelector(String.format(PARAM_SELECTOR, parameterName)));
         WebElement textInput = parameterRow.findElement(By.cssSelector("input[class='form-control']"));
 
         // Clear and re-write text
@@ -74,7 +73,7 @@ public class KBaseHelper {
             throws SeleniumIdentificationException, InterruptedException {
         System.out.printf("Setting text list \"%s\"...%n", parameterName);
 
-        WebElement parameterRow = codeCell.findElement(By.cssSelector(String.format(PARAMETER_SELECTOR, parameterName)));
+        WebElement parameterRow = codeCell.findElement(By.cssSelector(String.format(PARAM_SELECTOR, parameterName)));
         List<WebElement> listItems;
 
         // Remove previous items from list
@@ -113,10 +112,14 @@ public class KBaseHelper {
     public static void setSearchableOptionList(WebElement codeCell, String parameterName, List<String> values) {
         System.out.printf("Setting option list \"%s\"...%n", parameterName);
 
-        WebElement parameterRow = codeCell.findElement(By.cssSelector(String.format(PARAMETER_SELECTOR, parameterName)));
+        WebElement parameterRow = codeCell.findElement(By.cssSelector(String.format(PARAM_SELECTOR, parameterName)));
+
+        WebElement selectedItemsPane = parameterRow
+                .findElement(By.cssSelector("div[data-element='selected-items']"));
+        WebElement availableItemsPane = parameterRow
+                .findElement(By.cssSelector("div[data-element='available-items-area']"));
 
         // Clear previous selections
-        WebElement selectedItemsPane = parameterRow.findElement(By.cssSelector("div[data-element='selected-items']"));
         List<WebElement> selectedItems = selectedItemsPane.findElements(By.cssSelector(".row"));
         System.out.printf("  Removing %d items...%n", selectedItems.size());
         for (WebElement previousOption : selectedItems) {
@@ -124,7 +127,6 @@ public class KBaseHelper {
         }
 
         // Make new selections
-        WebElement availableItemsPane = parameterRow.findElement(By.cssSelector("div[data-element='available-items-area']"));
         WebElement searchField = availableItemsPane.findElement(By.cssSelector("input[class='form-contol']"));
         System.out.printf("  Adding %d items...%n", values.size());
         for (String value : values) {
@@ -133,7 +135,8 @@ public class KBaseHelper {
             searchField.sendKeys(value);
 
             // Expect and click a single result
-            List<WebElement> searchResults = availableItemsPane.findElements(By.cssSelector("span[class='kb-btn-icon']"));
+            List<WebElement> searchResults = availableItemsPane
+                    .findElements(By.cssSelector("span[class='kb-btn-icon']"));
             if (searchResults.size() == 1) {
                 searchResults.get(0).click();
             } else if (searchResults.isEmpty()) {

@@ -2,29 +2,21 @@ package edu.iastate.ece.sd.sdmay2126.runner.selenium;
 
 import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
     private WebDriver driver;
 
     public FBASeleniumInputProgrammer(WebDriver driver) {
         this.driver = driver;
-    }
-
-    public void programInputFormWithCssSelectorAndKeys(String cssSelec, WebElement scopedFBACard, String keys) {
-        WebElement tempVar = scopedFBACard
-                .findElement(By.cssSelector("div[data-parameter='" + cssSelec + "']"))
-                .findElement(By.cssSelector("input[class='form-control']"));
-        tempVar.clear();
-        tempVar.sendKeys(keys);
     }
 
     @Override
@@ -48,7 +40,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(d -> scopedFBACard.findElement(By.cssSelector(showAdvancedCSSSelector)))
                 .click();
-        
+
         KBaseHelper.setCheckBox(scopedFBACard, "fva", params.isFluxVariabilityAnalysis());
         KBaseHelper.setCheckBox(scopedFBACard, "minimize_flux", params.isMinimizeFlux());
         KBaseHelper.setCheckBox(scopedFBACard, "simulate_ko", params.isSimulateAllSingleKos());
