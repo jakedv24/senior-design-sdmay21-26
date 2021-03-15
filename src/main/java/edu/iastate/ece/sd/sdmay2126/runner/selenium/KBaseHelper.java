@@ -10,10 +10,10 @@ import java.util.List;
 
 /**
  * Automation routines for KBase which are not application-specific.
- *
+ * <p>
  * For the FBA application, see the parameter specification here:
  * https://github.com/cshenry/fba_tools/blob/master/ui/narrative/methods/run_flux_balance_analysis/spec.json
- *
+ * <p>
  * Note the distinction between "text" and "option" below:
  * Text: free-form input
  * Option: selection from pre-defined options
@@ -63,6 +63,12 @@ public class KBaseHelper {
 
     /**
      * Sets the value(s) of a multi-value text input.
+     *
+     * @param driver        The driver for waiting on changes.
+     * @param codeCell      The KBase code cell encompassing the list input.
+     * @param parameterName The value of "data-parameter" in the surrounding div.
+     * @param values        The list item values.
+     * @throws SeleniumIdentificationException If unable to find added list item.
      */
     public static void setTextList(WebDriver driver, WebElement codeCell, String parameterName, List<String> values)
             throws SeleniumIdentificationException, InterruptedException {
@@ -99,6 +105,10 @@ public class KBaseHelper {
 
     /**
      * Sets the value(s) of a searchable multi-value option input.
+     *
+     * @param codeCell      The KBase code cell encompassing the options input.
+     * @param parameterName The value of "data-parameter" in the surrounding div.
+     * @param values        The list item values.
      */
     public static void setSearchableOptionList(WebElement codeCell, String parameterName, List<String> values) {
         System.out.printf("Setting option list \"%s\"...%n", parameterName);
