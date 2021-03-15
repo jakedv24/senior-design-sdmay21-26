@@ -14,6 +14,9 @@ import org.openqa.selenium.WebElement;
  *   Option: selection from pre-defined options
  */
 public class KBaseHelper {
+    /** Used to identify a particular parameter from the code cell. */
+    private static final String PARAMETER_SELECTOR = "div[data-parameter='%s']";
+
     /**
      * Sets the value of a checkbox input.
      *
@@ -24,7 +27,7 @@ public class KBaseHelper {
     public static void setCheckBox(WebElement codeCell, String parameterName, boolean value) {
         // Checkbox inputs are wrapped by a div which includes an identifier for the particular parameter
         WebElement checkbox = codeCell
-                .findElement(By.cssSelector("div[data-parameter='" + parameterName + "']"))
+                .findElement(By.cssSelector(String.format(PARAMETER_SELECTOR, parameterName)))
                 .findElement(By.cssSelector("input[type='checkbox']"));
 
         // If the checkbox doesn't match the set value, toggle it
@@ -43,7 +46,7 @@ public class KBaseHelper {
     public static void setTextBox(WebElement codeCell, String parameterName, String value) {
         // Text inputs are wrapped by a div which includes an identifier for the particular parameter
         WebElement textbox = codeCell
-                .findElement(By.cssSelector("div[data-parameter='" + parameterName + "']"))
+                .findElement(By.cssSelector(String.format(PARAMETER_SELECTOR, parameterName)))
                 .findElement(By.cssSelector("input[class='form-control']"));
 
         // Clear and re-write text
