@@ -132,7 +132,7 @@ public class GUIForm extends JFrame {
                     // Create and queue a job from the user's inputs
                     try {
                         // Setup the parameters
-                        if(!readFromFile) {
+                        if (!readFromFile) {
                             params = activateForm();
                             jobManager.scheduleJob(new Job(params));
                         }
