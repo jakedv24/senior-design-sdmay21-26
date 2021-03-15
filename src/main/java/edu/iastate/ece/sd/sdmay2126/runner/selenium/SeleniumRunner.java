@@ -247,13 +247,9 @@ public class SeleniumRunner implements Runner {
     private WebElement getFBACardScope() {
         System.out.println("Looking for code cell...");
 
-        List<WebElement> cards = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(d -> d.findElements(By.cssSelector("div[class^='cell code_cell']")));
-
+        List<WebElement> cards = driver.findElements(By.className("code_cell"));
         for (WebElement card : cards) {
-            WebElement title = new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(d -> d.findElement(By.cssSelector("div[class='title']")));
-
+            WebElement title = card.findElement(By.className("title"));
             if (title.getText().contains("Run Flux Balance Analysis")) {
                 // TODO: Rather than taking the first, we can collect FBA cards and run concurrent jobs
                 return card;

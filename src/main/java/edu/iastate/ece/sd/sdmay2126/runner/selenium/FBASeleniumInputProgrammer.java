@@ -27,7 +27,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         FBAParameters params = (FBAParameters) job.getParameters();
 
         // Reset the FBA Application
-        resetFBAIfRequired();
+        resetFBAIfRequired(scopedFBACard);
 
         // Button will be obscured temporarily if we used the reset dialog, so try for 10 seconds before failing
         SeleniumUtilities.clickUntilSuccessful(scopedFBACard, Duration.ofSeconds(10));
@@ -89,11 +89,20 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
 
     }
 
-    private void resetFBAIfRequired() {
+    private void resetFBAIfRequired(WebElement scopedFBACard) {
         System.out.println("Checking if FBA needs to be reset...");
         try {
-            clickButtonWithCssSelector("button[class='btn btn-default -rerun']");
-            clickButtonWithCssSelector("button[class='btn btn-primary']");
+            // Click "Reset" on FBA card
+            new WebDriverWait(driver, Duration.ofSeconds(2))
+                    .until(d -> scopedFBACard.findElement(By.cssSelector("button[class='btn btn-default -rerun']")))
+                    .click();
+
+            // Click confirmation on popup dialog
+            new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.visibilityOfElementLocated(
+                            By.cssSelector("button[class='btn btn-primary']")))
+                    .click();
+
             System.out.println("FBA has been reset.");
         } catch (TimeoutException e) {
             // No-Op : App does not need reset - no action required.
