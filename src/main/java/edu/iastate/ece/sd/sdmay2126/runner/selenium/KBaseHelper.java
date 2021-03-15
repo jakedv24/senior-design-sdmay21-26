@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Automation routines for KBase which are not application-specific.
- * 
+ *
  * For the FBA application, see the parameter specification here:
  * https://github.com/cshenry/fba_tools/blob/master/ui/narrative/methods/run_flux_balance_analysis/spec.json
  *
@@ -29,6 +29,8 @@ public class KBaseHelper {
      * @param value         The new checkbox value (true checked, false unchecked).
      */
     public static void setCheckBox(WebElement codeCell, String parameterName, boolean value) {
+        System.out.println(String.format("Setting checkbox \"%s\" to %s...", parameterName, value));
+
         WebElement parameterRow = codeCell.findElement(By.cssSelector(String.format(PARAMETER_SELECTOR, parameterName)));
         WebElement checkboxInput = parameterRow.findElement(By.cssSelector("input[type='checkbox']"));
 
@@ -46,6 +48,8 @@ public class KBaseHelper {
      * @param value         The new textbox value.
      */
     public static void setTextBox(WebElement codeCell, String parameterName, String value) {
+        System.out.println(String.format("Setting textbox \"%s\" to value \"%s\"...", parameterName, value));
+
         WebElement parameterRow = codeCell.findElement(By.cssSelector(String.format(PARAMETER_SELECTOR, parameterName)));
         WebElement textInput = parameterRow.findElement(By.cssSelector("input[class='form-control']"));
 
@@ -58,17 +62,20 @@ public class KBaseHelper {
      * Sets the value(s) of a multi-value text input.
      */
     public static void setTextList(WebElement codeCell, String parameterName, List<String> values) {
-        WebElement parameterRow = codeCell.findElement(By.cssSelector(String.format(PARAMETER_SELECTOR, parameterName)));
+        System.out.println(String.format("Setting text list \"%s\"...", parameterName, values.size()));
 
+        WebElement parameterRow = codeCell.findElement(By.cssSelector(String.format(PARAMETER_SELECTOR, parameterName)));
         List<WebElement> listItems;
 
         // Remove previous items from list
         listItems = parameterRow.findElements(By.cssSelector("div[data-element='input-row']"));
+        System.out.println(String.format("  Removing %d items...", listItems.size()));
         for (WebElement previousRow : listItems) {
             previousRow.findElement(By.cssSelector("span[class='fa fa-close']")).click();
         }
 
         // Add new items to list
+        System.out.println(String.format("  Adding %d items...", values.size()));
         for (String value : values) {
             // Click the "plus" to add new item
             parameterRow.findElement(By.cssSelector("button[class='btn btn-default']")).click();
@@ -88,17 +95,22 @@ public class KBaseHelper {
      * Sets the value(s) of a searchable multi-value option input.
      */
     public static void setSearchableOptionList(WebElement codeCell, String parameterName, List<String> values) {
+        System.out.println(String.format("Setting option list \"%s\"...", parameterName));
+
         WebElement parameterRow = codeCell.findElement(By.cssSelector(String.format(PARAMETER_SELECTOR, parameterName)));
 
         // Clear previous selections
         WebElement selectedItemsPane = parameterRow.findElement(By.cssSelector("div[data-element='selected-items']"));
-        for (WebElement previousOption : selectedItemsPane.findElements(By.cssSelector(".row"))) {
+        List<WebElement> selectedItems = selectedItemsPane.findElements(By.cssSelector(".row"));
+        System.out.println(String.format("  Removing %d items...", selectedItems.size()));
+        for (WebElement previousOption : selectedItems) {
             previousOption.findElement(By.cssSelector("span[class='fa fa-minus-circle']")).click();
         }
 
         // Make new selections
         WebElement availableItemsPane = parameterRow.findElement(By.cssSelector("div[data-element='available-items']"));
         WebElement searchField = availableItemsPane.findElement(By.cssSelector("input[class='form-contol']"));
+        System.out.println(String.format("  Adding %d items...", values.size()));
         for (String value : values) {
             // Search for option
             searchField.clear();
@@ -110,10 +122,10 @@ public class KBaseHelper {
                 searchResults.get(0).click();
             } else if (searchResults.isEmpty()) {
                 // TODO: Should this be an exception? Currently, there's no way to detect/handle it from a higher level
-                System.err.println("Item could not be found: " + value);
+                System.err.println("  Item could not be found: " + value);
             } else {
                 // TODO: Should this be an exception? Currently, there's no way to detect/handle it from a higher level
-                System.err.println("Item has multiple matches: " + value);
+                System.err.println("  Item has multiple matches: " + value);
             }
         }
     }
