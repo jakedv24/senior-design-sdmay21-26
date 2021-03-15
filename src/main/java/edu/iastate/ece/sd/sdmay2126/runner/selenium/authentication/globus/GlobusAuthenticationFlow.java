@@ -73,21 +73,30 @@ public class GlobusAuthenticationFlow implements SeleniumAuthenticationFlow {
                 .until(d -> d.findElement(By.cssSelector("input[type=\"submit\"]")))
                 .click();
 
-        // Locate the confirmation iframe
-        System.out.println("Locating confirmation iframe...");
-        WebElement confirmFrame = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(d -> d.findElement(By.tagName("iframe")));
+        for (int retry = 0; retry < 3; retry++) {
+            // Locate the confirmation iframe
+            System.out.println("Locating confirmation iframe...");
+            WebElement confirmFrame = new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(d -> d.findElement(By.tagName("iframe")));
 
-        // Switch to the account confirmation frame
-        driver.switchTo().frame(confirmFrame);
+            // Switch to the account confirmation frame
+            driver.switchTo().frame(confirmFrame);
 
-        // Acknowledge account
-        System.out.println("Acknowledging account...");
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(d -> d.findElement(By.tagName("button")))
-                .click();
-
-        // Swap back to the window
-        driver.switchTo().defaultContent();
+            // Acknowledge account
+            try {
+                System.out.println("Acknowledging account (try " + (retry+1) + " of 3)...");
+                new WebDriverWait(driver, Duration.ofSeconds(10))
+                        .until(d -> d.findElement(By.tagName("button")))
+                        .click();
+                
+                // Successful; break to avoid retrying
+                break;
+            } catch (Exception e) {
+                System.out.println("Failed to identify the confirmation button");
+            } finally {
+                // Swap back to the window
+                driver.switchTo().defaultContent();
+            }
+        }
     }
 }

@@ -20,9 +20,13 @@ public class FBAParameters implements ApplicationParameters {
     private String reactionToMaximize;
     private float expressionThreshold;
     private float expressionUncertainty;
+
     private LinkedList<String> geneKnockouts;
-    // TODO geneKnockouts
     private LinkedList<String> reactionKnockouts;
+    private LinkedList<String> customFluxBounds;
+
+    private String mediaSupplements;
+    private String expressionCondition;
     // TODO customFluxBounds
     // TODO mediaSupplement
     // TODO expressionCondition
@@ -31,7 +35,7 @@ public class FBAParameters implements ApplicationParameters {
                          float activationCoefficient, float maxCarbonUptake, float maxNitrogenUptake,
                          float maxPhosphateUptake, float maxSulfurUptake, float maxOxygenUptake,
                          String reactionToMaximize, float expressionThreshold, float expressionUncertainty,
-                         String geneKnockouts) {
+                         String geneKnockouts, LinkedList<String> customFluxBounds) {
         this.fluxVariabilityAnalysis = fluxVariabilityAnalysis;
         this.minimizeFlux = minimizeFlux;
         this.simulateAllSingleKos = simulateAllSingleKos;
@@ -44,7 +48,7 @@ public class FBAParameters implements ApplicationParameters {
         this.reactionToMaximize = reactionToMaximize;
         this.expressionThreshold = expressionThreshold;
         this.expressionUncertainty = expressionUncertainty;
-
+        this.customFluxBounds = customFluxBounds;
         // TODO add other parameters
     }
 
@@ -159,12 +163,36 @@ public class FBAParameters implements ApplicationParameters {
         return reactionKnockouts;
     }
 
+    public void setMediaSupplements(String mediaSupplements) {
+        this.mediaSupplements = mediaSupplements;
+    }
+
+    public String getMediaSupplements() {
+        return mediaSupplements;
+    }
+
     public LinkedList<String> getGeneKnockouts() {
         return geneKnockouts;
     }
 
     public void setGeneKnockouts(LinkedList<String> geneKnockouts) {
         this.geneKnockouts = geneKnockouts;
+    }
+
+    public LinkedList<String> getCustomFluxBounds() {
+        return customFluxBounds;
+    }
+
+    public void setCustomFluxBounds(LinkedList<String> customFluxBounds) {
+        this.customFluxBounds = customFluxBounds;
+    }
+
+    public void setExpressionCondition(String expressionCondition) {
+        this.expressionCondition = expressionCondition;
+    }
+
+    public String getExpressionCondition() {
+        return  expressionCondition;
     }
 
     @Override

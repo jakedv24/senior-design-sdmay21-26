@@ -12,6 +12,7 @@ import edu.iastate.ece.sd.sdmay2126.runner.selenium.SeleniumRunner;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.InvalidSeleniumDriverException;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverUtilities;
 import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDrivers;
+import org.apache.commons.cli.*;
 
 import javax.swing.*;
 import java.io.FileNotFoundException;
@@ -29,11 +30,63 @@ public class App {
      */
     public static void main(String[] args) throws ClassNotFoundException,
             UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+
+        parseProgramArgsAndRunCorrectMode(args);
+    }
+
+    private static void parseProgramArgsAndRunCorrectMode(String[] args)
+            throws ClassNotFoundException, InstantiationException,
+            IllegalAccessException, UnsupportedLookAndFeelException {
+
+        boolean fbaType = true;
+        boolean fromConfigFile = false;
+        boolean remoteWebDriver = false;
+        String inputFileName = "";
+        String configFileName = "app.config";
+        String remoteWebDriverURL = "";
+
+        try {
+            CommandLine commandLine = configureAndParseOptions(args);
+            if (commandLine.hasOption("f")) {
+                fromConfigFile = true;
+                inputFileName = commandLine.getOptionValue("f");
+
+                if (!commandLine.hasOption("c")) {
+                    throw new Error("Configuration file is required when reading from an input file");
+                }
+            }
+
+            if (commandLine.hasOption("c")) {
+                configFileName = commandLine.getOptionValue("c");
+            }
+
+            if (commandLine.hasOption("r")) {
+                remoteWebDriver = true;
+                remoteWebDriverURL = commandLine.getOptionValue("r");
+            }
+
+            if (commandLine.hasOption("t") && !commandLine.getOptionValue("t").equals("FBA")) {
+                fbaType = false;
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return;
+        }
+
         // Load configuration files
         Properties appProps;
         Properties envProps;
         try {
-            ConfigurationLoader configuration = new ConfigurationLoader();
+            ConfigurationLoader configuration;
+
+            if (fromConfigFile && remoteWebDriver) {
+                System.out.println("From remote web driver: " + remoteWebDriverURL);
+                configuration = new ConfigurationLoader(configFileName, "chrome_remote", remoteWebDriverURL);
+            } else {
+                configuration = new ConfigurationLoader();
+            }
+
             configuration.loadConfiguration();
 
             appProps = configuration.getApplicationProperties();
@@ -42,6 +95,17 @@ public class App {
             e.printStackTrace();
             return;
         }
+
+        initializeConfigurationsAndStart(fbaType, fromConfigFile, inputFileName, appProps, envProps);
+    }
+
+    private static void initializeConfigurationsAndStart(boolean fbaType,
+                                                         boolean fromConfigFile,
+                                                         String inputFileName,
+                                                         Properties appProps,
+                                                         Properties envProps)
+            throws ClassNotFoundException, InstantiationException,
+            IllegalAccessException, UnsupportedLookAndFeelException {
 
         // Pull specific configuration values from the files
         String globusUser;
@@ -74,49 +138,50 @@ public class App {
                 1 // Let's leave it at a single runner for now
         );
 
-        parseProgramArgsAndRunCorrectMode(args, manager);
-    }
-
-    private static void parseProgramArgsAndRunCorrectMode(String[] args, JobManager manager)
-            throws ClassNotFoundException, InstantiationException,
-            IllegalAccessException, UnsupportedLookAndFeelException {
-        boolean fbaType = true;
-        boolean fromConfigFile = false;
-        String inputFileName = "";
-        for (int i = 0; i < args.length; i++) {
-            String arg = args[i];
-            if (arg.equals("-f") && args.length > i + 1) {
-                fromConfigFile = true;
-                inputFileName = args[i + 1];
-            } else if (arg.equals("-t") && args.length > i + 1 && !args[i + 1].equals("FBA")) {
-                fbaType = false;
-            }
-        }
-
         // Input config file
         if (fromConfigFile && fbaType) {
-            FileInputReader<FBAParameters> fbaFileInputReader = new JSONFileInputReader();
-            try {
-                FBAParameters fbaParameters = fbaFileInputReader.parseFromFile(inputFileName);
-                manager.scheduleJob(new Job(fbaParameters));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                System.out.println("Config file not found.");
-                System.exit(-1);
-            } catch (JobManagerStoppedException e) {
-                e.printStackTrace();
-            }
+            runHeadlessMode(manager, inputFileName);
         } else {
-            //Give the GUI a more authentic feel according to use OS
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            gui = new GUIForm(manager);
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    //Generate our GUI, this has control of the web driver.
-                    gui.setVisible(true);
-                }
-            });
+            runGUIMode(manager);
+        }
+    }
+
+    private static CommandLine configureAndParseOptions(String[] args) throws ParseException {
+        Options options = new Options();
+
+        options.addOption("c", true, "path to app config file");
+        options.addOption("f", true, "path to input file");
+        options.addOption("t", true, "kbase test type (ex. FBA)");
+        options.addOption("r", true, "path to a remote web driver url - for docker use");
+
+        return new DefaultParser().parse(options, args);
+    }
+
+    private static void runGUIMode(JobManager manager) throws ClassNotFoundException,
+            InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+        //Give the GUI a more authentic feel according to use OS
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        gui = new GUIForm(manager);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                //Generate our GUI, this has control of the web driver.
+                gui.setVisible(true);
+            }
+        });
+    }
+
+    private static void runHeadlessMode(JobManager manager, String inputFileName) {
+        FileInputReader<FBAParameters> fbaFileInputReader = new JSONFileInputReader();
+        try {
+            FBAParameters fbaParameters = fbaFileInputReader.parseFromFile(inputFileName);
+            manager.scheduleJob(new Job(fbaParameters));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("Config file not found.");
+            System.exit(-1);
+        } catch (JobManagerStoppedException e) {
+            e.printStackTrace();
         }
     }
 }

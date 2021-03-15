@@ -47,6 +47,27 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
                 .until(d -> scopedFBACard.findElement(By.cssSelector(showAdvancedCSSSelector)))
                 .click();
 
+        programCheckBoxes(scopedFBACard, params);
+
+        programBasicFloatInputs(scopedFBACard, params);
+
+        programCustomFluxBounds(scopedFBACard, params);
+
+        programGeneKnockOuts(scopedFBACard, params);
+
+        programReactionToMaximize(scopedFBACard, params);
+
+        programReactionKnockOuts(scopedFBACard, params);
+
+        programMediaSupplements(scopedFBACard, params);
+
+        programExpressionCondition(scopedFBACard, params);
+
+        System.out.println("Programming FBA complete.");
+
+    }
+
+    private void programCheckBoxes(WebElement scopedFBACard, FBAParameters params) {
         // The check boxes are children of divs
         System.out.println("Setting FVA...");
         WebElement fva = scopedFBACard
@@ -75,8 +96,96 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
             simKo.click();
         }
 
-        programBasicFloatInputs(scopedFBACard, params);
+    }
 
+
+    private void programBasicFloatInputs(WebElement scopedFBACard, FBAParameters params) {
+        // Finds clear and sets the value of the activeCoefficient value
+        System.out.println("Setting activation coefficient...");
+        programInputFormWithCssSelectorAndKeys("activation_coefficient", scopedFBACard,
+                Float.toString(params.getActivationCoefficient()));
+
+        //Finds clears and sets the value of the maxCarbonUptake value
+        System.out.println("Setting max carbon uptake...");
+        programInputFormWithCssSelectorAndKeys("max_c_uptake", scopedFBACard,
+                Float.toString(params.getMaxCarbonUptake()));
+
+        //Finds clears and sets the value of the maxNitrogenUptake value
+        System.out.println("Setting max nitrogen uptake...");
+        programInputFormWithCssSelectorAndKeys("max_n_uptake", scopedFBACard,
+                Float.toString(params.getMaxNitrogenUptake()));
+
+        //Finds clears and sets the value of the maxPhosphateUptake value
+        System.out.println("Setting max phosphate uptake...");
+        programInputFormWithCssSelectorAndKeys("max_p_uptake", scopedFBACard,
+                Float.toString(params.getMaxPhosphateUptake()));
+
+        //Finds clears and sets the value of the maxSulfurUptake value
+        System.out.println("Setting max sulfur uptake...");
+        programInputFormWithCssSelectorAndKeys("max_s_uptake", scopedFBACard,
+                Float.toString(params.getMaxSulfurUptake()));
+
+        //Finds clears and sets the value of the maxOxygenUptake value
+        System.out.println("Setting max oxygen uptake...");
+        programInputFormWithCssSelectorAndKeys("max_o_uptake", scopedFBACard,
+                Float.toString(params.getMaxOxygenUptake()));
+
+        //Finds clears and sets the value of the expressionThreshold value
+        System.out.println("Setting expression threshold...");
+        programInputFormWithCssSelectorAndKeys("exp_threshold_percentile", scopedFBACard,
+                Float.toString(params.getExpressionThreshold()));
+
+        //Finds clears and sets the value of the expressionUncertainty value
+        System.out.println("Setting expression uncertainty...");
+        programInputFormWithCssSelectorAndKeys("exp_threshold_margin", scopedFBACard,
+                Float.toString(params.getExpressionUncertainty()));
+    }
+
+    private void programCustomFluxBounds(WebElement scopedFBACard, FBAParameters params) {
+
+        System.out.println("Setting CustomFluxBounds");
+        WebElement customFluxBounds = scopedFBACard
+                .findElement(By.cssSelector("div[data-parameter='custom_bound_list']"));
+        LinkedList<String> customFluxBoundsLinked = params.getCustomFluxBounds();
+
+        int j = 0;
+        while (true) { //clear out all text regions
+            String indexString = "div[data-index='" + j + "']";
+            Boolean isCFBPresent = customFluxBounds
+                    .findElements(By.cssSelector(indexString)).size() > 0;
+            if (isCFBPresent) {
+                WebElement customFluxBoundsRow = customFluxBounds
+                        .findElement(By.cssSelector(indexString));
+                WebElement customFluxBoundsSpanClose = customFluxBoundsRow
+                        .findElement(By.cssSelector("span[class='fa fa-close']"));
+                customFluxBoundsSpanClose.click();
+                j++;
+            } else {
+                break;
+            }
+        }
+
+        j = 0;
+        if (customFluxBoundsLinked != null) {
+            for (String customFluxInput : customFluxBoundsLinked) {
+                WebElement customFluxBoundsButton = customFluxBounds
+                        .findElement(By.cssSelector("button[class='btn btn-default']"));
+                customFluxBoundsButton.click();
+
+                String indexString = "div[data-index='" + j + "']";
+                WebElement customFluxBoundsRow = customFluxBounds
+                        .findElement(By.cssSelector(indexString));
+
+                WebElement customFluxBoundsText = customFluxBoundsRow
+                        .findElement(By.cssSelector("input[class='form-control']"));
+                customFluxBoundsText.clear();
+                customFluxBoundsText.sendKeys(customFluxInput);
+                j++;
+            }
+        }
+    }
+
+    private void programGeneKnockOuts(WebElement scopedFBACard, FBAParameters params) {
         System.out.println("Setting GeneKnockouts");
         WebElement geneKnockouts = scopedFBACard
                 .findElement(By.cssSelector("div[data-parameter='feature_ko_list']"));
@@ -118,6 +227,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
             }
         }
 
+
         System.out.println("Programming FBA complete.");
 
         //Set reaction to maximize
@@ -125,33 +235,54 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         //clear out any old selections
         WebElement reactionToMaximizeArea = scopedFBACard
                 .findElement(By.cssSelector("div[data-parameter='target_reaction']"));
+    }
 
-        WebElement selectedItemsRM = reactionToMaximizeArea
-                .findElement(By.cssSelector("div[data-element='selected-items']"));
-        List<WebElement> alreadySelectedRM = selectedItemsRM
-                .findElements(By.cssSelector("span[class='fa fa-minus-circle']"));
+   private void programReactionToMaximize(WebElement scopedFBACard, FBAParameters params) {
+       //Set reaction to maximize
+       System.out.println("Setting reaction to Maximize...");
+       //clear out any old selections
+       WebElement reactionToMaximizeArea = scopedFBACard
+               .findElement(By.cssSelector("div[data-parameter='target_reaction']"));
 
-        if (!alreadySelectedRM.isEmpty()) {
-            alreadySelectedRM.get(0).click();
-        }
-        //search for item
-        WebElement reactionToMaxSearchBox = reactionToMaximizeArea
-                .findElement(By.cssSelector("input[class='form-contol']")); //control is misspelled on the kbase html
-        reactionToMaxSearchBox.clear();
-        reactionToMaxSearchBox.sendKeys(params.getReactionToMaximize());
-        WebElement availableRMItems = reactionToMaximizeArea
-                .findElement(By.cssSelector("div[data-element='available-items"));
-        List<WebElement> foundRMItem = availableRMItems
-                .findElements(By.cssSelector("span[class='kb-btn-icon']"));
-        if (foundRMItem.size() == 0) {
-            System.out.println("Unable to find " + params.getReactionToMaximize() + ". defaulting to bio1");
-            reactionToMaxSearchBox.clear();
-            reactionToMaxSearchBox.sendKeys("bio1");
-            foundRMItem = availableRMItems.findElements(By.cssSelector("span[class='kb-btn-icon']"));
-        }
-        foundRMItem.get(0).click();
+       WebElement selectedItemsRM = reactionToMaximizeArea
+               .findElement(By.cssSelector("div[data-element='selected-items']"));
+       List<WebElement> alreadySelectedRM = selectedItemsRM
+               .findElements(By.cssSelector("span[class='fa fa-minus-circle']"));
 
+       if (!alreadySelectedRM.isEmpty()) {
+           alreadySelectedRM.get(0).click();
+       }
+       //search for item
+       WebElement reactionToMaxSearchBox = reactionToMaximizeArea
+               .findElement(By.cssSelector("input[class='form-contol']")); //control is misspelled on the kbase html
+       reactionToMaxSearchBox.clear();
+       if (params.getReactionToMaximize() != null) {
+           reactionToMaxSearchBox.sendKeys(params.getReactionToMaximize());
+           WebElement availableRMItems = reactionToMaximizeArea
+                   .findElement(By.cssSelector("div[data-element='available-items"));
+           List<WebElement> foundRMItem = availableRMItems
+                   .findElements(By.cssSelector("span[class='kb-btn-icon']"));
+           if (foundRMItem.size() == 0) {
+               System.out.println("Unable to find " + params.getReactionToMaximize() + ". defaulting to bio1");
+               reactionToMaxSearchBox.clear();
+               reactionToMaxSearchBox.sendKeys("bio1");
+               foundRMItem = availableRMItems.findElements(By.cssSelector("span[class='kb-btn-icon']"));
+           }
+           foundRMItem.get(0).click();
+       } else {
+           reactionToMaxSearchBox.sendKeys("bio1");
+           WebElement availableRMItems = reactionToMaximizeArea
+                   .findElement(By.cssSelector("div[data-element='available-items"));
+           List<WebElement> foundRMItem = availableRMItems
+                   .findElements(By.cssSelector("span[class='kb-btn-icon']"));
+           foundRMItem = availableRMItems.findElements(By.cssSelector("span[class='kb-btn-icon']"));
+           foundRMItem.get(0).click();
 
+       }
+
+    }
+
+    private void programReactionKnockOuts(WebElement scopedFBACard, FBAParameters params) {
         //setting reaction knockouts
         System.out.println("Setting reaction knockouts");
         //clear out old selections if any
@@ -194,46 +325,82 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
 
     }
 
-    private void programBasicFloatInputs(WebElement scopedFBACard, FBAParameters params) {
-        // Finds clear and sets the value of the activeCoefficient value
-        System.out.println("Setting activation coefficient...");
-        programInputFormWithCssSelectorAndKeys("activation_coefficient", scopedFBACard,
-                Float.toString(params.getActivationCoefficient()));
+    private void programMediaSupplements(WebElement scopedFBA, FBAParameters params) {
 
-        //Finds clears and sets the value of the maxCarbonUptake value
-        System.out.println("Setting max carbon uptake...");
-        programInputFormWithCssSelectorAndKeys("max_c_uptake", scopedFBACard,
-                Float.toString(params.getMaxCarbonUptake()));
+        //Setting Media Supplements
+        System.out.println("Setting Media Supplements");
 
-        //Finds clears and sets the value of the maxNitrogenUptake value
-        System.out.println("Setting max nitrogen uptake...");
-        programInputFormWithCssSelectorAndKeys("max_n_uptake", scopedFBACard,
-                Float.toString(params.getMaxNitrogenUptake()));
+        WebElement mediaSupplementArea = scopedFBA
+                .findElement(By.cssSelector("div[data-parameter='media_supplement_list']"));
 
-        //Finds clears and sets the value of the maxPhosphateUptake value
-        System.out.println("Setting max phosphate uptake...");
-        programInputFormWithCssSelectorAndKeys("max_p_uptake", scopedFBACard,
-                Float.toString(params.getMaxPhosphateUptake()));
+        WebElement mediaSupplementsButton = mediaSupplementArea
+                .findElement(By.cssSelector("button[class='btn btn-default']"));
+        mediaSupplementsButton.click();
 
-        //Finds clears and sets the value of the maxSulfurUptake value
-        System.out.println("Setting max sulfur uptake...");
-        programInputFormWithCssSelectorAndKeys("max_s_uptake", scopedFBACard,
-                Float.toString(params.getMaxSulfurUptake()));
+        //Clear out
+        WebElement selectedItemsRK = mediaSupplementArea
+                .findElement(By.cssSelector("div[data-element='selected-items']"));
 
-        //Finds clears and sets the value of the maxOxygenUptake value
-        System.out.println("Setting max oxygen uptake...");
-        programInputFormWithCssSelectorAndKeys("max_o_uptake", scopedFBACard,
-                Float.toString(params.getMaxOxygenUptake()));
+        boolean removeElementsFromMediaSupplement = true;
+        while (removeElementsFromMediaSupplement) {
+            try {
+                WebElement alreadySelectedMediaSupplement = selectedItemsRK
+                        .findElement(By.cssSelector("span[class='fa fa-minus-circle']"));
+                alreadySelectedMediaSupplement.click();
 
-        //Finds clears and sets the value of the expressionThreshold value
-        System.out.println("Setting expression threshold...");
-        programInputFormWithCssSelectorAndKeys("exp_threshold_percentile", scopedFBACard,
-                Float.toString(params.getExpressionThreshold()));
+            } catch (Exception e) {
+                removeElementsFromMediaSupplement = false;
+            }
+        }
 
-        //Finds clears and sets the value of the expressionUncertainty value
-        System.out.println("Setting expression uncertainty...");
-        programInputFormWithCssSelectorAndKeys("exp_threshold_margin", scopedFBACard,
-                Float.toString(params.getExpressionUncertainty()));
+        WebElement mediaSupplementSearchBox = mediaSupplementArea
+                .findElement(By.cssSelector("input[class='form-contol']")); // Kbase misspelled this
+        WebElement availableSupplementItems = mediaSupplementArea
+                .findElement(By.cssSelector("div[data-element='available-items-area']"));
+        String mediaSupplement = params.getMediaSupplements();
+
+        mediaSupplementSearchBox.clear();
+        mediaSupplementSearchBox.sendKeys(mediaSupplement);
+
+        List<WebElement> foundMediaSupplementItems = availableSupplementItems
+                .findElements(By.cssSelector("span[class='kb-btn-icon']"));
+        if (foundMediaSupplementItems.size() == 0) {
+            System.out.println("Unable to find: " + mediaSupplement);
+        } else {
+            foundMediaSupplementItems.get(0).click();
+        }
+
+    }
+
+    private void programExpressionCondition(WebElement scopedFBACard, FBAParameters params) {
+        System.out.println("Setting Expression Condition");
+        WebElement expressionConditionArea = scopedFBACard
+                .findElement(By.cssSelector("div[data-parameter='expression_condition']"));
+        WebElement selectedExpression = expressionConditionArea
+                .findElement(By.cssSelector("div[data-element='selected-items']"));
+        List<WebElement> alreadySelectedExpression = selectedExpression
+                .findElements(By.cssSelector("span[class='fa fa-minus-circle']"));
+        if (!alreadySelectedExpression.isEmpty()) {
+           alreadySelectedExpression.get(0).click();
+        }
+        if (params.getExpressionCondition() != null) {
+        WebElement expressionSearchBox = expressionConditionArea
+                .findElement(By.cssSelector("input[class='form-contol']"));
+        expressionSearchBox.click();
+        expressionSearchBox.sendKeys(params.getExpressionCondition());
+        WebElement availableExpression = expressionConditionArea
+                .findElement(By.cssSelector("div[data-element='available-items"));
+        List<WebElement> foundExpression = availableExpression
+                .findElements(By.cssSelector("span[class='kb-btn-icon']"));
+        if (foundExpression.size() != 0) {
+        foundExpression.get(0).click();
+        } else {
+            System.out.println("Could not find " + params.getExpressionCondition() + ". No default.");
+        }
+
+
+        }
+
     }
 
     private void resetFBAIfRequired() {
