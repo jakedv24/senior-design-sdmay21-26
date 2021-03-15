@@ -3,6 +3,9 @@ package edu.iastate.ece.sd.sdmay2126.runner.selenium;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Automation routines for KBase which are not application-specific.
  *
@@ -57,7 +60,32 @@ public class KBaseHelper {
     /**
      * Sets the value(s) of a multi-value text input.
      */
-    public static void setTextList() {}
+    public static void setTextList(WebElement codeCell, String parameterName, List<String> values) {
+        WebElement list = codeCell.findElement(By.cssSelector(String.format(PARAMETER_SELECTOR, parameterName)));
+
+        List<WebElement> listItems;
+
+        // Remove previous items from list
+        listItems = list.findElements(By.cssSelector("div[data-element='input-row']"));
+        for (WebElement previousRow : listItems) {
+            previousRow.findElement(By.cssSelector("span[class='fa fa-close']")).click();
+        }
+
+        // Add new items to list
+        for (String value : values) {
+            // Click the "plus" to add new item
+            list.findElement(By.cssSelector("button[class='btn btn-default']")).click();
+
+            // Grab items and identify the last (just-added) item
+            listItems = list.findElements(By.cssSelector("div[data-element='input-row']"));
+            WebElement lastItem = listItems.get(listItems.size() - 1);
+
+            // Find the item's text field and enter our value
+            WebElement itemInput = lastItem.findElement(By.cssSelector("input[class='form-control']"));
+            itemInput.clear();
+            itemInput.sendKeys(value);
+        }
+    }
 
     /**
      * Sets the value(s) of a searchable multi-value option input.
