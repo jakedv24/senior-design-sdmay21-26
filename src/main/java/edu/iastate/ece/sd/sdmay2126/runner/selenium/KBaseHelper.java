@@ -1,8 +1,11 @@
 package edu.iastate.ece.sd.sdmay2126.runner.selenium;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -61,7 +64,8 @@ public class KBaseHelper {
     /**
      * Sets the value(s) of a multi-value text input.
      */
-    public static void setTextList(WebElement codeCell, String parameterName, List<String> values) {
+    public static void setTextList(WebDriver driver, WebElement codeCell, String parameterName, List<String> values)
+            throws SeleniumIdentificationException, InterruptedException {
         System.out.printf("Setting text list \"%s\"...%n", parameterName);
 
         WebElement parameterRow = codeCell.findElement(By.cssSelector(String.format(PARAMETER_SELECTOR, parameterName)));
@@ -76,12 +80,14 @@ public class KBaseHelper {
 
         // Add new items to list
         System.out.printf("  Adding %d items...%n", values.size());
+        int itemsAdded = 0;
         for (String value : values) {
             // Click the "plus" to add new item
             parameterRow.findElement(By.cssSelector("button[class='btn btn-default']")).click();
 
-            // Grab items and identify the last (just-added) item
-            listItems = parameterRow.findElements(By.cssSelector("div[data-element='input-row']"));
+            // Grab items and identify the last (just-added) item (wait for JS from previous click to complete)
+            listItems = SeleniumUtilities.waitForNMatches(driver, By.cssSelector("div[data-element='input-row']"),
+                    ++itemsAdded, Duration.ofSeconds(10), parameterRow);
             WebElement lastItem = listItems.get(listItems.size() - 1);
 
             // Find the item's text field and enter our value
@@ -108,7 +114,7 @@ public class KBaseHelper {
         }
 
         // Make new selections
-        WebElement availableItemsPane = parameterRow.findElement(By.cssSelector("div[data-element='available-items']"));
+        WebElement availableItemsPane = parameterRow.findElement(By.cssSelector("div[data-element='available-items-area']"));
         WebElement searchField = availableItemsPane.findElement(By.cssSelector("input[class='form-contol']"));
         System.out.printf("  Adding %d items...%n", values.size());
         for (String value : values) {
@@ -122,10 +128,10 @@ public class KBaseHelper {
                 searchResults.get(0).click();
             } else if (searchResults.isEmpty()) {
                 // TODO: Should this be an exception? Currently, there's no way to detect/handle it from a higher level
-                System.err.printf("  Item could not be found: %s%n" + value);
+                System.err.printf("  Item could not be found: %s%n", value);
             } else {
                 // TODO: Should this be an exception? Currently, there's no way to detect/handle it from a higher level
-                System.err.printf("  Item has multiple matches: %s%n" + value);
+                System.err.printf("  Item has multiple matches: %s%n", value);
             }
         }
     }

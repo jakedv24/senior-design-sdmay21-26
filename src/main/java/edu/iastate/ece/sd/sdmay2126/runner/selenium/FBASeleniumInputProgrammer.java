@@ -77,7 +77,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         KBaseHelper.setTextBox(scopedFBACard, "exp_threshold_margin",
                 Float.toString(params.getExpressionUncertainty()));
 
-        KBaseHelper.setTextList(scopedFBACard, "custom_bound_list", params.getCustomFluxBounds());
+        KBaseHelper.setTextList(driver, scopedFBACard, "custom_bound_list", params.getCustomFluxBounds());
 
         KBaseHelper.setSearchableOptionList(scopedFBACard, "feature_ko_list", params.getGeneKnockouts());
 
