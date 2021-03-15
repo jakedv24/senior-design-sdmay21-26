@@ -90,5 +90,34 @@ public class KBaseHelper {
     /**
      * Sets the value(s) of a searchable multi-value option input.
      */
-    public static void setSearchableTextList() {}
+    public static void setSearchableOptionList(WebElement codeCell, String parameterName, List<String> values) {
+        WebElement parameter = codeCell.findElement(By.cssSelector(String.format(PARAMETER_SELECTOR, parameterName)));
+
+        // Clear previous selections
+        WebElement selectedItemsPane = parameter.findElement(By.cssSelector("div[data-element='selected-items']"));
+        for (WebElement previousOption : selectedItemsPane.findElements(By.cssSelector(".row"))) {
+            previousOption.findElement(By.cssSelector("span[class='fa fa-minus-circle']")).click();
+        }
+
+        // Make new selections
+        WebElement availableItemsPane = parameter.findElement(By.cssSelector("div[data-element='available-items']"));
+        WebElement searchField = availableItemsPane.findElement(By.cssSelector("input[class='form-contol']"));
+        for (String value : values) {
+            // Search for option
+            searchField.clear();
+            searchField.sendKeys(value);
+
+            // Expect and click a single result
+            List<WebElement> searchResults = availableItemsPane.findElements(By.cssSelector("span[class='kb-btn-icon']"));
+            if (searchResults.size() == 1) {
+                searchResults.get(0).click();
+            } else if (searchResults.isEmpty()) {
+                // TODO: Should this be an exception? Currently, there's no way to detect/handle it from a higher level
+                System.err.println("Item could not be found: " + value);
+            } else {
+                // TODO: Should this be an exception? Currently, there's no way to detect/handle it from a higher level
+                System.err.println("Item has multiple matches: " + value);
+            }
+        }
+    }
 }
