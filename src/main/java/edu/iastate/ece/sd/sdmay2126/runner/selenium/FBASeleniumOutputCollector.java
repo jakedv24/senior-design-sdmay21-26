@@ -33,6 +33,7 @@ public class FBASeleniumOutputCollector implements SeleniumOutputCollector {
     public ApplicationOutput collectOutput(Job job, WebElement scopedFBACard) {
         try {
             // try to sleep to let output load
+            // TODO: Can we detect when an element comes available instead of waiting?
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -49,6 +50,7 @@ public class FBASeleniumOutputCollector implements SeleniumOutputCollector {
             scopedFBACard.findElement(By.xpath(JOB_STATUS_BUTTON_PATH))
                     .click();
 
+            // TODO: Can we detect when logs are loaded instead of waiting?
             Thread.sleep(2000);
 
             return scopedFBACard.findElements(By.className(LOG_TEXT_CLASS_NAME))
