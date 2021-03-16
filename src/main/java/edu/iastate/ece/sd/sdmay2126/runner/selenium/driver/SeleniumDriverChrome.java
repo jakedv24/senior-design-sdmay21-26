@@ -12,8 +12,7 @@ public class SeleniumDriverChrome implements SeleniumDriverManager {
     public WebDriver initializeDriver(SeleniumDriverConfiguration driverConfiguration) {
         System.setProperty("webdriver.chrome.driver", driverConfiguration.getDriverLocation());
         return new ChromeDriver(
-                // TODO: Expose through configuration; make "debug" option
-                new ChromeOptions().setHeadless(false)
+                new ChromeOptions().setHeadless(driverConfiguration.getHeadless())
         );
     }
 }
