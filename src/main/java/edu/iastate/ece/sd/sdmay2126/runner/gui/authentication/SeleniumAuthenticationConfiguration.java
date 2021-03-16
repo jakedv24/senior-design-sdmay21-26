@@ -1,4 +1,4 @@
-package edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication;
+package edu.iastate.ece.sd.sdmay2126.runner.gui.authentication;
 
 /**
  * Specifies authentication configuration related to a particular flow.
