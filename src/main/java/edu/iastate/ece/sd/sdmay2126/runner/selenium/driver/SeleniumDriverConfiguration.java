@@ -6,10 +6,12 @@ package edu.iastate.ece.sd.sdmay2126.runner.selenium.driver;
 public class SeleniumDriverConfiguration {
     private SeleniumDrivers driverType;
     private String driverLocation;
+    private boolean headless;
 
-    public SeleniumDriverConfiguration(SeleniumDrivers driverType, String driverLocation) {
+    public SeleniumDriverConfiguration(SeleniumDrivers driverType, String driverLocation, boolean headless) {
         this.driverType = driverType;
         this.driverLocation = driverLocation;
+        this.headless = headless;
     }
 
     public SeleniumDrivers getDriverType() {
@@ -18,5 +20,9 @@ public class SeleniumDriverConfiguration {
 
     public String getDriverLocation() {
         return driverLocation;
+    }
+
+    public boolean getHeadless() {
+        return headless;
     }
 }
