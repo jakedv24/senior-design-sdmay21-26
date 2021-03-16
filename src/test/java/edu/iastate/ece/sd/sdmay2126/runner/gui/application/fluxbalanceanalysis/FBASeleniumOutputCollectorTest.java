@@ -1,9 +1,10 @@
-package edu.iastate.ece.sd.sdmay2126.runner.gui;
+package edu.iastate.ece.sd.sdmay2126.runner.gui.application.fluxbalanceanalysis;
 
 import edu.iastate.ece.sd.sdmay2126.FakeWebElement;
 import edu.iastate.ece.sd.sdmay2126.application.FBAOutput;
 import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.application.fluxbalanceanalysis.FBASeleniumOutputCollector;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -15,7 +16,7 @@ import org.openqa.selenium.WebElement;
 import java.util.ArrayList;
 import java.util.List;
 
-import static edu.iastate.ece.sd.sdmay2126.runner.gui.FBASeleniumOutputCollector.*;
+import static edu.iastate.ece.sd.sdmay2126.runner.gui.application.fluxbalanceanalysis.FBASeleniumOutputCollector.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;

@@ -1,6 +1,9 @@
-package edu.iastate.ece.sd.sdmay2126.runner.gui;
+package edu.iastate.ece.sd.sdmay2126.runner.gui.application.fluxbalanceanalysis;
 
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumApplicationExecutor;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumIdentificationException;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumUtilities;
 import org.openqa.selenium.*;
 
 import java.time.Duration;
@@ -9,7 +12,7 @@ import java.util.List;
 public class FBASeleniumApplicationExecutor implements SeleniumApplicationExecutor {
     private final WebDriver driver;
 
-    FBASeleniumApplicationExecutor(WebDriver driver) {
+    public FBASeleniumApplicationExecutor(WebDriver driver) {
         this.driver = driver;
     }
 
