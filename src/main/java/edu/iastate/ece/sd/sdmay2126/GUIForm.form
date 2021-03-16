@@ -214,13 +214,13 @@
       <component id="c929e" class="javax.swing.JTextField" binding="customFluxBounds">
         <constraints>
           <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-          <preferred-size width="150" height="-1"/>
+            <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-         <properties>
+        <properties>
           <text value="Custom Flux Bounds"/>
         </properties>
-        </component>
+      </component>
       <component id="db393" class="javax.swing.JTextField" binding="expressionCondition">
         <constraints>
           <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
@@ -229,6 +229,14 @@
         </constraints>
         <properties>
           <text value="Expression Condition"/>
+        </properties>
+      </component>
+      <component id="a781d" class="javax.swing.JCheckBox" binding="readFromFileCheckBox">
+        <constraints>
+          <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Read from file"/>
         </properties>
       </component>
     </children>
