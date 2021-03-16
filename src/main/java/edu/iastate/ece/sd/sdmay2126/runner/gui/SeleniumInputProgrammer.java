@@ -1,4 +1,4 @@
-package edu.iastate.ece.sd.sdmay2126.runner.selenium;
+package edu.iastate.ece.sd.sdmay2126.runner.gui;
 
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
 import org.openqa.selenium.WebElement;

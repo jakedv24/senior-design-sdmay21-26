@@ -1,9 +1,9 @@
-package edu.iastate.ece.sd.sdmay2126.runner.selenium;
+package edu.iastate.ece.sd.sdmay2126.runner.gui;
 
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.SeleniumAuthenticationConfiguration;
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus.GlobusAuthenticationConfiguration;
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverConfiguration;
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDrivers;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.authentication.SeleniumAuthenticationConfiguration;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.authentication.globus.GlobusAuthenticationConfiguration;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.SeleniumDriverConfiguration;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.SeleniumDrivers;
 
 /**
  * Specifies some Selenium configuration, including driver and authentication information.

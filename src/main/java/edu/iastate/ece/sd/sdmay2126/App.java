@@ -7,11 +7,11 @@ import edu.iastate.ece.sd.sdmay2126.input.JSONFileInputReader;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManager;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManagerStoppedException;
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.SeleniumConfiguration;
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.SeleniumRunner;
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.InvalidSeleniumDriverException;
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverUtilities;
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDrivers;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.SeleniumConfiguration;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.SeleniumRunner;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.InvalidSeleniumDriverException;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.SeleniumDriverUtilities;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.SeleniumDrivers;
 import org.apache.commons.cli.*;
 
 import javax.swing.*;
