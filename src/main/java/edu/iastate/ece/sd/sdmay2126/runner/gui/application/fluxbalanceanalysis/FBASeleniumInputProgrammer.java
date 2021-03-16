@@ -2,7 +2,7 @@ package edu.iastate.ece.sd.sdmay2126.runner.gui.application.fluxbalanceanalysis;
 
 import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
-import edu.iastate.ece.sd.sdmay2126.runner.gui.KBaseHelper;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumKBaseHelper;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumIdentificationException;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumInputProgrammer;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumUtilities;
@@ -45,47 +45,47 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
                 .until(d -> scopedFBACard.findElement(By.cssSelector(showAdvancedCSSSelector)))
                 .click();
 
-        KBaseHelper.setCheckBox(scopedFBACard, "fva", params.isFluxVariabilityAnalysis());
-        KBaseHelper.setCheckBox(scopedFBACard, "minimize_flux", params.isMinimizeFlux());
-        KBaseHelper.setCheckBox(scopedFBACard, "simulate_ko", params.isSimulateAllSingleKos());
+        SeleniumKBaseHelper.setCheckBox(scopedFBACard, "fva", params.isFluxVariabilityAnalysis());
+        SeleniumKBaseHelper.setCheckBox(scopedFBACard, "minimize_flux", params.isMinimizeFlux());
+        SeleniumKBaseHelper.setCheckBox(scopedFBACard, "simulate_ko", params.isSimulateAllSingleKos());
 
-        KBaseHelper.setTextBox(scopedFBACard, "activation_coefficient",
+        SeleniumKBaseHelper.setTextBox(scopedFBACard, "activation_coefficient",
                 Float.toString(params.getActivationCoefficient()));
 
-        KBaseHelper.setTextBox(scopedFBACard, "max_c_uptake",
+        SeleniumKBaseHelper.setTextBox(scopedFBACard, "max_c_uptake",
                 Float.toString(params.getMaxCarbonUptake()));
 
-        KBaseHelper.setTextBox(scopedFBACard, "max_n_uptake",
+        SeleniumKBaseHelper.setTextBox(scopedFBACard, "max_n_uptake",
                 Float.toString(params.getMaxNitrogenUptake()));
 
-        KBaseHelper.setTextBox(scopedFBACard, "max_p_uptake",
+        SeleniumKBaseHelper.setTextBox(scopedFBACard, "max_p_uptake",
                 Float.toString(params.getMaxPhosphateUptake()));
 
-        KBaseHelper.setTextBox(scopedFBACard, "max_s_uptake",
+        SeleniumKBaseHelper.setTextBox(scopedFBACard, "max_s_uptake",
                 Float.toString(params.getMaxSulfurUptake()));
 
-        KBaseHelper.setTextBox(scopedFBACard, "max_o_uptake",
+        SeleniumKBaseHelper.setTextBox(scopedFBACard, "max_o_uptake",
                 Float.toString(params.getMaxOxygenUptake()));
 
-        KBaseHelper.setTextBox(scopedFBACard, "exp_threshold_percentile",
+        SeleniumKBaseHelper.setTextBox(scopedFBACard, "exp_threshold_percentile",
                 Float.toString(params.getExpressionThreshold()));
 
-        KBaseHelper.setTextBox(scopedFBACard, "exp_threshold_margin",
+        SeleniumKBaseHelper.setTextBox(scopedFBACard, "exp_threshold_margin",
                 Float.toString(params.getExpressionUncertainty()));
 
-        KBaseHelper.setTextList(driver, scopedFBACard, "custom_bound_list", params.getCustomFluxBounds());
+        SeleniumKBaseHelper.setTextList(driver, scopedFBACard, "custom_bound_list", params.getCustomFluxBounds());
 
-        KBaseHelper.setSearchableOptionList(scopedFBACard, "feature_ko_list", params.getGeneKnockouts());
+        SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "feature_ko_list", params.getGeneKnockouts());
 
         // TODO: This used to default to bio1 if no matches
-        KBaseHelper.setSearchableOptionList(scopedFBACard, "target_reaction",
+        SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "target_reaction",
                 Collections.singletonList(params.getReactionToMaximize()));
 
-        KBaseHelper.setSearchableOptionList(scopedFBACard, "reaction_ko_list", params.getReactionKnockouts());
+        SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "reaction_ko_list", params.getReactionKnockouts());
 
         KBaseHelper.setSearchableOptionList(scopedFBACard, "media_supplement_list", params.getMediaSupplements());
 
-        KBaseHelper.setSearchableOptionList(scopedFBACard, "expression_condition",
+        SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "expression_condition",
                 Collections.singletonList(params.getExpressionCondition()));
 
         System.out.println("Programming FBA complete.");
