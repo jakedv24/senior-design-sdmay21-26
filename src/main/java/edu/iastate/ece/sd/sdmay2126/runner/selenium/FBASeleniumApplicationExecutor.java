@@ -28,14 +28,8 @@ public class FBASeleniumApplicationExecutor implements SeleniumApplicationExecut
                 scopedFBACard
         );
 
-        // FBA is the 3rd application on the page, thus the 3rd run button (0-indexed)
         System.out.println("Run buttons located; clicking the FBA run...");
         runButtons.get(0).click();
-        try {
-            runButtons.get(0).click(); // And again to bypass the webdriver internal error (FF-specific?)
-        } catch (ElementNotInteractableException e) {
-            //just ignore?
-        }
 
         // Locate the cancel buttons
         System.out.println("Locating cancel buttons...");

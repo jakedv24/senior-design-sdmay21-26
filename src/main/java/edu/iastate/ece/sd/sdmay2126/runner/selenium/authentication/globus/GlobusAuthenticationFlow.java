@@ -88,6 +88,7 @@ public class GlobusAuthenticationFlow implements SeleniumAuthenticationFlow {
                 new WebDriverWait(driver, Duration.ofSeconds(10))
                         .until(d -> d.findElement(By.tagName("button")))
                         .click();
+
                 // Successful; break to avoid retrying
                 break;
             } catch (Exception e) {
