@@ -7,7 +7,7 @@ import edu.iastate.ece.sd.sdmay2126.input.JSONFileInputReader;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManager;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManagerStoppedException;
-import edu.iastate.ece.sd.sdmay2126.runner.gui.SeleniumConfiguration;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumConfiguration;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.SeleniumRunner;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.InvalidSeleniumDriverException;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.SeleniumDriverUtilities;
