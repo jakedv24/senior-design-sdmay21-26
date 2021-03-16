@@ -113,12 +113,14 @@ public class App {
         String driverPath;
         SeleniumDrivers driverType;
         String narrativeIdentifier;
+        boolean seleniumHeadless;
         try {
             globusUser = appProps.getProperty("kbase.auth.globus.user");
             globusPass = appProps.getProperty("kbase.auth.globus.pass");
             driverType = SeleniumDriverUtilities.getDriverFromString(envProps.getProperty("selenium.driver.type"));
             driverPath = envProps.getProperty("selenium.driver.path");
             narrativeIdentifier = appProps.getProperty("kbase.narrative_identifier");
+            seleniumHeadless = Boolean.parseBoolean(appProps.getProperty("selenium.headless"));
         } catch (InvalidSeleniumDriverException e) {
             System.err.println("Invalid Selenium driver specified in configuration.");
             e.printStackTrace();
@@ -133,7 +135,8 @@ public class App {
         manager.initializeRunners(
                 jobManager -> new SeleniumRunner(
                         manager,
-                        new SeleniumConfiguration(globusUser, globusPass, driverType, driverPath, narrativeIdentifier)
+                        new SeleniumConfiguration(globusUser, globusPass, driverType,
+                                driverPath, narrativeIdentifier, seleniumHeadless)
                 ),
                 1 // Let's leave it at a single runner for now
         );
