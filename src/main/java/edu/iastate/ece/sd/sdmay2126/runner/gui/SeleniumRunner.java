@@ -1,4 +1,4 @@
-package edu.iastate.ece.sd.sdmay2126.runner.selenium;
+package edu.iastate.ece.sd.sdmay2126.runner.gui;
 
 import edu.iastate.ece.sd.sdmay2126.application.ApplicationType;
 import edu.iastate.ece.sd.sdmay2126.application.InvalidApplicationException;
@@ -11,13 +11,13 @@ import edu.iastate.ece.sd.sdmay2126.output.JobOutputWriter;
 import edu.iastate.ece.sd.sdmay2126.runner.Runner;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotInitializedException;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotReadyException;
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.SeleniumAuthenticationFlow;
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus.GlobusAuthenticationConfiguration;
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus.GlobusAuthenticationFlow;
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverChromeRemote;
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverChrome;
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverConfiguration;
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.driver.SeleniumDriverFirefox;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.authentication.SeleniumAuthenticationFlow;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.authentication.globus.GlobusAuthenticationConfiguration;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.authentication.globus.GlobusAuthenticationFlow;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.SeleniumDriverChromeRemote;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.SeleniumDriverChrome;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.SeleniumDriverConfiguration;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.SeleniumDriverFirefox;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

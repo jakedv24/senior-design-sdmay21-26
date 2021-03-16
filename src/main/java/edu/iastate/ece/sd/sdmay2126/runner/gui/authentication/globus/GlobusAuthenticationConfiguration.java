@@ -1,7 +1,7 @@
-package edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.globus;
+package edu.iastate.ece.sd.sdmay2126.runner.gui.authentication.globus;
 
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.SeleniumAuthenticationConfiguration;
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication.SeleniumAuthenticationFlows;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.authentication.SeleniumAuthenticationConfiguration;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.authentication.SeleniumAuthenticationFlows;
 
 public class GlobusAuthenticationConfiguration extends SeleniumAuthenticationConfiguration {
     private String username;

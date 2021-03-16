@@ -1,4 +1,4 @@
-package edu.iastate.ece.sd.sdmay2126.runner.selenium;
+package edu.iastate.ece.sd.sdmay2126.runner.gui;
 
 import edu.iastate.ece.sd.sdmay2126.FakeWebElement;
 import edu.iastate.ece.sd.sdmay2126.application.FBAOutput;
@@ -15,7 +15,7 @@ import org.openqa.selenium.WebElement;
 import java.util.ArrayList;
 import java.util.List;
 
-import static edu.iastate.ece.sd.sdmay2126.runner.selenium.FBASeleniumOutputCollector.*;
+import static edu.iastate.ece.sd.sdmay2126.runner.gui.FBASeleniumOutputCollector.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;

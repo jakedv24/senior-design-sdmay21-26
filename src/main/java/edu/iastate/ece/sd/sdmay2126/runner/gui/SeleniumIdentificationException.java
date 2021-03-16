@@ -1,4 +1,4 @@
-package edu.iastate.ece.sd.sdmay2126.runner.selenium;
+package edu.iastate.ece.sd.sdmay2126.runner.gui;
 
 /**
  * Throw in instances where Selenium automation was unable to identify some element in KBase.

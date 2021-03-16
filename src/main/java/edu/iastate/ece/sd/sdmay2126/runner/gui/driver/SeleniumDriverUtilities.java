@@ -1,4 +1,4 @@
-package edu.iastate.ece.sd.sdmay2126.runner.selenium.driver;
+package edu.iastate.ece.sd.sdmay2126.runner.gui.driver;
 
 /**
  * General utilities for interaction with Selenium drivers.

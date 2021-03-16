@@ -1,6 +1,6 @@
-package edu.iastate.ece.sd.sdmay2126.runner.selenium.authentication;
+package edu.iastate.ece.sd.sdmay2126.runner.gui.authentication;
 
-import edu.iastate.ece.sd.sdmay2126.runner.selenium.SeleniumIdentificationException;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.SeleniumIdentificationException;
 
 /**
  * Perform an authentication flow, such as Globus OAuth, to some session.
