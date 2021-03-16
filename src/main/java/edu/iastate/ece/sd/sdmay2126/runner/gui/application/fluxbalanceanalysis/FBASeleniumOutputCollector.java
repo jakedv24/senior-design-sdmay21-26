@@ -1,8 +1,11 @@
-package edu.iastate.ece.sd.sdmay2126.runner.gui;
+package edu.iastate.ece.sd.sdmay2126.runner.gui.application.fluxbalanceanalysis;
 
 import edu.iastate.ece.sd.sdmay2126.application.ApplicationOutput;
 import edu.iastate.ece.sd.sdmay2126.application.FBAOutput;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumIdentificationException;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumOutputCollector;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;

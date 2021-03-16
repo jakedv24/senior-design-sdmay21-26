@@ -1,4 +1,4 @@
-package edu.iastate.ece.sd.sdmay2126.runner.gui;
+package edu.iastate.ece.sd.sdmay2126.runner.gui.selenium;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;

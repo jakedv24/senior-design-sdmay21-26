@@ -1,5 +1,7 @@
 package edu.iastate.ece.sd.sdmay2126.runner.gui;
 
+import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumIdentificationException;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumUtilities;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

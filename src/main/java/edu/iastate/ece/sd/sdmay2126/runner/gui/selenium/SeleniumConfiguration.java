@@ -1,4 +1,4 @@
-package edu.iastate.ece.sd.sdmay2126.runner.gui;
+package edu.iastate.ece.sd.sdmay2126.runner.gui.selenium;
 
 import edu.iastate.ece.sd.sdmay2126.runner.gui.authentication.SeleniumAuthenticationConfiguration;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.authentication.globus.GlobusAuthenticationConfiguration;
