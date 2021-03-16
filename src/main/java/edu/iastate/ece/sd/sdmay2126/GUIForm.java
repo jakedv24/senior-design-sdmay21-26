@@ -76,7 +76,7 @@ public class GUIForm extends JFrame {
     private JCheckBox randomCheckBox;
     private JCheckBox samplingCheckBox;
     private JTextField numberJobs;
-    private JTextField geneKnockouts;
+    private JTextArea geneKnockouts;
     private JTextArea reactionKnockouts;
     private JCheckBox readFromFileCheckBox;
     public File userFile;
@@ -430,7 +430,7 @@ public class GUIForm extends JFrame {
 
         geneKnockoutsList = new LinkedList<String>();
         Scanner geneKnockOutScanner = new Scanner(geneKnockoutsString);
-        geneKnockOutScanner.useDelimiter("[\t|;]");
+        geneKnockOutScanner.useDelimiter("\n");
         while (geneKnockOutScanner.hasNext()) {
             geneKnockoutsList.add(geneKnockOutScanner.next());
         }
