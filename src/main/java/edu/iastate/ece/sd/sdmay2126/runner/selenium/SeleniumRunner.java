@@ -31,7 +31,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
 /**
- * KBase job runner using Selenium WebDrivers.
+ * KBase job runner using Selenium WebDrivers. Runners are 1:1 with narratives in KBase, so multiple runners cannot
+ * automate the same narrative simultaneously.
  */
 public class SeleniumRunner implements Runner {
     private final JobManager jobManager;
