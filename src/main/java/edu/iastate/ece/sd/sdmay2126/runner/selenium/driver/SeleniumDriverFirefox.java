@@ -12,8 +12,7 @@ public class SeleniumDriverFirefox implements SeleniumDriverManager {
     public WebDriver initializeDriver(SeleniumDriverConfiguration driverConfiguration) {
         System.setProperty("webdriver.gecko.driver", driverConfiguration.getDriverLocation());
         return new FirefoxDriver(
-                // TODO: Expose through configuration; make "debug" option
-                new FirefoxOptions().setHeadless(false)
+                new FirefoxOptions().setHeadless(driverConfiguration.getHeadless())
         );
     }
 }
