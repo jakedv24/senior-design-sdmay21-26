@@ -1,4 +1,4 @@
-package edu.iastate.ece.sd.sdmay2126.runner.gui;
+package edu.iastate.ece.sd.sdmay2126.runner.gui.selenium;
 
 import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumIdentificationException;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumUtilities;
@@ -19,7 +19,7 @@ import java.util.List;
  * Text: free-form input
  * Option: selection from pre-defined options
  */
-public class KBaseHelper {
+public class SeleniumKBaseHelper {
     /**
      * Used to identify a particular parameter from the code cell.
      */
