@@ -16,9 +16,9 @@ public class SeleniumConfiguration {
     // TODO: This little "helper" should probably be removed/refactored to decouple from Globus
     public SeleniumConfiguration(
             String globusUsername, String globusPassword, SeleniumDrivers driverType,
-            String driverLocation, String narrativeIdentifier) {
+            String driverLocation, String narrativeIdentifier, boolean headless) {
         this(
-                new SeleniumDriverConfiguration(driverType, driverLocation),
+                new SeleniumDriverConfiguration(driverType, driverLocation, headless),
                 new GlobusAuthenticationConfiguration(globusUsername, globusPassword),
                 narrativeIdentifier
         );
