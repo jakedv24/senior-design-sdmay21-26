@@ -35,7 +35,8 @@ public class FBAParameters implements ApplicationParameters {
                          float activationCoefficient, float maxCarbonUptake, float maxNitrogenUptake,
                          float maxPhosphateUptake, float maxSulfurUptake, float maxOxygenUptake,
                          String reactionToMaximize, float expressionThreshold, float expressionUncertainty,
-                         LinkedList<String> geneKnockouts,LinkedList<String > mediaSupplements, LinkedList<String> customFluxBounds) {
+                         LinkedList<String> geneKnockouts, LinkedList<String> mediaSupplements, 
+                         LinkedList<String> customFluxBounds) {
         this.fluxVariabilityAnalysis = fluxVariabilityAnalysis;
         this.minimizeFlux = minimizeFlux;
         this.simulateAllSingleKos = simulateAllSingleKos;

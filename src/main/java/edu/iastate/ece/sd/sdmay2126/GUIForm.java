@@ -641,7 +641,7 @@ public class GUIForm extends JFrame {
                     minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
                     carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
                     reactionToMaximizeString, expressionThresholdValue, expressionUncertaintyValue,
-                    geneKnockoutsList, mediaSupplementList,customFluxBoundsList);
+                    geneKnockoutsList, mediaSupplementList, customFluxBoundsList);
         } else if (randomValue) {
             params = new FBAParameters(randomValue);
             randomChecked(params);

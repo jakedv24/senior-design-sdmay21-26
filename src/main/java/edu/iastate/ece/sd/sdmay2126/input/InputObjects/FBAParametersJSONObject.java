@@ -53,6 +53,6 @@ public class FBAParametersJSONObject {
         return new FBAParameters(fluxVariabilityAnalysis, minimizeFlux, simulateAllSingleKos, activationCoefficient,
                 maxCarbonUptake, maxNitrogenUptake, maxPhosphateUptake, maxSulfurUptake, maxOxygenUptake,
                 reactionToMaximize, expressionThreshold, expressionUncertainty,
-                geneKnockouts, mediaSupplements,customFluxBounds);
+                geneKnockouts, mediaSupplements, customFluxBounds);
     }
 }
