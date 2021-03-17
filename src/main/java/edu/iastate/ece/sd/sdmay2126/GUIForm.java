@@ -81,7 +81,7 @@ public class GUIForm extends JFrame {
     private JCheckBox readFromFileCheckBox;
     public File userFile;
     private JTextField mediaSupplement;
-    private JTextField customFluxBounds;
+    private JTextArea customFluxBounds;
     private JTextField expressionCondition;
 
     private boolean formError = false; //try catches will signal this.
@@ -439,7 +439,7 @@ public class GUIForm extends JFrame {
         customFluxBoundsList = new LinkedList<String>();
         String customFluxBoundsString = customFluxBounds.getText();
         Scanner customFluxBoundsScanner = new Scanner(customFluxBoundsString);
-        customFluxBoundsScanner.useDelimiter("[\t|;]");
+        customFluxBoundsScanner.useDelimiter("\n");
         while (customFluxBoundsScanner.hasNext()) {
             customFluxBoundsList.add(customFluxBoundsScanner.next());
         }
