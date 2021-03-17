@@ -24,8 +24,8 @@ public class FBAParameters implements ApplicationParameters {
     private LinkedList<String> geneKnockouts;
     private LinkedList<String> reactionKnockouts;
     private LinkedList<String> customFluxBounds;
+    private LinkedList<String> mediaSupplements;
 
-    private String mediaSupplements;
     private String expressionCondition;
     // TODO customFluxBounds
     // TODO mediaSupplement
@@ -163,11 +163,11 @@ public class FBAParameters implements ApplicationParameters {
         return reactionKnockouts;
     }
 
-    public void setMediaSupplements(String mediaSupplements) {
+    public void setMediaSupplements(LinkedList<String> mediaSupplements) {
         this.mediaSupplements = mediaSupplements;
     }
 
-    public String getMediaSupplements() {
+    public LinkedList<String> getMediaSupplements() {
         return mediaSupplements;
     }
 
