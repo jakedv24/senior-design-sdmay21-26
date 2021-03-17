@@ -57,6 +57,7 @@ public class GUIForm extends JFrame {
     public LinkedList<String> reactionKnockOutList;
     public LinkedList<String> geneKnockoutsList;
     public LinkedList<String> customFluxBoundsList;
+    public LinkedList<String> mediaSupplementList;
     //GUI Components
     private JButton runDefaultSettingsButton;
     private JCheckBox fluxVariabilityAnalysis; //boolean, check is 1 unchecked is 0
@@ -80,7 +81,7 @@ public class GUIForm extends JFrame {
     private JTextArea reactionKnockouts;
     private JCheckBox readFromFileCheckBox;
     public File userFile;
-    private JTextField mediaSupplement;
+    private JTextArea mediaSupplement;
     private JTextArea customFluxBounds;
     private JTextField expressionCondition;
 
@@ -444,6 +445,15 @@ public class GUIForm extends JFrame {
             customFluxBoundsList.add(customFluxBoundsScanner.next());
         }
         customFluxBoundsScanner.close();
+
+        mediaSupplementList = new LinkedList<String>();
+        String mediaSupplementString = mediaSupplement.getText();
+        Scanner mediaSupplementScanner = new Scanner(mediaSupplementString);
+        mediaSupplementScanner.useDelimiter("\n");
+        while (mediaSupplementScanner.hasNext()) {
+            mediaSupplementList.add(mediaSupplementScanner.next());
+        }
+        mediaSupplementScanner.close();
     }
 
     /*
@@ -466,7 +476,7 @@ public class GUIForm extends JFrame {
         params.setGeneKnockouts(geneKnockoutsList);
         params.setCustomFluxBounds(customFluxBoundsList);
         params.setReactionKnockouts(reactionKnockOutList);
-        params.setMediaSupplements(mediaSupplementString);
+        params.setMediaSupplements(mediaSupplementList);
         params.setExpressionCondition(expressionConditionString);
     }
 
@@ -631,7 +641,7 @@ public class GUIForm extends JFrame {
                     minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
                     carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
                     reactionToMaximizeString, expressionThresholdValue, expressionUncertaintyValue,
-                    geneKnockoutsString, customFluxBoundsList);
+                    geneKnockoutsList, mediaSupplementList,customFluxBoundsList);
         } else if (randomValue) {
             params = new FBAParameters(randomValue);
             randomChecked(params);
@@ -640,7 +650,7 @@ public class GUIForm extends JFrame {
                     minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
                     carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
                     reactionToMaximizeString, expressionThresholdValue, expressionUncertaintyValue,
-                    geneKnockoutsString, customFluxBoundsList);
+                    geneKnockoutsList, mediaSupplementList, customFluxBoundsList);
             //duplicate code?
             setRunnerParameters(params);
             // Queue the job
