@@ -21,14 +21,16 @@ public class FBAParametersJSONObject {
     private String reactionToMaximize;
     private float expressionThreshold;
     private float expressionUncertainty;
-    private String geneKnockouts;
+    private LinkedList<String> geneKnockouts;
+    private LinkedList<String> mediaSupplements;
     private LinkedList<String> customFluxBounds;
 
     public FBAParametersJSONObject(boolean fluxVariabilityAnalysis, boolean minimizeFlux, boolean simulateAllSingleKos,
                                    float activationCoefficient, float maxCarbonUptake, float maxNitrogenUptake,
                                    float maxPhosphateUptake, float maxSulfurUptake, float maxOxygenUptake,
                                    String reactionToMaximize, float expressionThreshold,
-                                   float expressionUncertainty, String geneKnockouts,
+                                   float expressionUncertainty, LinkedList<String> geneKnockouts,
+                                   LinkedList<String> mediaSupplements,
                                    LinkedList<String> customFluxBounds) {
         this.fluxVariabilityAnalysis = fluxVariabilityAnalysis;
         this.minimizeFlux = minimizeFlux;
@@ -43,6 +45,7 @@ public class FBAParametersJSONObject {
         this.expressionThreshold = expressionThreshold;
         this.expressionUncertainty = expressionUncertainty;
         this.geneKnockouts = geneKnockouts;
+        this.mediaSupplements = mediaSupplements;
         this.customFluxBounds = customFluxBounds;
     }
 
@@ -50,6 +53,6 @@ public class FBAParametersJSONObject {
         return new FBAParameters(fluxVariabilityAnalysis, minimizeFlux, simulateAllSingleKos, activationCoefficient,
                 maxCarbonUptake, maxNitrogenUptake, maxPhosphateUptake, maxSulfurUptake, maxOxygenUptake,
                 reactionToMaximize, expressionThreshold, expressionUncertainty,
-                geneKnockouts, customFluxBounds);
+                geneKnockouts, mediaSupplements, customFluxBounds);
     }
 }
