@@ -122,8 +122,11 @@ public class KBaseHelper {
         // Clear previous selections
         List<WebElement> selectedItems = selectedItemsPane.findElements(By.cssSelector(".row"));
         System.out.printf("  Removing %d items...%n", selectedItems.size());
-        for (WebElement previousOption : selectedItems) {
-            previousOption.findElement(By.cssSelector("span[class='fa fa-minus-circle']")).click();
+        while (!selectedItems.isEmpty()) {
+            selectedItems.get(0).findElement(By.cssSelector("span[class='fa fa-minus-circle']")).click();
+
+            // Reload the remaining items so our references don't become stale
+            selectedItems = selectedItemsPane.findElements(By.cssSelector(".row"));
         }
 
         // Make new selections

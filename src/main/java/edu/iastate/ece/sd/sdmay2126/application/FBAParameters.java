@@ -24,8 +24,8 @@ public class FBAParameters implements ApplicationParameters {
     private LinkedList<String> geneKnockouts;
     private LinkedList<String> reactionKnockouts;
     private LinkedList<String> customFluxBounds;
+    private LinkedList<String> mediaSupplements;
 
-    private String mediaSupplements;
     private String expressionCondition;
     // TODO customFluxBounds
     // TODO mediaSupplement
@@ -35,7 +35,8 @@ public class FBAParameters implements ApplicationParameters {
                          float activationCoefficient, float maxCarbonUptake, float maxNitrogenUptake,
                          float maxPhosphateUptake, float maxSulfurUptake, float maxOxygenUptake,
                          String reactionToMaximize, float expressionThreshold, float expressionUncertainty,
-                         String geneKnockouts, LinkedList<String> customFluxBounds) {
+                         LinkedList<String> geneKnockouts, LinkedList<String> mediaSupplements,
+                         LinkedList<String> customFluxBounds) {
         this.fluxVariabilityAnalysis = fluxVariabilityAnalysis;
         this.minimizeFlux = minimizeFlux;
         this.simulateAllSingleKos = simulateAllSingleKos;
@@ -48,6 +49,8 @@ public class FBAParameters implements ApplicationParameters {
         this.reactionToMaximize = reactionToMaximize;
         this.expressionThreshold = expressionThreshold;
         this.expressionUncertainty = expressionUncertainty;
+        this.geneKnockouts = geneKnockouts;
+        this.mediaSupplements = mediaSupplements;
         this.customFluxBounds = customFluxBounds;
         // TODO add other parameters
     }
@@ -163,11 +166,11 @@ public class FBAParameters implements ApplicationParameters {
         return reactionKnockouts;
     }
 
-    public void setMediaSupplements(String mediaSupplements) {
+    public void setMediaSupplements(LinkedList<String> mediaSupplements) {
         this.mediaSupplements = mediaSupplements;
     }
 
-    public String getMediaSupplements() {
+    public LinkedList<String> getMediaSupplements() {
         return mediaSupplements;
     }
 

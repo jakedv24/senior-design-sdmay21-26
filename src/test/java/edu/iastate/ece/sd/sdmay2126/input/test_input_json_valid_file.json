@@ -11,6 +11,7 @@
   "reactionToMaximize": "validReaction",
   "expressionThreshold": 1.0,
   "expressionUncertainty": 1.0,
-  "geneKnockouts": "geneKnockout",
+  "geneKnockouts": ["geneKnockout"],
+  "mediaSupplements": ["mediaSupplement"],
   "customFluxBounds": ["customFluxBounds"]
 }
