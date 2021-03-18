@@ -83,7 +83,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
 
         SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "reaction_ko_list", params.getReactionKnockouts());
 
-        KBaseHelper.setSearchableOptionList(scopedFBACard, "media_supplement_list", params.getMediaSupplements());
+        SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "media_supplement_list", params.getMediaSupplements());
 
         SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "expression_condition",
                 Collections.singletonList(params.getExpressionCondition()));
