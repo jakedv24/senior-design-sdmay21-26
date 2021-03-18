@@ -4,7 +4,6 @@ import edu.iastate.ece.sd.sdmay2126.FakeWebElement;
 import edu.iastate.ece.sd.sdmay2126.application.FBAOutput;
 import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
-import edu.iastate.ece.sd.sdmay2126.runner.gui.application.fluxbalanceanalysis.FBASeleniumOutputCollector;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;

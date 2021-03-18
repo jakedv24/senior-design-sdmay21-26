@@ -73,17 +73,21 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         SeleniumKBaseHelper.setTextBox(scopedFBACard, "exp_threshold_margin",
                 Float.toString(params.getExpressionUncertainty()));
 
-        SeleniumKBaseHelper.setTextList(driver, scopedFBACard, "custom_bound_list", params.getCustomFluxBounds());
+        SeleniumKBaseHelper.setTextList(driver, scopedFBACard, "custom_bound_list",
+                params.getCustomFluxBounds());
 
-        SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "feature_ko_list", params.getGeneKnockouts());
+        SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "feature_ko_list",
+                params.getGeneKnockouts());
 
         // TODO: This used to default to bio1 if no matches
         SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "target_reaction",
                 Collections.singletonList(params.getReactionToMaximize()));
 
-        SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "reaction_ko_list", params.getReactionKnockouts());
+        SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "reaction_ko_list",
+                params.getReactionKnockouts());
 
-        KBaseHelper.setSearchableOptionList(scopedFBACard, "media_supplement_list", params.getMediaSupplements());
+        SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "media_supplement_list",
+                params.getMediaSupplements());
 
         SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "expression_condition",
                 Collections.singletonList(params.getExpressionCondition()));
