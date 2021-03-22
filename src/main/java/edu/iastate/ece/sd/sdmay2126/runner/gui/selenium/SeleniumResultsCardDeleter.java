@@ -5,5 +5,5 @@ import org.openqa.selenium.WebDriver;
 
 
 public interface SeleniumResultsCardDeleter {
-    void DeleteResultsCard(Job job, WebDriver driver);
+    void DeleteResultsCard();
 }
