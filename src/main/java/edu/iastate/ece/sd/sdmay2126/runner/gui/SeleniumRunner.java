@@ -18,8 +18,8 @@ import edu.iastate.ece.sd.sdmay2126.runner.gui.application.fluxbalanceanalysis.F
 import edu.iastate.ece.sd.sdmay2126.runner.gui.authentication.SeleniumAuthenticationFlow;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.authentication.globus.GlobusAuthenticationConfiguration;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.authentication.globus.GlobusAuthenticationFlow;
-import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.SeleniumDriverChromeRemote;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.SeleniumDriverChrome;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.SeleniumDriverChromeRemote;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.SeleniumDriverConfiguration;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.SeleniumDriverFirefox;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumConfiguration;

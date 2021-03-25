@@ -7,17 +7,19 @@ import edu.iastate.ece.sd.sdmay2126.input.JSONFileInputReader;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManager;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManagerStoppedException;
-import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumConfiguration;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.SeleniumRunner;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.InvalidSeleniumDriverException;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.SeleniumDriverUtilities;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.SeleniumDrivers;
-import org.apache.commons.cli.*;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumConfiguration;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 
 import javax.swing.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Properties;
 
 /**

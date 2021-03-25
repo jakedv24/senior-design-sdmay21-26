@@ -4,7 +4,9 @@ import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumApplicationExecutor;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumIdentificationException;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumUtilities;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import java.time.Duration;
 import java.util.List;

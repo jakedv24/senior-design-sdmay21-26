@@ -4,11 +4,10 @@ import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
-import java.util.Collection;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class JSONFileInputReaderTest {
     private static final String SINGLE_JOB_VALID_FILE_NAME =
