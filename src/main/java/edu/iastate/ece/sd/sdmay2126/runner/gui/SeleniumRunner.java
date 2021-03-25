@@ -251,7 +251,7 @@ public class SeleniumRunner implements Runner {
         String timestampString = new SimpleDateFormat("yyy.MM.dd.HH.mm.ss").format(new Date());
         jobOutputWriter.outputToFile(job, "FBAJson_" + timestampString);
 
-        new FBAResultsCardDeleter(driver).DeleteResultsCard();
+        new FBAResultsCardDeleter(driver).DeleteResultsCard(job);
     }
 
     private WebElement getFBACardScope() {

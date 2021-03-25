@@ -5,5 +5,5 @@ import org.openqa.selenium.WebDriver;
 
 
 public interface SeleniumResultsCardDeleter {
-    void DeleteResultsCard();
+    void DeleteResultsCard(Job job) throws InterruptedException, SeleniumIdentificationException;
 }

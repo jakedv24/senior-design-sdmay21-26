@@ -71,6 +71,13 @@ public class SeleniumUtilities {
                 Thread.sleep(POLLING_DELAY_MILLIS);
             } catch (StaleElementReferenceException e) {
                 return;
+            } catch (ElementNotVisibleException e) {
+                Thread.sleep(POLLING_DELAY_MILLIS);
+
+            } catch (UnknownError e) {
+                Thread.sleep(POLLING_DELAY_MILLIS);
+            } catch(WebDriverException e) {
+                Thread.sleep(POLLING_DELAY_MILLIS);
             }
 
         }
