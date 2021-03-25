@@ -24,6 +24,9 @@ public class FBAParametersJSONObject {
     private LinkedList<String> geneKnockouts;
     private LinkedList<String> mediaSupplements;
     private LinkedList<String> customFluxBounds;
+    private LinkedList<String> reactionKnockouts;
+    private boolean deleteCard;
+    private String expressionCondition;
 
     public FBAParametersJSONObject(boolean fluxVariabilityAnalysis, boolean minimizeFlux, boolean simulateAllSingleKos,
                                    float activationCoefficient, float maxCarbonUptake, float maxNitrogenUptake,
@@ -31,7 +34,8 @@ public class FBAParametersJSONObject {
                                    String reactionToMaximize, float expressionThreshold,
                                    float expressionUncertainty, LinkedList<String> geneKnockouts,
                                    LinkedList<String> mediaSupplements,
-                                   LinkedList<String> customFluxBounds) {
+                                   LinkedList<String> customFluxBounds, LinkedList<String> reactionKnockouts,
+                                   boolean deleteCard, String expressionCondition) {
         this.fluxVariabilityAnalysis = fluxVariabilityAnalysis;
         this.minimizeFlux = minimizeFlux;
         this.simulateAllSingleKos = simulateAllSingleKos;
@@ -47,12 +51,15 @@ public class FBAParametersJSONObject {
         this.geneKnockouts = geneKnockouts;
         this.mediaSupplements = mediaSupplements;
         this.customFluxBounds = customFluxBounds;
+        this.reactionKnockouts = reactionKnockouts;
+        this.deleteCard = deleteCard;
+        this.expressionCondition = expressionCondition;
     }
 
     public FBAParameters generateFBAParameters() {
         return new FBAParameters(fluxVariabilityAnalysis, minimizeFlux, simulateAllSingleKos, activationCoefficient,
                 maxCarbonUptake, maxNitrogenUptake, maxPhosphateUptake, maxSulfurUptake, maxOxygenUptake,
                 reactionToMaximize, expressionThreshold, expressionUncertainty,
-                geneKnockouts, mediaSupplements, customFluxBounds);
+                geneKnockouts, mediaSupplements, customFluxBounds, reactionKnockouts, deleteCard, expressionCondition);
     }
 }
