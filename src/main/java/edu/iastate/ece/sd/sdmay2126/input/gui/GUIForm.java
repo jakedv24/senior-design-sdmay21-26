@@ -1,4 +1,4 @@
-package edu.iastate.ece.sd.sdmay2126;
+package edu.iastate.ece.sd.sdmay2126.input.gui;
 
 import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
 import edu.iastate.ece.sd.sdmay2126.input.file.FileInputReader;
