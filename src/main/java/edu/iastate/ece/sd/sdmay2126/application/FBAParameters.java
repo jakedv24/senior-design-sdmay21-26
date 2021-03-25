@@ -27,6 +27,8 @@ public class FBAParameters implements ApplicationParameters {
     private LinkedList<String> mediaSupplements;
 
     private String expressionCondition;
+
+    private boolean deleteCard;
     // TODO customFluxBounds
     // TODO mediaSupplement
     // TODO expressionCondition
@@ -196,6 +198,14 @@ public class FBAParameters implements ApplicationParameters {
 
     public String getExpressionCondition() {
         return  expressionCondition;
+    }
+
+    public boolean getDeleteCard() {
+        return deleteCard;
+    }
+
+    public void setDeleteCard(boolean deleteCard) {
+        this.deleteCard = deleteCard;
     }
 
     @Override

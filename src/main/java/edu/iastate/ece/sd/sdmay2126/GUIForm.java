@@ -54,6 +54,7 @@ public class GUIForm extends JFrame {
     public int numberJobsValue = 1; //Default is one.
     public boolean randomValue = false;
     public boolean sampleValue = false;
+    public boolean deleteResultsCard = false;
     public LinkedList<String> reactionKnockOutList;
     public LinkedList<String> geneKnockoutsList;
     public LinkedList<String> customFluxBoundsList;
@@ -84,6 +85,7 @@ public class GUIForm extends JFrame {
     private JTextArea mediaSupplement;
     private JTextArea customFluxBounds;
     private JTextField expressionCondition;
+    private JCheckBox deleteResultsCheckBox;
 
     private boolean formError = false; //try catches will signal this.
 
@@ -170,6 +172,7 @@ public class GUIForm extends JFrame {
                     fluxVariabilityAnalysisValue = fluxVariabilityAnalysis.isSelected();
                     simulateAllSingleKosValue = simulateAllSingleKos.isSelected();
                     minimizeFluxValue = minimizeFlux.isSelected();
+                    deleteResultsCard = deleteResultsCheckBox.isSelected();
                     //Close the Jpanel and free the resources it used.
                 }
                 if (!formError) {
@@ -478,6 +481,7 @@ public class GUIForm extends JFrame {
         params.setReactionKnockouts(reactionKnockOutList);
         params.setMediaSupplements(mediaSupplementList);
         params.setExpressionCondition(expressionConditionString);
+        params.setDeleteCard(deleteResultsCard);
     }
 
     private void randomChecked(FBAParameters params) {

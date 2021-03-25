@@ -11,6 +11,7 @@ import edu.iastate.ece.sd.sdmay2126.output.JobOutputWriter;
 import edu.iastate.ece.sd.sdmay2126.runner.Runner;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotInitializedException;
 import edu.iastate.ece.sd.sdmay2126.runner.RunnerNotReadyException;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.application.fluxbalanceanalysis.FBAResultsCardDeleter;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.application.fluxbalanceanalysis.FBASeleniumApplicationExecutor;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.application.fluxbalanceanalysis.FBASeleniumInputProgrammer;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.application.fluxbalanceanalysis.FBASeleniumOutputCollector;
@@ -249,6 +250,8 @@ public class SeleniumRunner implements Runner {
         JobOutputWriter jobOutputWriter = new JSONJobOutputWriter();
         String timestampString = new SimpleDateFormat("yyy.MM.dd.HH.mm.ss").format(new Date());
         jobOutputWriter.outputToFile(job, "FBAJson_" + timestampString);
+
+        new FBAResultsCardDeleter(driver).deleteResultsCard(job);
     }
 
     private WebElement getFBACardScope() {
