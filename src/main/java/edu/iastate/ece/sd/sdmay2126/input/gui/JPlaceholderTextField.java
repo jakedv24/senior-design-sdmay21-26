@@ -10,7 +10,7 @@ import java.awt.event.FocusListener;
  */
 public class JPlaceholderTextField extends JTextField {
     private final String placeholderText;
-    
+
     /**
      * @param placeholderText The placeholder text for this field.
      */
