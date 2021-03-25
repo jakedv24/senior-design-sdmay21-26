@@ -5,9 +5,15 @@ import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
+/**
+ * A JTextArea with placeholder text.
+ */
 public class JPlaceholderTextArea extends JTextArea {
     private final String placeholderText;
 
+    /**
+     * @param placeholderText The placeholder text for this field.
+     */
     public JPlaceholderTextArea(String placeholderText) {
         this.placeholderText = placeholderText;
 
