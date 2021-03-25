@@ -1,6 +1,7 @@
 package edu.iastate.ece.sd.sdmay2126.application;
 
 
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 
@@ -29,16 +30,14 @@ public class FBAParameters implements ApplicationParameters {
     private String expressionCondition;
 
     private boolean deleteCard;
-    // TODO customFluxBounds
-    // TODO mediaSupplement
-    // TODO expressionCondition
 
     public FBAParameters(boolean fluxVariabilityAnalysis, boolean minimizeFlux, boolean simulateAllSingleKos,
                          float activationCoefficient, float maxCarbonUptake, float maxNitrogenUptake,
                          float maxPhosphateUptake, float maxSulfurUptake, float maxOxygenUptake,
                          String reactionToMaximize, float expressionThreshold, float expressionUncertainty,
                          LinkedList<String> geneKnockouts, LinkedList<String> mediaSupplements,
-                         LinkedList<String> customFluxBounds) {
+                         LinkedList<String> customFluxBounds, LinkedList<String> reactionKnockouts,
+                         boolean deleteCard, String expressionCondition) {
         this.fluxVariabilityAnalysis = fluxVariabilityAnalysis;
         this.minimizeFlux = minimizeFlux;
         this.simulateAllSingleKos = simulateAllSingleKos;
@@ -54,7 +53,9 @@ public class FBAParameters implements ApplicationParameters {
         this.geneKnockouts = geneKnockouts;
         this.mediaSupplements = mediaSupplements;
         this.customFluxBounds = customFluxBounds;
-        // TODO add other parameters
+        this.reactionKnockouts = reactionKnockouts;
+        this.deleteCard = deleteCard;
+        this.expressionCondition = expressionCondition;
     }
 
     public FBAParameters(boolean fluxVariabilityAnalysis) {

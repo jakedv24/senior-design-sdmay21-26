@@ -110,6 +110,11 @@ public class SeleniumKBaseHelper {
      * @param values        The list item values.
      */
     public static void setSearchableOptionList(WebElement codeCell, String parameterName, List<String> values) {
+        if (values == null) {
+            System.out.println(parameterName + " is null, skipping...");
+            return;
+        }
+
         System.out.printf("Setting option list \"%s\"...%n", parameterName);
 
         WebElement parameterRow = codeCell.findElement(By.cssSelector(String.format(PARAM_SELECTOR, parameterName)));
@@ -133,6 +138,10 @@ public class SeleniumKBaseHelper {
         WebElement searchField = availableItemsPane.findElement(By.cssSelector("input[class='form-contol']"));
         System.out.printf("  Adding %d items...%n", values.size());
         for (String value : values) {
+            if (value == null) {
+                System.out.println("a value for " + parameterName + " is null, skipping value...");
+                break;
+            }
             // Search for option
             searchField.clear();
             searchField.sendKeys(value);

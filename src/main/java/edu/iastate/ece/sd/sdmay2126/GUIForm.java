@@ -649,7 +649,7 @@ public class GUIForm extends JFrame {
                     minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
                     carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
                     reactionToMaximizeString, expressionThresholdValue, expressionUncertaintyValue,
-                    geneKnockoutsList, mediaSupplementList, customFluxBoundsList);
+                    geneKnockoutsList, mediaSupplementList, customFluxBoundsList, new LinkedList<>(), true, "");
         } else if (randomValue) {
             params = new FBAParameters(randomValue);
             randomChecked(params);
@@ -658,7 +658,7 @@ public class GUIForm extends JFrame {
                     minimizeFluxValue, simulateAllSingleKosValue, activationCoefficient,
                     carbonValue, nitrogenValue, phosphateValue, sulfurValue, oxygenValue,
                     reactionToMaximizeString, expressionThresholdValue, expressionUncertaintyValue,
-                    geneKnockoutsList, mediaSupplementList, customFluxBoundsList);
+                    geneKnockoutsList, mediaSupplementList, customFluxBoundsList, new LinkedList<>(), true, "");
             //duplicate code?
             setRunnerParameters(params);
             // Queue the job
