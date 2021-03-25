@@ -7,12 +7,15 @@ import edu.iastate.ece.sd.sdmay2126.input.JSONFileInputReader;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManager;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManagerStoppedException;
-import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumConfiguration;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.SeleniumRunner;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.InvalidSeleniumDriverException;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.SeleniumDriverUtilities;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.driver.SeleniumDrivers;
-import org.apache.commons.cli.*;
+import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumConfiguration;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 
 import javax.swing.*;
 import java.io.FileNotFoundException;
@@ -165,20 +168,18 @@ public class App {
         //Give the GUI a more authentic feel according to use OS
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         gui = new GUIForm(manager);
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                //Generate our GUI, this has control of the web driver.
-                gui.setVisible(true);
-            }
+        SwingUtilities.invokeLater(() -> {
+            //Generate our GUI, this has control of the web driver.
+            gui.setVisible(true);
         });
     }
 
     private static void runHeadlessMode(JobManager manager, String inputFileName) {
         FileInputReader<FBAParameters> fbaFileInputReader = new JSONFileInputReader();
         try {
-            FBAParameters fbaParameters = fbaFileInputReader.parseFromFile(inputFileName);
-            manager.scheduleJob(new Job(fbaParameters));
+            for (FBAParameters jobParams :  fbaFileInputReader.parseFromFile(inputFileName)) {
+                manager.scheduleJob(new Job(jobParams));
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("Config file not found.");

@@ -2,16 +2,19 @@ package edu.iastate.ece.sd.sdmay2126.input;
 
 import com.google.gson.Gson;
 import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
+import edu.iastate.ece.sd.sdmay2126.input.InputObjects.FBAJobsJSONObject;
 import edu.iastate.ece.sd.sdmay2126.input.InputObjects.FBAParametersJSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class JSONFileInputReader implements FileInputReader<FBAParameters> {
+public class JSONFileInputReader extends FileInputReader<FBAParameters> {
     @Override
-    public FBAParameters parseFromFile(String pathToFile) throws FileNotFoundException {
+    public List<FBAParameters> parseFromFile(String pathToFile) throws FileNotFoundException {
         File f = new File(pathToFile);
 
         if (!f.exists()) {
@@ -19,12 +22,14 @@ public class JSONFileInputReader implements FileInputReader<FBAParameters> {
         }
 
         Reader fileReader = new FileReader(f);
-        FBAParametersJSONObject fbaParamsJSON = new Gson().fromJson(fileReader, FBAParametersJSONObject.class);
+        FBAJobsJSONObject fbaJobsJSON = new Gson().fromJson(fileReader, FBAJobsJSONObject.class);
 
         // TODO validate inputs for required / correct inputs, as well as set default values for optional params.
         // This logic should be extracted from the GUI to be re-usable by both portions. Ideally, the FBAParameters
         // constructor should throw exceptions for incorrect configurations.
 
-        return fbaParamsJSON.generateFBAParameters();
+        return fbaJobsJSON.getJobs().stream()
+                .map(FBAParametersJSONObject::generateFBAParameters)
+                .collect(Collectors.toList());
     }
 }

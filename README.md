@@ -39,6 +39,12 @@ Run the application as normal. Click through the GUI and run jobs.
 ## Using configuration files
 Run the application with a `-f <pathToConfigFile>` flag. This will read from the config file at that path.
 
+### Configuration file documentation
+_TODO_
+
+For now, please see `test_input_json_valid_file_single.json` to see an example of all parameters available
+to the configuration file.
+
 # Program Flags
 | Flag        | Usage | Description |
 | ----------- | ----------- |----------- |
