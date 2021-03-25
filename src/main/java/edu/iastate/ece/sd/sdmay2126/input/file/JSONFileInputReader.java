@@ -1,9 +1,9 @@
-package edu.iastate.ece.sd.sdmay2126.input;
+package edu.iastate.ece.sd.sdmay2126.input.file;
 
 import com.google.gson.Gson;
 import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
-import edu.iastate.ece.sd.sdmay2126.input.InputObjects.FBAJobsJSONObject;
-import edu.iastate.ece.sd.sdmay2126.input.InputObjects.FBAParametersJSONObject;
+import edu.iastate.ece.sd.sdmay2126.input.file.InputObjects.FBAJobsJSONObject;
+import edu.iastate.ece.sd.sdmay2126.input.file.InputObjects.FBAParametersJSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
