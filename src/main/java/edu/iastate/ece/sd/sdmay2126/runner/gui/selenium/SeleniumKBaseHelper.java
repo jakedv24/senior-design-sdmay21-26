@@ -152,25 +152,28 @@ public class SeleniumKBaseHelper {
         }
     }
 
-    public static void deleteResultCard(String cardName, WebDriver driver) throws InterruptedException, SeleniumIdentificationException {
+    public static void deleteResultCard(String cardName, WebDriver driver)
+            throws InterruptedException, SeleniumIdentificationException {
         List<WebElement> cards = driver.findElements(By.className("code_cell"));
         for (WebElement card : cards) {
             WebElement title = card.findElement(By.className("title"));
             if (title.getText().contains(cardName)) {
-                deleteCard(card,driver);
+                deleteCard(card, driver);
                 break;
             }
         }
     }
 
-    private static void deleteCard(WebElement parent, WebDriver driver) throws SeleniumIdentificationException, InterruptedException {
-        WebElement optionBox = parent.findElement(By.cssSelector("button[class='btn btn-xs btn-default dropdown-toggle']"));
+    private static void deleteCard(WebElement parent, WebDriver driver)
+            throws SeleniumIdentificationException, InterruptedException {
+        WebElement optionBox = parent
+                .findElement(By.cssSelector("button[class='btn btn-xs btn-default dropdown-toggle']"));
         optionBox.click();
         List<WebElement> buttons = parent.findElements(By.cssSelector("button[class='btn btn-default']"));
-        for(WebElement button : buttons)
+        for (WebElement button : buttons)
         {
             List<WebElement> spanners = button.findElements(By.tagName("span"));
-            for(WebElement span : spanners) {
+            for (WebElement span : spanners) {
                 if (span.getText().contains("Delete cell")) {
                     button.click();
                 }
@@ -180,7 +183,7 @@ public class SeleniumKBaseHelper {
         WebElement popUp = driver.findElement(By.cssSelector("div[class='modal-footer']"));
         WebElement yesButton = popUp.findElement(By.cssSelector("button[class='btn btn-primary']"));
         SeleniumUtilities.clickUntilSuccessful(yesButton, Duration.ofSeconds(20));
-        SeleniumUtilities.clickUntilSuccessful(driver.findElement(By.cssSelector("button[id='kb-save-btn']")),Duration.ofSeconds(20));
+        SeleniumUtilities.clickUntilSuccessful(driver.findElement(By.cssSelector("button[id='kb-save-btn']")), Duration.ofSeconds(20));
 
     }
 }

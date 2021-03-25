@@ -76,7 +76,7 @@ public class SeleniumUtilities {
 
             } catch (UnknownError e) {
                 Thread.sleep(POLLING_DELAY_MILLIS);
-            } catch(WebDriverException e) {
+            } catch (WebDriverException e) {
                 Thread.sleep(POLLING_DELAY_MILLIS);
             }
 
