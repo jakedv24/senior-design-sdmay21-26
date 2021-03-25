@@ -15,6 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -155,9 +156,12 @@ public class GUIForm extends JFrame {
                         String absoluteFilePath = userFile.getAbsolutePath();
                         FileInputReader<FBAParameters> fbaFileInputReader = new JSONFileInputReader();
                         try {
-                            params = fbaFileInputReader.parseFromFile(absoluteFilePath);
+                            Collection<FBAParameters> jobParams = fbaFileInputReader.parseFromFile(absoluteFilePath);
                             readFromFile = true;
-                            jobManager.scheduleJob(new Job(params));
+
+                            for (FBAParameters jobParam : jobParams) {
+                                jobManager.scheduleJob(new Job(jobParam));
+                            }
                         } catch (FileNotFoundException | JobManagerStoppedException fileNotFoundException) {
                             fileNotFoundException.printStackTrace();
                         }

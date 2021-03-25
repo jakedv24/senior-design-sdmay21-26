@@ -17,6 +17,7 @@ import org.apache.commons.cli.*;
 import javax.swing.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Properties;
 
 /**
@@ -165,20 +166,18 @@ public class App {
         //Give the GUI a more authentic feel according to use OS
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         gui = new GUIForm(manager);
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                //Generate our GUI, this has control of the web driver.
-                gui.setVisible(true);
-            }
+        SwingUtilities.invokeLater(() -> {
+            //Generate our GUI, this has control of the web driver.
+            gui.setVisible(true);
         });
     }
 
     private static void runHeadlessMode(JobManager manager, String inputFileName) {
         FileInputReader<FBAParameters> fbaFileInputReader = new JSONFileInputReader();
         try {
-            FBAParameters fbaParameters = fbaFileInputReader.parseFromFile(inputFileName);
-            manager.scheduleJob(new Job(fbaParameters));
+            for (FBAParameters jobParams :  fbaFileInputReader.parseFromFile(inputFileName)) {
+                manager.scheduleJob(new Job(jobParams));
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("Config file not found.");
