@@ -170,8 +170,7 @@ public class SeleniumKBaseHelper {
                 .findElement(By.cssSelector("button[class='btn btn-xs btn-default dropdown-toggle']"));
         optionBox.click();
         List<WebElement> buttons = parent.findElements(By.cssSelector("button[class='btn btn-default']"));
-        for (WebElement button : buttons)
-        {
+        for (WebElement button : buttons) {
             List<WebElement> spanners = button.findElements(By.tagName("span"));
             for (WebElement span : spanners) {
                 if (span.getText().contains("Delete cell")) {
@@ -183,7 +182,8 @@ public class SeleniumKBaseHelper {
         WebElement popUp = driver.findElement(By.cssSelector("div[class='modal-footer']"));
         WebElement yesButton = popUp.findElement(By.cssSelector("button[class='btn btn-primary']"));
         SeleniumUtilities.clickUntilSuccessful(yesButton, Duration.ofSeconds(20));
-        SeleniumUtilities.clickUntilSuccessful(driver.findElement(By.cssSelector("button[id='kb-save-btn']")), Duration.ofSeconds(20));
+        SeleniumUtilities.clickUntilSuccessful(driver
+                .findElement(By.cssSelector("button[id='kb-save-btn']")), Duration.ofSeconds(20));
 
     }
 }
