@@ -21,7 +21,12 @@
       ],
       "customFluxBounds": [
         "customFluxBounds"
-      ]
+      ],
+      "reactionKnockouts": [
+        "reactionKnockout"
+      ],
+      "deleteCard": true,
+      "expressionCondition": "expCondition"
     }
   ]
 }

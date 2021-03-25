@@ -21,7 +21,12 @@
       ],
       "customFluxBounds": [
         "customFluxBounds"
-      ]
+      ],
+      "reactionKnockouts": [
+        "reactionKnockout"
+      ],
+      "deleteCard": true,
+      "expressionCondition": "expCondition"
     },
     {
       "fluxVariabilityAnalysis": true,
@@ -44,7 +49,12 @@
       ],
       "customFluxBounds": [
         "customFluxBounds"
-      ]
+      ],
+      "reactionKnockouts": [
+        "reactionKnockout"
+      ],
+      "deleteCard": true,
+      "expressionCondition": "expCondition"
     }
   ]
 }
