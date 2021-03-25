@@ -2,8 +2,8 @@ package edu.iastate.ece.sd.sdmay2126;
 
 import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
 import edu.iastate.ece.sd.sdmay2126.configuration.ConfigurationLoader;
-import edu.iastate.ece.sd.sdmay2126.input.FileInputReader;
-import edu.iastate.ece.sd.sdmay2126.input.JSONFileInputReader;
+import edu.iastate.ece.sd.sdmay2126.input.file.FileInputReader;
+import edu.iastate.ece.sd.sdmay2126.input.file.JSONFileInputReader;
 import edu.iastate.ece.sd.sdmay2126.orchestration.Job;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManager;
 import edu.iastate.ece.sd.sdmay2126.orchestration.JobManagerStoppedException;

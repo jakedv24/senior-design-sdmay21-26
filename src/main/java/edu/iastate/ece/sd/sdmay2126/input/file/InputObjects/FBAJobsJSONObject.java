@@ -1,4 +1,4 @@
-package edu.iastate.ece.sd.sdmay2126.input.InputObjects;
+package edu.iastate.ece.sd.sdmay2126.input.file.InputObjects;
 
 import java.util.List;
 
