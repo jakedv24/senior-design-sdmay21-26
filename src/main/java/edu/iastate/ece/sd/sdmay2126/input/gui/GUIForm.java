@@ -68,7 +68,7 @@ public class GUIForm extends JFrame {
     private JTextField errorTextField;
     //Float values GUI fields
     private JTextField activationCoefficientText;
-    private JTextField carbonUptake;
+    private JPlaceholderTextField carbonUptake;
     private JTextField nitrogenUptake;
     private JTextField phosphateUptake;
     private JTextField sulfurUptake;
@@ -256,7 +256,6 @@ public class GUIForm extends JFrame {
         fluxVariabilityAnalysis.setSelected(true);
         simulateAllSingleKos.setSelected(true);
         minimizeFlux.setSelected(true);
-
         add(mainPanel); //Display Panel
         setSize(500, 500); //Set a arbitrary size for the GUI
         //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Adds the X button to close
@@ -264,7 +263,7 @@ public class GUIForm extends JFrame {
 
         //Give all the text that "hint" look in the GUI
         activationCoefficientText.setForeground(Color.gray);
-        carbonUptake.setForeground(Color.gray);
+        carbonUptake = new JPlaceholderTextField("*Carbon Uptake [0,100]");
         nitrogenUptake.setForeground(Color.gray);
         phosphateUptake.setForeground(Color.gray);
         sulfurUptake.setForeground(Color.gray);
