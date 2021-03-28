@@ -1,4 +1,4 @@
-package edu.iastate.ece.sd.sdmay2126.input;
+package edu.iastate.ece.sd.sdmay2126.input.file;
 
 /**
  * Exception for incorrectly configured input files.

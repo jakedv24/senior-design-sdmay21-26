@@ -1,6 +1,7 @@
 package edu.iastate.ece.sd.sdmay2126.input;
 
 import edu.iastate.ece.sd.sdmay2126.application.FBAParameters;
+import edu.iastate.ece.sd.sdmay2126.input.file.JSONFileInputReader;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
