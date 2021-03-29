@@ -6,14 +6,15 @@ import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumIdentificationEx
 import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumInputProgrammer;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumKBaseHelper;
 import edu.iastate.ece.sd.sdmay2126.runner.gui.selenium.SeleniumUtilities;
-import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.Collections;
-import java.util.concurrent.TimeUnit;
 
 public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
     private WebDriver driver;
