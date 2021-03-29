@@ -45,9 +45,34 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
                 .until(d -> scopedFBACard.findElement(By.cssSelector(showAdvancedCSSSelector)))
                 .click();
 
+        // TODO: This used to default to bio1 if no matches
+        SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "target_reaction",
+                Collections.singletonList(params.getReactionToMaximize()));
+
         SeleniumKBaseHelper.setCheckBox(scopedFBACard, "fva", params.isFluxVariabilityAnalysis());
         SeleniumKBaseHelper.setCheckBox(scopedFBACard, "minimize_flux", params.isMinimizeFlux());
         SeleniumKBaseHelper.setCheckBox(scopedFBACard, "simulate_ko", params.isSimulateAllSingleKos());
+
+        SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "feature_ko_list",
+                params.getGeneKnockouts());
+
+        SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "reaction_ko_list",
+                params.getReactionKnockouts());
+
+        SeleniumKBaseHelper.setTextList(driver, scopedFBACard, "custom_bound_list",
+                params.getCustomFluxBounds());
+
+        SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "media_supplement_list",
+                params.getMediaSupplements());
+
+        SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "expression_condition",
+                Collections.singletonList(params.getExpressionCondition()));
+
+        SeleniumKBaseHelper.setTextBox(scopedFBACard, "exp_threshold_percentile",
+                Float.toString(params.getExpressionThreshold()));
+
+        SeleniumKBaseHelper.setTextBox(scopedFBACard, "exp_threshold_margin",
+                Float.toString(params.getExpressionUncertainty()));
 
         SeleniumKBaseHelper.setTextBox(scopedFBACard, "activation_coefficient",
                 Float.toString(params.getActivationCoefficient()));
@@ -66,31 +91,6 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
 
         SeleniumKBaseHelper.setTextBox(scopedFBACard, "max_o_uptake",
                 Float.toString(params.getMaxOxygenUptake()));
-
-        SeleniumKBaseHelper.setTextBox(scopedFBACard, "exp_threshold_percentile",
-                Float.toString(params.getExpressionThreshold()));
-
-        SeleniumKBaseHelper.setTextBox(scopedFBACard, "exp_threshold_margin",
-                Float.toString(params.getExpressionUncertainty()));
-
-        SeleniumKBaseHelper.setTextList(driver, scopedFBACard, "custom_bound_list",
-                params.getCustomFluxBounds());
-
-        SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "feature_ko_list",
-                params.getGeneKnockouts());
-
-        // TODO: This used to default to bio1 if no matches
-        SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "target_reaction",
-                Collections.singletonList(params.getReactionToMaximize()));
-
-        SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "reaction_ko_list",
-                params.getReactionKnockouts());
-
-        SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "media_supplement_list",
-                params.getMediaSupplements());
-
-        SeleniumKBaseHelper.setSearchableOptionList(scopedFBACard, "expression_condition",
-                Collections.singletonList(params.getExpressionCondition()));
 
         System.out.println("Programming FBA complete.");
 
