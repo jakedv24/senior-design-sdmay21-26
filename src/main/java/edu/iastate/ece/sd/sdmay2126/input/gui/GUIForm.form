@@ -173,7 +173,7 @@
           <text value="Number of Jobs"/>
         </properties>
       </component>
-      <component id="6e17a" class="javax.swing.JTextArea" binding="geneKnockouts">
+      <component id="6e17a" class="edu.iastate.ece.sd.sdmay2126.input.gui.JPlaceholderTextArea" binding="geneKnockouts">
         <constraints>
           <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="50"/>
@@ -183,7 +183,7 @@
           <text value="Gene Knockouts"/>
         </properties>
       </component>
-      <component id="8865c" class="javax.swing.JTextArea" binding="reactionKnockouts">
+      <component id="8865c" class="edu.iastate.ece.sd.sdmay2126.input.gui.JPlaceholderTextArea" binding="reactionKnockouts">
         <constraints>
           <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="50"/>
@@ -201,7 +201,7 @@
           <text value="Controlled Random"/>
         </properties>
       </component>
-      <component id="23b4e" class="javax.swing.JTextArea" binding="mediaSupplement">
+      <component id="23b4e" class="edu.iastate.ece.sd.sdmay2126.input.gui.JPlaceholderTextArea" binding="mediaSupplement">
         <constraints>
           <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="50"/>
@@ -211,7 +211,7 @@
           <text value="Media Supplement"/>
         </properties>
       </component>
-      <component id="c929e" class="javax.swing.JTextArea" binding="customFluxBounds">
+      <component id="c929e" class="edu.iastate.ece.sd.sdmay2126.input.gui.JPlaceholderTextArea" binding="customFluxBounds">
         <constraints>
           <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="50"/>

@@ -65,7 +65,7 @@ public class GUIForm extends JFrame {
     private JCheckBox fluxVariabilityAnalysis; //boolean, check is 1 unchecked is 0
     private JCheckBox simulateAllSingleKos; //boolean, check is 1 unchecked is 0
     private JCheckBox minimizeFlux; //boolean, check is 1 unchecked is 0
-    private JTextField errorTextField;
+    private JTextField errorTextField; //Staying as a JTextfield
     //Float values GUI fields
     private JPlaceholderTextField activationCoefficientText;
     private JPlaceholderTextField carbonUptake;
@@ -79,12 +79,12 @@ public class GUIForm extends JFrame {
     private JCheckBox randomCheckBox;
     private JCheckBox samplingCheckBox;
     private JPlaceholderTextField numberJobs;
-    private JTextArea geneKnockouts;
-    private JTextArea reactionKnockouts;
+    private JPlaceholderTextArea geneKnockouts;
+    private JPlaceholderTextArea reactionKnockouts;
     private JCheckBox readFromFileCheckBox;
     public File userFile;
-    private JTextArea mediaSupplement;
-    private JTextArea customFluxBounds;
+    private JPlaceholderTextArea mediaSupplement;
+    private JPlaceholderTextArea customFluxBounds;
     private JPlaceholderTextField expressionCondition;
     private JCheckBox deleteResultsCheckBox;
 
@@ -95,43 +95,8 @@ public class GUIForm extends JFrame {
      */
     public GUIForm(JobManager jobManager) {
         this.jobManager = jobManager;
-        //while (numberJobsValue >= 1) {
         guiInitialization();
         mouseClickActivators();
-        customFluxBounds.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (customFluxBounds.getText().equals("Custom Flux Bounds")) {
-                    customFluxBounds.setText("");
-                    customFluxBounds.setForeground(Color.BLACK);
-                }
-
-            }
-        });
-        mediaSupplement.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (mediaSupplement.getText().equals("Media Supplement")) {
-                    mediaSupplement.setText("");
-                    mediaSupplement.setForeground(Color.BLACK);
-                }
-                mediaSupplementString = mediaSupplement.getText();
-            }
-        });
-
-        expressionCondition.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (expressionCondition.getText().equals("Expression Condition")) {
-                    expressionCondition.setText("");
-                    expressionCondition.setForeground(Color.BLACK);
-                }
-                expressionConditionString = expressionCondition.getText();
-            }
-        });
 
 
         runDefaultSettingsButton.addActionListener(new ActionListener() {
@@ -195,8 +160,6 @@ public class GUIForm extends JFrame {
                 }
             }
         });
-        //}
-        //numberJobsValue--;
     }
 
     /*
@@ -267,13 +230,13 @@ public class GUIForm extends JFrame {
         sulfurUptake.setPlaceHolderTextField("*Sulfur Uptake [0,100]");
         oxygenUptake.setPlaceHolderTextField("*Oxygen Uptake [0,100]");
         reactionToMaximize.setPlaceHolderTextField("Reaction to Maximize");
-        geneKnockouts.setForeground(Color.gray);
+        geneKnockouts.setPlaceHolderTextField("Gene Knockouts");
         expressionThreshold.setPlaceHolderTextField("Expression Threshold [0,1]");
         expressionUncertainty.setPlaceHolderTextField("Expression Uncertainty [0,?]");
         numberJobs.setPlaceHolderTextField("Number of Jobs");
-        customFluxBounds.setForeground(Color.gray);
-        reactionKnockouts.setForeground(Color.gray);
-        mediaSupplement.setForeground(Color.gray);
+        customFluxBounds.setPlaceHolderTextField("Custom Flux Bounds");
+        reactionKnockouts.setPlaceHolderTextField("ReactionKnockouts");
+        mediaSupplement.setPlaceHolderTextField("Media Supplement");
         expressionCondition.setPlaceHolderTextField("Expression Condition");
 
 
@@ -506,19 +469,6 @@ public class GUIForm extends JFrame {
     method simplified.
      */
     private void mouseClickActivators() {
-        numberJobs.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (numberJobs.getText().contains("Number")
-                        || numberJobs.getText().contains("jobs")) {
-                    numberJobs.setText("");
-                    numberJobs.setForeground(Color.BLACK);
-                }
-                numberJobsString = numberJobs.getText();
-            }
-        });
-
         samplingCheckBox.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -530,28 +480,6 @@ public class GUIForm extends JFrame {
             }
         });
 
-        geneKnockouts.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (geneKnockouts.getText().equals("Gene Knockouts")) {
-                    geneKnockouts.setText("");
-                    geneKnockouts.setForeground(Color.BLACK);
-                }
-                geneKnockoutsString = geneKnockouts.getText();
-            }
-        });
-        reactionKnockouts.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (reactionKnockouts.getText().equals("ReactionKnockouts")) {
-                    reactionKnockouts.setText("");
-                    reactionKnockouts.setForeground(Color.BLACK);
-                }
-
-            }
-        });
     }
 
     public FBAParameters activateForm() {
