@@ -32,7 +32,7 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
 
         // Reset the FBA Application
        // resetFBAIfRequired(scopedFBACard);
-        SeleniumKBaseHelper.resetCardIfNeeded(scopedFBACard,driver);
+        SeleniumKBaseHelper.resetCardIfNeeded(scopedFBACard, driver);
 
         // Button will be obscured temporarily if we used the reset dialog, so try for 10 seconds before failing
         //SeleniumUtilities.clickUntilSuccessful(scopedFBACard, Duration.ofSeconds(10));

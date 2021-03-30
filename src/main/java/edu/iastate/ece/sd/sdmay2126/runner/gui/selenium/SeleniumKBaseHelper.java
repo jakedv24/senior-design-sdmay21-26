@@ -202,11 +202,11 @@ public class SeleniumKBaseHelper {
 
     }
 
-    public static void resetCardIfNeeded(WebElement codeCell, WebDriver driver) throws InterruptedException, SeleniumIdentificationException {
+    public static void resetCardIfNeeded(WebElement codeCell, WebDriver driver)
+            throws InterruptedException, SeleniumIdentificationException {
         System.out.println("Checking if card needs to be reset...");
         List<WebElement>  resetButton = codeCell.findElements(By.cssSelector("button[class='btn btn-default -rerun"));
-        if(resetButton.isEmpty())
-        {
+        if (resetButton.isEmpty()) {
             System.out.println("No reset required...");
             return;
         }
