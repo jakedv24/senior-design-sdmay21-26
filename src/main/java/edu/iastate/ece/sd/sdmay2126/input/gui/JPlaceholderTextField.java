@@ -12,6 +12,7 @@ public class JPlaceholderTextField extends JTextField {
     private String placeholderText;
 
     /**
+     *
      */
     public JPlaceholderTextField() {
         this.placeholderText = "";
@@ -36,7 +37,7 @@ public class JPlaceholderTextField extends JTextField {
         });
     }
 
-    public void setPlaceHolderTextField(String text){
+    public void setPlaceHolderTextField(String text) {
         this.placeholderText = text;
         setText(placeholderText);
         setForeground(Color.GRAY);

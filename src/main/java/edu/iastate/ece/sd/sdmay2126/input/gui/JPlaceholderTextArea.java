@@ -36,7 +36,7 @@ public class JPlaceholderTextArea extends JTextArea {
         });
     }
 
-    public void setPlaceHolderTextField(String text){
+    public void setPlaceHolderTextField(String text) {
         this.placeholderText = text;
         setText(placeholderText);
         setForeground(Color.GRAY);
