@@ -161,24 +161,24 @@ public class SeleniumKBaseHelper {
         }
     }
 
-    public static void deleteResultCard(String cardName, WebDriver driver)
+    public static void deleteCardByName(String cardName, WebDriver driver)
             throws InterruptedException, SeleniumIdentificationException {
         List<WebElement> cards = driver.findElements(By.className("code_cell"));
         for (WebElement card : cards) {
             WebElement title = card.findElement(By.className("title"));
             if (title.getText().contains(cardName)) {
-                deleteCard(card, driver);
+                deleteCardByElement(card, driver);
                 break;
             }
         }
     }
 
-    private static void deleteCard(WebElement parent, WebDriver driver)
+    public static void deleteCardByElement(WebElement codeCell, WebDriver driver)
             throws SeleniumIdentificationException, InterruptedException {
-        WebElement optionBox = parent
+        WebElement optionBox = codeCell
                 .findElement(By.cssSelector("button[class='btn btn-xs btn-default dropdown-toggle']"));
         optionBox.click();
-        List<WebElement> buttons = parent.findElements(By.cssSelector("button[class='btn btn-default']"));
+        List<WebElement> buttons = codeCell.findElements(By.cssSelector("button[class='btn btn-default']"));
         for (WebElement button : buttons) {
             List<WebElement> spanners = button.findElements(By.tagName("span"));
             for (WebElement span : spanners) {
@@ -188,11 +188,33 @@ public class SeleniumKBaseHelper {
             }
         }
 
-        WebElement popUp = driver.findElement(By.cssSelector("div[class='modal-footer']"));
-        WebElement yesButton = popUp.findElement(By.cssSelector("button[class='btn btn-primary']"));
-        SeleniumUtilities.clickUntilSuccessful(yesButton, Duration.ofSeconds(20));
+        acceptKbasePopUp(driver);
         SeleniumUtilities.clickUntilSuccessful(driver
                 .findElement(By.cssSelector("button[id='kb-save-btn']")), Duration.ofSeconds(20));
 
     }
+
+    private static void acceptKbasePopUp(WebDriver driver)
+            throws SeleniumIdentificationException, InterruptedException {
+        WebElement popUp = driver.findElement(By.cssSelector("div[class='modal-footer']"));
+        WebElement yesButton = popUp.findElement(By.cssSelector("button[class='btn btn-primary']"));
+        SeleniumUtilities.clickUntilSuccessful(yesButton, Duration.ofSeconds(20));
+
+    }
+
+    public static void resetCardIfNeeded(WebElement codeCell, WebDriver driver) throws InterruptedException, SeleniumIdentificationException {
+        System.out.println("Checking if card needs to be reset...");
+        List<WebElement>  resetButton = codeCell.findElements(By.cssSelector("button[class='btn btn-default -rerun"));
+        if(resetButton.isEmpty())
+        {
+            System.out.println("No reset required...");
+            return;
+        }
+        resetButton.get(0).click();
+        acceptKbasePopUp(driver);
+        SeleniumUtilities.clickUntilSuccessful(codeCell, Duration.ofSeconds(10));
+        System.out.println("Card has been reset...");
+
+    }
+
 }
