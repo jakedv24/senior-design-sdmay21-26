@@ -33,7 +33,7 @@ public class GlobusAuthenticationFlow implements SeleniumAuthenticationFlow {
 
         // Locate the login iframe
         System.out.println("Finding auth provider iframe...");
-        WebElement authProviderFrame = new WebDriverWait(driver, Duration.ofSeconds(10))
+        WebElement authProviderFrame = new WebDriverWait(driver, Duration.ofSeconds(30))
                 .until(d -> d.findElement(By.tagName("iframe")));
 
         driver.switchTo().frame(authProviderFrame);
@@ -43,7 +43,7 @@ public class GlobusAuthenticationFlow implements SeleniumAuthenticationFlow {
         System.out.println("Looking for login buttons...");
 
         List<WebElement> loginButtons = SeleniumUtilities.waitForNMatches(
-                driver, By.className("signin-button"), 3, Duration.ofSeconds(10), null);
+                driver, By.className("signin-button"), 3, Duration.ofSeconds(30), null);
 
         for (int retry = 0; retry < 3; retry++) {
 
