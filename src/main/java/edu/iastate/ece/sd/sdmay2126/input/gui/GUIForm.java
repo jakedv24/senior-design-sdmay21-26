@@ -65,27 +65,27 @@ public class GUIForm extends JFrame {
     private JCheckBox fluxVariabilityAnalysis; //boolean, check is 1 unchecked is 0
     private JCheckBox simulateAllSingleKos; //boolean, check is 1 unchecked is 0
     private JCheckBox minimizeFlux; //boolean, check is 1 unchecked is 0
-    private JTextField errorTextField;
+    private JTextField errorTextField; //Staying as a JTextfield
     //Float values GUI fields
-    private JTextField activationCoefficientText;
-    private JTextField carbonUptake;
-    private JTextField nitrogenUptake;
-    private JTextField phosphateUptake;
-    private JTextField sulfurUptake;
-    private JTextField oxygenUptake;
-    private JTextField reactionToMaximize;
-    private JTextField expressionThreshold;
-    private JTextField expressionUncertainty;
+    private JPlaceholderTextField activationCoefficientText;
+    private JPlaceholderTextField carbonUptake;
+    private JPlaceholderTextField nitrogenUptake;
+    private JPlaceholderTextField phosphateUptake;
+    private JPlaceholderTextField sulfurUptake;
+    private JPlaceholderTextField oxygenUptake;
+    private JPlaceholderTextField reactionToMaximize;
+    private JPlaceholderTextField expressionThreshold;
+    private JPlaceholderTextField expressionUncertainty;
     private JCheckBox randomCheckBox;
     private JCheckBox samplingCheckBox;
-    private JTextField numberJobs;
-    private JTextArea geneKnockouts;
-    private JTextArea reactionKnockouts;
+    private JPlaceholderTextField numberJobs;
+    private JPlaceholderTextArea geneKnockouts;
+    private JPlaceholderTextArea reactionKnockouts;
     private JCheckBox readFromFileCheckBox;
     public File userFile;
-    private JTextArea mediaSupplement;
-    private JTextArea customFluxBounds;
-    private JTextField expressionCondition;
+    private JPlaceholderTextArea mediaSupplement;
+    private JPlaceholderTextArea customFluxBounds;
+    private JPlaceholderTextField expressionCondition;
     private JCheckBox deleteResultsCheckBox;
 
     private boolean formError = false; //try catches will signal this.
@@ -95,45 +95,8 @@ public class GUIForm extends JFrame {
      */
     public GUIForm(JobManager jobManager) {
         this.jobManager = jobManager;
-        //while (numberJobsValue >= 1) {
         guiInitialization();
         mouseClickActivators();
-        customFluxBounds.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (customFluxBounds.getText().equals("Custom Flux Bounds")) {
-                    customFluxBounds.setText("");
-                    customFluxBounds.setForeground(Color.BLACK);
-                }
-
-            }
-        });
-        mediaSupplement.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (mediaSupplement.getText().equals("Media Supplement")) {
-                    mediaSupplement.setText("");
-                    mediaSupplement.setForeground(Color.BLACK);
-                }
-                mediaSupplementString = mediaSupplement.getText();
-            }
-        });
-
-        expressionCondition.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (expressionCondition.getText().equals("Expression Condition")) {
-                    expressionCondition.setText("");
-                    expressionCondition.setForeground(Color.BLACK);
-                }
-                expressionConditionString = expressionCondition.getText();
-            }
-        });
-
-
 
 
         runDefaultSettingsButton.addActionListener(new ActionListener() {
@@ -197,8 +160,6 @@ public class GUIForm extends JFrame {
                 }
             }
         });
-        //}
-        //numberJobsValue--;
     }
 
     /*
@@ -256,28 +217,27 @@ public class GUIForm extends JFrame {
         fluxVariabilityAnalysis.setSelected(true);
         simulateAllSingleKos.setSelected(true);
         minimizeFlux.setSelected(true);
-
         add(mainPanel); //Display Panel
         setSize(500, 500); //Set a arbitrary size for the GUI
         //setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Adds the X button to close
-        activationCoefficientText.setText("Activation Coefficient [0,1]");
+        activationCoefficientText.setPlaceHolderTextField("Activation Coefficient [0,1]");
 
         //Give all the text that "hint" look in the GUI
         activationCoefficientText.setForeground(Color.gray);
-        carbonUptake.setForeground(Color.gray);
-        nitrogenUptake.setForeground(Color.gray);
-        phosphateUptake.setForeground(Color.gray);
-        sulfurUptake.setForeground(Color.gray);
-        oxygenUptake.setForeground(Color.gray);
-        reactionToMaximize.setForeground(Color.gray);
-        geneKnockouts.setForeground(Color.gray);
-        expressionThreshold.setForeground(Color.gray);
-        expressionUncertainty.setForeground(Color.gray);
-        numberJobs.setForeground(Color.gray);
-        customFluxBounds.setForeground(Color.gray);
-        reactionKnockouts.setForeground(Color.gray);
-        mediaSupplement.setForeground(Color.gray);
-        expressionCondition.setForeground(Color.gray);
+        carbonUptake.setPlaceHolderTextField("*Carbon Uptake [0,100]");
+        nitrogenUptake.setPlaceHolderTextField("*Nitrogen Uptake [0,100]");
+        phosphateUptake.setPlaceHolderTextField("*Phosphate Uptake [0,100]");
+        sulfurUptake.setPlaceHolderTextField("*Sulfur Uptake [0,100]");
+        oxygenUptake.setPlaceHolderTextField("*Oxygen Uptake [0,100]");
+        reactionToMaximize.setPlaceHolderTextField("Reaction to Maximize");
+        geneKnockouts.setPlaceHolderTextField("Gene Knockouts");
+        expressionThreshold.setPlaceHolderTextField("Expression Threshold [0,1]");
+        expressionUncertainty.setPlaceHolderTextField("Expression Uncertainty [0,?]");
+        numberJobs.setPlaceHolderTextField("Number of Jobs");
+        customFluxBounds.setPlaceHolderTextField("Custom Flux Bounds");
+        reactionKnockouts.setPlaceHolderTextField("ReactionKnockouts");
+        mediaSupplement.setPlaceHolderTextField("Media Supplement");
+        expressionCondition.setPlaceHolderTextField("Expression Condition");
 
 
     }
@@ -358,7 +318,6 @@ public class GUIForm extends JFrame {
             floatException("Number of Jobs", 0, 0);
         }
 
-        int x = getNumberJobs();
 
         //Setting the Carbon string from the GUI for the web driver
         carbonValue = guiValidationCheck(carbonString, "*Carbon Uptake [0,100]",
@@ -510,32 +469,6 @@ public class GUIForm extends JFrame {
     method simplified.
      */
     private void mouseClickActivators() {
-        activationCoefficientText.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (activationCoefficientText.getText().contains("Coefficient")
-                        || activationCoefficientText.getText().contains("Activation")) {
-                    activationCoefficientText.setText("");
-                    activationCoefficientText.setForeground(Color.BLACK);
-                }
-                activationCoefficientString = activationCoefficientText.getText();
-            }
-        });
-
-        numberJobs.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (numberJobs.getText().contains("Number")
-                        || numberJobs.getText().contains("jobs")) {
-                    numberJobs.setText("");
-                    numberJobs.setForeground(Color.BLACK);
-                }
-                numberJobsString = numberJobs.getText();
-            }
-        });
-
         samplingCheckBox.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -547,99 +480,6 @@ public class GUIForm extends JFrame {
             }
         });
 
-        onTouchListenerNoDefault(carbonUptake, "Carbon Uptake");
-        carbonString = carbonUptake.getText();
-        onTouchListenerNoDefault(phosphateUptake, "Phosphate Uptake");
-        phosphateString = phosphateUptake.getText();
-        onTouchListenerNoDefault(nitrogenUptake, "Nitrogen Uptake");
-        nitrogenString = nitrogenUptake.getText();
-        onTouchListenerNoDefault(sulfurUptake, "Sulfur Uptake");
-        sulfurString = sulfurUptake.getText();
-        onTouchListenerNoDefault(oxygenUptake, "Oxygen Uptake");
-        oxygenString = oxygenUptake.getText();
-
-        expressionThreshold.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (expressionThreshold.getText().contains("Expression")
-                        || expressionThreshold.getText().contains("Threshold")) {
-                    expressionThreshold.setText("");
-                    expressionThreshold.setForeground(Color.BLACK);
-                }
-                expressionthresholdString = expressionThreshold.getText();
-            }
-        });
-        expressionUncertainty.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (expressionUncertainty.getText().contains("Expression")
-                        || expressionUncertainty.getText().contains("Uncertainty")) {
-                    expressionUncertainty.setText("");
-                    expressionUncertainty.setForeground(Color.BLACK);
-                }
-                expressionUncertaintyString = expressionUncertainty.getText();
-            }
-        });
-        reactionToMaximize.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (reactionToMaximize.getText().contains("Reaction")
-                        || reactionToMaximize.getText().contains("Maximize")) {
-                    reactionToMaximize.setText("");
-                    reactionToMaximize.setForeground(Color.BLACK);
-                }
-                reactionToMaximizeString = reactionToMaximize.getText();
-            }
-        });
-        geneKnockouts.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (geneKnockouts.getText().equals("Gene Knockouts")) {
-                    geneKnockouts.setText("");
-                    geneKnockouts.setForeground(Color.BLACK);
-                }
-                geneKnockoutsString = geneKnockouts.getText();
-            }
-        });
-        reactionKnockouts.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (reactionKnockouts.getText().equals("ReactionKnockouts")) {
-                    reactionKnockouts.setText("");
-                    reactionKnockouts.setForeground(Color.BLACK);
-                }
-
-            }
-        });
-    }
-
-    /**
-     * Sets up the on text listener for each of the fields to turn its text from
-     * the hint text to the actual text the user wants to display.
-     * NOT FUNCTIONAL YET
-     *
-     * @param textField
-     * @param check1
-     * @param check2
-     */
-    public void setMouseListener(JTextField textField, String check1, String check2) {
-        textField.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                if (textField.getText().contains(check1)
-                        || textField.getText().contains(check2)) {
-                    textField.setText("");
-                    textField.setForeground(Color.BLACK);
-                }
-                String finalValue = textField.getText();
-            }
-        });
     }
 
     public FBAParameters activateForm() {
@@ -668,33 +508,6 @@ public class GUIForm extends JFrame {
 
     public int getNumberJobs() {
         return numberJobsValue;
-    }
-
-    //test
-    /*
-    TESTING NOT WORKING CURRENTLY
-    Method for refactoring duplicate code that each float value needs to run through on click.
-    ElementString ex: CarbonString
-    ElementMin ex: Carbon min value is 0
-    ElementMax ex: Carbon max value is 100
-    ElementUptake ex: "Carbon Uptake"
-     */
-    private void guifloatvaluesimplifier(String elementString, int elementMin, int elementMax,
-                                         String elementUptake, float elementValue) {
-        try {
-            //Check if the user left the value as a default value
-            if (elementString.equals("*" + elementUptake + " [" + elementMin + "," + elementMax + "]")
-                    || elementString.equals("")) { //this value can't be left blank, no specified default
-                formError = true;
-                errorTextField.setText(elementUptake + " Field is required. Range: " + elementMin + "-" + elementMax);
-            } else {
-                elementValue = Float.parseFloat(elementString); //if not default set as user value
-            }
-
-        } catch (NumberFormatException k) {
-            floatException(elementUptake, 0, 100);
-        }
-        validationRange(0.0, 100.0, elementValue, elementUptake);
     }
 
 
