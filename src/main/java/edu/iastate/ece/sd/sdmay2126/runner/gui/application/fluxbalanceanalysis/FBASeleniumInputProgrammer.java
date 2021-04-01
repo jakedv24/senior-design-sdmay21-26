@@ -31,10 +31,11 @@ public class FBASeleniumInputProgrammer implements SeleniumInputProgrammer {
         FBAParameters params = (FBAParameters) job.getParameters();
 
         // Reset the FBA Application
-        resetFBAIfRequired(scopedFBACard);
+       // resetFBAIfRequired(scopedFBACard);
+        SeleniumKBaseHelper.resetCardIfNeeded(scopedFBACard, driver);
 
         // Button will be obscured temporarily if we used the reset dialog, so try for 10 seconds before failing
-        SeleniumUtilities.clickUntilSuccessful(scopedFBACard, Duration.ofSeconds(10));
+        //SeleniumUtilities.clickUntilSuccessful(scopedFBACard, Duration.ofSeconds(10));
 
         // There are two buttons that show and hide advanced options we want to click the second one
         System.out.println("Toggling advanced options...");

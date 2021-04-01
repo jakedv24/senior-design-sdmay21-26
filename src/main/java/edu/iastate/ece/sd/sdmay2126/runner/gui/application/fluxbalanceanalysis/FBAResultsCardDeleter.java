@@ -23,7 +23,7 @@ public class FBAResultsCardDeleter implements SeleniumResultsCardDeleter {
     public void deleteResultsCard(Job job) throws InterruptedException, SeleniumIdentificationException {
         FBAParameters params = (FBAParameters) job.getParameters();
         if (params.getDeleteCard()) {
-            SeleniumKBaseHelper.deleteResultCard("Output from Run Flux Balance Analysis", driver);
+            SeleniumKBaseHelper.deleteCardByName("Output from Run Flux Balance Analysis", driver);
 
         }
 
