@@ -9,16 +9,13 @@ import java.awt.event.FocusListener;
  * A JTextArea with placeholder text.
  */
 public class JPlaceholderTextArea extends JTextArea {
-    private final String placeholderText;
+    private String placeholderText;
 
     /**
      * @param placeholderText The placeholder text for this field.
      */
-    public JPlaceholderTextArea(String placeholderText) {
-        this.placeholderText = placeholderText;
-
-        setText(placeholderText);
-        setForeground(Color.GRAY);
+    public JPlaceholderTextArea() {
+        this.placeholderText = "";
 
         addFocusListener(new FocusListener() {
             @Override
@@ -37,5 +34,11 @@ public class JPlaceholderTextArea extends JTextArea {
                 }
             }
         });
+    }
+
+    public void setPlaceHolderTextField(String text) {
+        this.placeholderText = text;
+        setText(placeholderText);
+        setForeground(Color.GRAY);
     }
 }

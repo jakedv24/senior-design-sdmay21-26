@@ -9,21 +9,19 @@ import java.awt.event.FocusListener;
  * A JTextArea with placeholder text.
  */
 public class JPlaceholderTextField extends JTextField {
-    private final String placeholderText;
+    private String placeholderText;
 
     /**
-     * @param placeholderText The placeholder text for this field.
+     *
      */
-    public JPlaceholderTextField(String placeholderText) {
-        this.placeholderText = placeholderText;
+    public JPlaceholderTextField() {
+        this.placeholderText = "";
 
-        setText(placeholderText);
-        setForeground(Color.GRAY);
 
         addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (getText().equals(placeholderText)) {
+                if (getText().equals(JPlaceholderTextField.this.placeholderText)) {
                     setText("");
                     setForeground(Color.BLACK);
                 }
@@ -32,10 +30,16 @@ public class JPlaceholderTextField extends JTextField {
             @Override
             public void focusLost(FocusEvent e) {
                 if (getText().isEmpty()) {
-                    setText(placeholderText);
+                    setText(JPlaceholderTextField.this.placeholderText);
                     setForeground(Color.GRAY);
                 }
             }
         });
+    }
+
+    public void setPlaceHolderTextField(String text) {
+        this.placeholderText = text;
+        setText(placeholderText);
+        setForeground(Color.GRAY);
     }
 }
