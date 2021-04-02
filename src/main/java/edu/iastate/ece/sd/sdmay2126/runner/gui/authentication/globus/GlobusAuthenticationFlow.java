@@ -33,24 +33,46 @@ public class GlobusAuthenticationFlow implements SeleniumAuthenticationFlow {
 
         // Locate the login iframe
         System.out.println("Finding auth provider iframe...");
-        WebElement authProviderFrame = new WebDriverWait(driver, Duration.ofSeconds(10))
+        WebElement authProviderFrame = new WebDriverWait(driver, Duration.ofSeconds(30))
                 .until(d -> d.findElement(By.tagName("iframe")));
 
         driver.switchTo().frame(authProviderFrame);
 
+
         // Wait for the login buttons to load
         System.out.println("Looking for login buttons...");
+
         List<WebElement> loginButtons = SeleniumUtilities.waitForNMatches(
-                driver, By.className("signin-button"), 3, Duration.ofSeconds(10), null);
+                driver, By.className("signin-button"), 3, Duration.ofSeconds(30), null);
 
-        // Click the Globus auth button (we'll wait for it to render)
-        System.out.println("Clicking Globus login...");
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(d -> loginButtons.get(2).isDisplayed());
-        loginButtons.get(2).click();
+        for (int retry = 0; retry < 3; retry++) {
 
-        // Switch back to the window (from the iframe)
-        driver.switchTo().defaultContent();
+            // Click the Globus auth button (we'll wait for it to render)
+            System.out.println("Clicking Globus login...");
+            new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(d -> loginButtons.get(2).isDisplayed());
+            loginButtons.get(2).click();
+
+            // Switch back to the window (from the iframe)
+            driver.switchTo().defaultContent();
+
+            // Acknowledge Globus
+            try {
+                System.out.println("Acknowledging Globus (try " + (retry + 1) + " of 3)...");
+                new WebDriverWait(driver, Duration.ofSeconds(10))
+                        .until(d -> d.findElement(By.tagName("button")))
+                        .click();
+
+                // Successful; break to avoid retrying
+                break;
+            } catch (Exception e) {
+                System.out.println("Failed to identify the Globus login button");
+            } finally {
+                // Swap back to the window
+                driver.switchTo().defaultContent();
+            }
+        }
+
 
         // Locate the Globus "continue" button
         System.out.println("Watching for Continue button...");
