@@ -42,7 +42,7 @@ A Selenium WebDriver matching the Chrome version on the machine has to be manual
 
 ## Using the input GUI
 
-Run the application as normal. Click through the GUI and run jobs.
+Run the application as normal. Click through the GUI and run jobs. The GUI is able to accept configuration files in a graphical format.
 
 ## Using configuration files
 
