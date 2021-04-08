@@ -1,7 +1,5 @@
 # senior-design-sdmay21-26
 
-![example branch parameter](https://github.com/github/docs/actions/workflows/main.yml/badge.svg?branch=master)
-
 This application uses [Selenium](https://www.selenium.dev/) web drivers to automate using KBase in the browser.
 
 FBA Application jobs can be configured through a GUI, or through the command line via a configuration file. The configuration files can be used to queue multiple jobs from a single file. For an example of a configuration file, keep reading.
